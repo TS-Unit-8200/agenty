@@ -99,6 +99,14 @@ class Settings(BaseSettings):
         validation_alias="INTAKE_DEFAULT_ORG_EXTERNAL_ID",
         description="Mongo organizations.external_id used when ingesting a new incident from the UI.",
     )
+    agents_dir: str = Field(
+        default="agents",
+        validation_alias="AGENTS_DIR",
+        description=(
+            "Directory containing agent markdown files (relative to project root). "
+            "Use 'agents_kghm' for the KGHM corporate crisis agent set."
+        ),
+    )
     cors_origins: str = Field(
         default="http://localhost:3000,http://127.0.0.1:3000",
         validation_alias="CORS_ORIGINS",

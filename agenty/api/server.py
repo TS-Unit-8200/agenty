@@ -27,7 +27,14 @@ def create_app() -> FastAPI:
     )
     connector = MongoConnector(settings)
     repository = OrchestrationRepository(connector)
-    runtime = AgentRuntime(settings=settings)
+    from pathlib import Path as _Path
+
+    _project_root = _Path(__file__).resolve().parent.parent.parent
+    _agents_path = _project_root / settings.agents_dir
+
+    from agenty.agent import AgentRegistry as _AR
+
+    runtime = AgentRuntime(settings=settings, registry=_AR(agents_dir=_agents_path))
 
     resource_server = ResourceCrudMCPServer(
         api_base_url=settings.nextjs_api_base_url,

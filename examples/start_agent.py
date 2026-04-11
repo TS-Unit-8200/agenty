@@ -45,11 +45,24 @@ def main() -> int:
         action="store_true",
         help="Do not attach example AgentContext (system prompt = instructions only).",
     )
+    parser.add_argument(
+        "--agents-dir",
+        default=None,
+        metavar="DIR",
+        help="Agent directory (e.g. 'agents_kghm'). Default: 'agents'.",
+    )
     args = parser.parse_args()
+
+    from pathlib import Path
 
     from agenty import AgentContext, AgentRegistry, AgentRuntime
 
-    registry = AgentRegistry()
+    agents_dir = None
+    if args.agents_dir:
+        project_root = Path(__file__).resolve().parent.parent
+        agents_dir = project_root / args.agents_dir
+
+    registry = AgentRegistry(agents_dir=agents_dir)
     if args.list:
         for agent_id in registry.list_ids():
             title = registry.get(agent_id).title
@@ -66,7 +79,7 @@ def main() -> int:
         )
 
     try:
-        runtime = AgentRuntime()
+        runtime = AgentRuntime(registry=registry)
     except ValidationError as exc:
         print(
             "Could not load settings. Set ANTHROPIC_API_KEY or CGC_LLM_API_KEY in agenty/.env "
