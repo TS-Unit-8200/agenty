@@ -4,7 +4,8 @@ from agenty.agent import AgentDefinition, AgentRegistry, AgentRuntime, AgentSess
 from agenty.config import Settings, get_settings
 from agenty.connection import LlmConnection
 from agenty.context import AgentContext
-from agenty.mcp import MCPProvider
+from agenty.mcp import MCPProvider, StaticMCPProvider
+from agenty.orchestration import OrchestrationEngine, OrchestrationRepository
 
 __all__ = [
     "AgentContext",
@@ -14,6 +15,9 @@ __all__ = [
     "AgentSession",
     "LlmConnection",
     "MCPProvider",
+    "StaticMCPProvider",
+    "OrchestrationEngine",
+    "OrchestrationRepository",
     "Settings",
     "get_settings",
 ]

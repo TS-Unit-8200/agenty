@@ -43,6 +43,26 @@ class Settings(BaseSettings):
         validation_alias="MONGODB_DATABASE",
         description="Database name when the URI has no path segment.",
     )
+    nextjs_api_base_url: str = Field(
+        default="http://localhost:3000",
+        validation_alias="NEXTJS_API_BASE_URL",
+        description="Next.js backend base URL for resource CRUD proxy calls.",
+    )
+    nextjs_api_token: str | None = Field(
+        default=None,
+        validation_alias="NEXTJS_API_TOKEN",
+        description="Optional bearer token for service-to-service calls to Next.js.",
+    )
+    orchestrator_version: str = Field(
+        default="v1",
+        validation_alias="ORCHESTRATOR_VERSION",
+        description="Idempotency/version key for orchestration runs.",
+    )
+    orchestration_log_file: str | None = Field(
+        default="logs/orchestration-trace.log",
+        validation_alias="ORCHESTRATION_LOG_FILE",
+        description="Optional file path for orchestration trace logging.",
+    )
 
 
 @lru_cache

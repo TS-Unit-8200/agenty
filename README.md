@@ -106,3 +106,32 @@ python examples/start_agent.py --agent marszalek-wojewodztwa -m "Opisz priorytet
 | `agents/*.md` | System prompts / role specs |
 | `examples/start_agent.py` | Runnable demo |
 | `.env.example` | Template for secrets |
+
+## Incident Orchestration Backend (async)
+
+This repository now includes an async orchestration backend for incident workflows:
+
+- Fetches incident hierarchy from Mongo first
+- Selects and runs required agents concurrently
+- Reconciles outputs and generates scenario sets (A/B/C)
+- Uses MCP adapters for resources, scenario tools, and mocked comms calls
+
+Main modules:
+
+- `agenty/orchestration/engine.py` — state-machine orchestrator
+- `agenty/orchestration/repository.py` — Mongo persistence for runs/steps/results
+- `agenty/mcp_gateway/` — MCP tool servers and gateway
+- `agenty/api/server.py` — FastAPI app exposing orchestration endpoints
+- Trace logs are written to `logs/orchestration-trace.log` by default
+
+Run API server:
+
+```bash
+uvicorn agenty.api.server:app_factory --factory --reload --port 8080
+```
+
+Endpoints:
+
+- `POST /orchestrations` — start run (`incident_id`, `org_id`)
+- `GET /orchestrations/{run_id}` — status and steps
+- `GET /orchestrations/{run_id}/result` — final artifacts when available

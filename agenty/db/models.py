@@ -122,6 +122,8 @@ class Incident(BaseModel):
     updates: list[IncidentUpdate] = Field(default_factory=list)
     resources: list[IncidentResource] = Field(default_factory=list)
     scenarios: list[Scenario] = Field(default_factory=list)
+    latest_orchestration_run_id: str | None = None
+    latest_scenario_version_id: str | None = None
 
 
 class HierarchyNode(BaseModel):
