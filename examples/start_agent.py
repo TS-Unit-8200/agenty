@@ -2,7 +2,7 @@
 """
 Start a CrisisTwin agent, optionally with structured context, and print one assistant reply.
 
-Requires ``CGC_LLM_API_KEY`` (see ``agenty/.env.example``). Run from any directory::
+Requires ``ANTHROPIC_API_KEY`` or ``CGC_LLM_API_KEY`` (see ``agenty/.env.example``). Run from any directory::
 
     cd /path/to/agenty
     python examples/start_agent.py --list
@@ -19,7 +19,7 @@ from pydantic import ValidationError
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Start an agent session and send one user message to the CGC LLM API.",
+        description="Start an agent session and send one user message to the configured LLM API.",
     )
     parser.add_argument(
         "--list",
@@ -69,7 +69,7 @@ def main() -> int:
         runtime = AgentRuntime()
     except ValidationError as exc:
         print(
-            "Could not load settings. Set CGC_LLM_API_KEY in agenty/.env "
+            "Could not load settings. Set ANTHROPIC_API_KEY or CGC_LLM_API_KEY in agenty/.env "
             "(copy from .env.example).",
             file=sys.stderr,
         )

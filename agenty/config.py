@@ -1,9 +1,10 @@
-"""Application settings (CGC LLM — OpenAI-compatible API)."""
+"""Application settings (Claude via Anthropic or CGC — OpenAI-compatible chat API)."""
 
 from functools import lru_cache
 from pathlib import Path
+from typing import Self
 
-from pydantic import Field
+from pydantic import Field, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 # Project root: repository ``agenty/`` folder (parent of the ``agenty`` Python package).
@@ -14,8 +15,8 @@ _DEFAULT_ENV_FILE = _PROJECT_ROOT / ".env"
 class Settings(BaseSettings):
     """Environment-backed configuration.
 
-    API reference: https://docs.cgc.comtegra.cloud/llm-api
-    Base URL defaults to the hosted Comtegra endpoint; override for self-managed instances.
+    Set ``ANTHROPIC_API_KEY`` to use Claude (OpenAI SDK compatibility), or ``CGC_LLM_*`` for
+    Comtegra GPU Cloud: https://docs.cgc.comtegra.cloud/llm-api
     """
 
     model_config = SettingsConfigDict(
@@ -28,10 +29,25 @@ class Settings(BaseSettings):
         default="https://llm.comtegra.cloud/v1",
         validation_alias="CGC_LLM_BASE_URL",
     )
-    llm_api_key: str = Field(validation_alias="CGC_LLM_API_KEY")
+    llm_api_key: str = Field(default="", validation_alias="CGC_LLM_API_KEY")
     default_chat_model: str = Field(
         default="llama3-8b",
         validation_alias="CGC_LLM_CHAT_MODEL",
+    )
+    anthropic_api_key: str | None = Field(
+        default=None,
+        validation_alias="ANTHROPIC_API_KEY",
+        description="Claude API key; when set, overrides CGC LLM base URL, key, and default model.",
+    )
+    anthropic_base_url: str = Field(
+        default="https://api.anthropic.com/v1",
+        validation_alias="ANTHROPIC_BASE_URL",
+        description="OpenAI-compatible Claude API root (trailing slash optional).",
+    )
+    anthropic_chat_model: str = Field(
+        default="claude-sonnet-4-6",
+        validation_alias="ANTHROPIC_CHAT_MODEL",
+        description="Model id when using ANTHROPIC_API_KEY.",
     )
     database_url: str | None = Field(
         default=None,
@@ -92,6 +108,21 @@ class Settings(BaseSettings):
             "The API also allows any port on localhost/127.0.0.1 via regex in dev."
         ),
     )
+
+    @model_validator(mode="after")
+    def _resolve_llm_provider(self) -> Self:
+        # pydantic-settings: mutate ``self`` and return ``self`` (returning ``model_copy`` is ignored).
+        anthropic = (self.anthropic_api_key or "").strip()
+        if anthropic:
+            self.llm_base_url = self.anthropic_base_url.rstrip("/")
+            self.llm_api_key = anthropic
+            self.default_chat_model = self.anthropic_chat_model
+        elif not (self.llm_api_key or "").strip():
+            raise ValueError(
+                "Missing LLM credentials: set ANTHROPIC_API_KEY (Claude) or CGC_LLM_API_KEY "
+                "(Comtegra GPU Cloud). See agenty/.env.example."
+            )
+        return self
 
 
 @lru_cache

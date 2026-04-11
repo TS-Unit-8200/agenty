@@ -69,6 +69,41 @@ def trace_human_block(title: str, body: str, *, width: int = 76) -> None:
     human.info(msg)
 
 
+def trace_llm_output(
+    *,
+    title: str,
+    answer: str,
+    reasoning: str | None = None,
+    model: str | None = None,
+    max_stderr: int = 48_000,
+) -> None:
+    """Emit full model answer (and reasoning/thinking when present) to stderr and the human log."""
+    from agenty.api.access_log import agenty_echo
+
+    parts: list[str] = []
+    if model:
+        parts.append(f"(model={model})")
+    if reasoning and reasoning.strip():
+        parts.append("### Reasoning / thinking\n" + reasoning.strip())
+    parts.append("### Output\n" + (answer.strip() if answer else "(empty)"))
+    body = "\n\n".join(parts)
+    ts = datetime.now(UTC).strftime("%Y-%m-%d %H:%M:%S UTC")
+    for_line = body if len(body) <= max_stderr else body[:max_stderr] + "\n… [truncated for stderr]"
+    agenty_echo(f"[agenty] LLM {ts} │ {title}\n{for_line}")
+
+    human = logging.getLogger(_HUMAN_LOGGER_NAME)
+    if human.handlers:
+        trace_human_block(f"LLM  │  {title}", body)
+
+    trace_event(
+        "llm.output",
+        title=title,
+        model=model,
+        answer_chars=len(answer or ""),
+        reasoning_chars=len(reasoning or ""),
+    )
+
+
 def trace_event(event: str, **data: Any) -> None:
     logger = logging.getLogger(_LOGGER_NAME)
     payload = {"event": event, **data}

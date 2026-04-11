@@ -150,3 +150,1026 @@
 {"event": "mcp.resource.request", "method": "GET", "path": "/api/resources?incident_id=9c03a167797047e5a14fc205"}
 {"event": "api.orchestration.result", "run_id": "0ae385c0-ad31-47fe-b246-c78bcee9ee33", "status": "failed"}
 {"event": "orchestration.graph.error", "run_id": "0ae385c0-ad31-47fe-b246-c78bcee9ee33", "error": "timed out"}
+{"event": "api.incident.intake", "incident_id": "8abf3d9ae36f49bb9a8a41c7", "organization_external_id": "org_lubelskie", "workflow_org_id": "org_lubelskie"}
+{"event": "orchestration.run.created", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "incident_id": "8abf3d9ae36f49bb9a8a41c7", "org_id": "org_lubelskie"}
+{"event": "api.orchestration.start", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "incident_id": "8abf3d9ae36f49bb9a8a41c7", "org_id": "org_lubelskie"}
+{"event": "orchestration.graph.invoke", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468"}
+{"event": "orchestration.step.start", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "state": "fetch_hierarchy"}
+{"event": "orchestration.hierarchy.loaded", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "incident_id": "8abf3d9ae36f49bb9a8a41c7"}
+{"event": "orchestration.step.complete", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "state": "fetch_hierarchy", "output_keys": ["organization", "incident", "hierarchy_found", "hierarchy"]}
+{"event": "orchestration.step.start", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "state": "select_agents"}
+{"event": "orchestration.agents.selected", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "agents": ["dyrektor-abw", "dyrektor-szpitala", "komendant-policji", "komendant-psp", "logistyk", "orchestrator", "starosta", "wojewoda", "wojt"]}
+{"event": "orchestration.step.complete", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "state": "select_agents", "output_keys": ["agents"]}
+{"event": "orchestration.step.start", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "state": "run_agents_async"}
+{"event": "orchestration.agent.batch.start", "agent_ids": ["dyrektor-abw", "dyrektor-szpitala", "komendant-policji", "komendant-psp", "logistyk", "orchestrator", "starosta", "wojewoda", "wojt"]}
+{"event": "orchestration.agent.start", "agent_id": "dyrektor-abw"}
+{"event": "orchestration.agent.start", "agent_id": "dyrektor-szpitala"}
+{"event": "orchestration.agent.start", "agent_id": "komendant-policji"}
+{"event": "orchestration.agent.start", "agent_id": "komendant-psp"}
+{"event": "orchestration.agent.start", "agent_id": "logistyk"}
+{"event": "orchestration.agent.start", "agent_id": "orchestrator"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "orchestration.agent.start", "agent_id": "starosta"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "orchestration.agent.start", "agent_id": "wojewoda"}
+{"event": "orchestration.agent.start", "agent_id": "wojt"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "run_agents_async"}
+{"event": "orchestration.agent.batch.complete", "total": 9}
+{"event": "orchestration.agents.ran", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "agents": ["dyrektor-abw", "dyrektor-szpitala", "komendant-policji", "komendant-psp", "logistyk", "orchestrator", "starosta", "wojewoda", "wojt"], "failed": ["dyrektor-abw", "komendant-policji", "komendant-psp", "logistyk", "orchestrator", "starosta", "wojewoda", "wojt"]}
+{"event": "orchestration.step.complete", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "state": "run_agents_async", "output_keys": ["total", "failures", "failed_agents"]}
+{"event": "orchestration.step.start", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "state": "resolve_conflicts"}
+{"event": "orchestration.conflicts.resolved", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "agreements": 1, "conflicts": 8}
+{"event": "orchestration.step.complete", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "state": "resolve_conflicts", "output_keys": ["agreements", "conflicts", "gaps", "agent_summary"]}
+{"event": "orchestration.step.start", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "state": "generate_scenarios"}
+{"event": "mcp.gateway.dispatch", "tool": "scenario_estimate_cost", "server": "ScenarioGenMCPServer"}
+{"event": "mcp.scenario.request", "tool": "scenario_estimate_cost"}
+{"event": "mcp.scenario.response", "tool": "scenario_estimate_cost", "result": "{\"estimated_cost\": \"125000\"}"}
+{"event": "mcp.gateway.dispatch", "tool": "scenario_risk_score", "server": "ScenarioGenMCPServer"}
+{"event": "mcp.scenario.request", "tool": "scenario_risk_score"}
+{"event": "mcp.scenario.response", "tool": "scenario_risk_score", "result": "{\"score\": 24.0}"}
+{"event": "mcp.gateway.dispatch", "tool": "scenario_risk_score", "server": "ScenarioGenMCPServer"}
+{"event": "mcp.scenario.request", "tool": "scenario_risk_score"}
+{"event": "mcp.scenario.response", "tool": "scenario_risk_score", "result": "{\"score\": 12.0}"}
+{"event": "mcp.gateway.dispatch", "tool": "scenario_risk_score", "server": "ScenarioGenMCPServer"}
+{"event": "mcp.scenario.request", "tool": "scenario_risk_score"}
+{"event": "mcp.scenario.response", "tool": "scenario_risk_score", "result": "{\"score\": 12.0}"}
+{"event": "orchestration.scenario.scored", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "best_label": "B", "best_score": 12.0}
+{"event": "orchestration.scenarios.generated", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "scenario_version_id": "adc8d3b9-50f1-4c3d-a63d-248ec9832aa1", "recommendation": "B"}
+{"event": "orchestration.step.complete", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "state": "generate_scenarios", "output_keys": ["scenario_version_id", "recommended"]}
+{"event": "orchestration.step.start", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "state": "sync_resources"}
+{"event": "mcp.gateway.dispatch", "tool": "resource_list", "server": "ResourceCrudMCPServer"}
+{"event": "mcp.resource.request", "method": "GET", "path": "/api/resources?incident_id=8abf3d9ae36f49bb9a8a41c7"}
+{"event": "mcp.resource.response", "method": "GET", "path": "/api/resources?incident_id=8abf3d9ae36f49bb9a8a41c7"}
+{"event": "orchestration.resources.synced", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "resource_count": 0}
+{"event": "orchestration.step.complete", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "state": "sync_resources", "output_keys": ["resource_sync"]}
+{"event": "api.orchestration.result", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "status": "sync_resources"}
+{"event": "orchestration.step.start", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "state": "comms_mock_call"}
+{"event": "mcp.gateway.dispatch", "tool": "call_user_for_incident_info", "server": "CommsMockMCPServer"}
+{"event": "mcp.comms.request", "tool": "call_user_for_incident_info", "incident_id": "8abf3d9ae36f49bb9a8a41c7"}
+{"event": "mcp.comms.response", "tool": "call_user_for_incident_info", "incident_id": "8abf3d9ae36f49bb9a8a41c7"}
+{"event": "orchestration.comms.mocked", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "summary": "**Phone Call Summary – Incident ID: 8abf3d9ae36f49bb9a8a41c7**\n\n1. **Location**: Na Zalewie Zemborzyckim.\n2. **Issue**: Rise in water level causing overflow and flooding risk in nearby areas.\n3. **Affected Areas**: Local roads underwater, riverside buildings at risk.\n4. **Response**: Residents and local authorities notified; fire department and rescue teams preparing for intervention. Potential need for monitoring or evacuation."}
+{"event": "orchestration.step.complete", "run_id": "cf7aa289-18bf-401f-a272-ace5e526a468", "state": "comms_mock_call", "output_keys": ["incident_id", "phone", "summary"]}
+{"event": "api.incident.intake", "incident_id": "481ef539a071482bab6227df", "organization_external_id": "org_lubelskie", "workflow_org_id": "org_lubelskie"}
+{"event": "orchestration.run.created", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "incident_id": "481ef539a071482bab6227df", "org_id": "org_lubelskie"}
+{"event": "api.orchestration.start", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "incident_id": "481ef539a071482bab6227df", "org_id": "org_lubelskie"}
+{"event": "orchestration.graph.invoke", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c"}
+{"event": "orchestration.step.start", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "state": "fetch_hierarchy"}
+{"event": "orchestration.hierarchy.loaded", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "incident_id": "481ef539a071482bab6227df"}
+{"event": "orchestration.step.complete", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "state": "fetch_hierarchy", "output_keys": ["organization", "incident", "hierarchy_found", "hierarchy"]}
+{"event": "orchestration.step.start", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "state": "select_agents"}
+{"event": "orchestration.agents.selected", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "agents": ["dyrektor-abw", "dyrektor-szpitala", "komendant-policji", "komendant-psp", "logistyk", "orchestrator", "starosta", "wojewoda", "wojt"]}
+{"event": "orchestration.step.complete", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "state": "select_agents", "output_keys": ["agents"]}
+{"event": "orchestration.step.start", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "state": "run_agents_async"}
+{"event": "orchestration.agent.batch.start", "agent_ids": ["dyrektor-abw", "dyrektor-szpitala", "komendant-policji", "komendant-psp", "logistyk", "orchestrator", "starosta", "wojewoda", "wojt"]}
+{"event": "orchestration.agent.start", "agent_id": "dyrektor-abw"}
+{"event": "orchestration.agent.start", "agent_id": "dyrektor-szpitala"}
+{"event": "orchestration.agent.start", "agent_id": "komendant-policji"}
+{"event": "orchestration.agent.start", "agent_id": "komendant-psp"}
+{"event": "orchestration.agent.start", "agent_id": "logistyk"}
+{"event": "orchestration.agent.start", "agent_id": "orchestrator"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "orchestration.agent.start", "agent_id": "starosta"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "orchestration.agent.start", "agent_id": "wojewoda"}
+{"event": "orchestration.agent.start", "agent_id": "wojt"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "run_agents_async"}
+{"event": "orchestration.agent.batch.complete", "total": 9}
+{"event": "orchestration.agents.ran", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "agents": ["dyrektor-abw", "dyrektor-szpitala", "komendant-policji", "komendant-psp", "logistyk", "orchestrator", "starosta", "wojewoda", "wojt"], "failed": ["dyrektor-szpitala", "komendant-policji", "komendant-psp", "logistyk", "orchestrator", "starosta", "wojewoda", "wojt"]}
+{"event": "orchestration.step.complete", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "state": "run_agents_async", "output_keys": ["total", "failures", "failed_agents"]}
+{"event": "orchestration.step.start", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "state": "resolve_conflicts"}
+{"event": "orchestration.conflicts.resolved", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "agreements": 1, "conflicts": 8}
+{"event": "orchestration.step.complete", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "state": "resolve_conflicts", "output_keys": ["agreements", "conflicts", "gaps", "agent_summary"]}
+{"event": "orchestration.step.start", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "state": "generate_scenarios"}
+{"event": "mcp.gateway.dispatch", "tool": "scenario_estimate_cost", "server": "ScenarioGenMCPServer"}
+{"event": "mcp.scenario.request", "tool": "scenario_estimate_cost"}
+{"event": "mcp.scenario.response", "tool": "scenario_estimate_cost", "result": "{\"estimated_cost\": \"50000\"}"}
+{"event": "mcp.gateway.dispatch", "tool": "scenario_risk_score", "server": "ScenarioGenMCPServer"}
+{"event": "mcp.scenario.request", "tool": "scenario_risk_score"}
+{"event": "mcp.scenario.response", "tool": "scenario_risk_score", "result": "{\"score\": 30.0}"}
+{"event": "mcp.gateway.dispatch", "tool": "scenario_risk_score", "server": "ScenarioGenMCPServer"}
+{"event": "mcp.scenario.request", "tool": "scenario_risk_score"}
+{"event": "mcp.scenario.response", "tool": "scenario_risk_score", "result": "{\"score\": 15.0}"}
+{"event": "mcp.gateway.dispatch", "tool": "scenario_risk_score", "server": "ScenarioGenMCPServer"}
+{"event": "mcp.scenario.request", "tool": "scenario_risk_score"}
+{"event": "mcp.scenario.response", "tool": "scenario_risk_score", "result": "{\"score\": 15.0}"}
+{"event": "orchestration.scenario.scored", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "best_label": "B", "best_score": 15.0}
+{"event": "orchestration.scenarios.generated", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "scenario_version_id": "cfe04d91-9588-4c65-841b-73c0f7f8c878", "recommendation": "B"}
+{"event": "orchestration.step.complete", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "state": "generate_scenarios", "output_keys": ["scenario_version_id", "recommended"]}
+{"event": "orchestration.step.start", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "state": "sync_resources"}
+{"event": "mcp.gateway.dispatch", "tool": "resource_list", "server": "ResourceCrudMCPServer"}
+{"event": "mcp.resource.request", "method": "GET", "path": "/api/resources?incident_id=481ef539a071482bab6227df"}
+{"event": "mcp.resource.response", "method": "GET", "path": "/api/resources?incident_id=481ef539a071482bab6227df"}
+{"event": "orchestration.resources.synced", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "resource_count": 0}
+{"event": "orchestration.step.complete", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "state": "sync_resources", "output_keys": ["resource_sync"]}
+{"event": "orchestration.step.start", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "state": "comms_mock_call"}
+{"event": "mcp.gateway.dispatch", "tool": "call_user_for_incident_info", "server": "CommsMockMCPServer"}
+{"event": "mcp.comms.request", "tool": "call_user_for_incident_info", "incident_id": "481ef539a071482bab6227df"}
+{"event": "mcp.comms.response", "tool": "call_user_for_incident_info", "incident_id": "481ef539a071482bab6227df"}
+{"event": "orchestration.comms.mocked", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "summary": "**Mock Phone Call Summary**\n\n**Incident ID:** 481ef539a071482bab6227df\n**Location:** Tomaszow Lubelski\n**Type:** Train derailment\n\n**Key Facts:**\n1. **Casualties:** 150 people injured.\n2. **Response Required:** Immediate medical assistance, security, and transportation to nearby hospitals.\n3. **Emergency Services Needed:** Ambulances, fire department, and police."}
+{"event": "orchestration.step.complete", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "state": "comms_mock_call", "output_keys": ["incident_id", "phone", "summary"]}
+{"event": "api.orchestration.result", "run_id": "c3e1e6e6-91c1-42d3-9598-a2acf8ff7f1c", "status": "completed"}
+{"event": "llm.output", "title": "intake:narrative_draft_json", "model": "mistralai_Devstral-Small-2-24B-Instruct-2512-Q5_K_M.gguf", "answer_chars": 704, "reasoning_chars": 0}
+{"event": "api.incident.intake", "incident_id": "5b86909c43bb4d969dd8d1b6", "organization_external_id": "org_lubelskie", "workflow_org_id": "org_lubelskie"}
+{"event": "orchestration.run.created", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "incident_id": "5b86909c43bb4d969dd8d1b6", "org_id": "org_lubelskie"}
+{"event": "api.orchestration.start", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "incident_id": "5b86909c43bb4d969dd8d1b6", "org_id": "org_lubelskie"}
+{"event": "orchestration.graph.invoke", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153"}
+{"event": "orchestration.step.start", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "state": "fetch_hierarchy"}
+{"event": "orchestration.hierarchy.loaded", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "incident_id": "5b86909c43bb4d969dd8d1b6"}
+{"event": "orchestration.step.complete", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "state": "fetch_hierarchy", "output_keys": ["organization", "incident", "hierarchy_found", "hierarchy"]}
+{"event": "orchestration.step.start", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "state": "select_agents"}
+{"event": "orchestration.agents.selected", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "agents": ["dyrektor-abw", "dyrektor-szpitala", "komendant-policji", "komendant-psp", "logistyk", "orchestrator", "starosta", "wojewoda", "wojt"]}
+{"event": "orchestration.step.complete", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "state": "select_agents", "output_keys": ["agents"]}
+{"event": "orchestration.step.start", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "state": "run_agents_async"}
+{"event": "orchestration.agent.batch.start", "agent_ids": ["dyrektor-abw", "dyrektor-szpitala", "komendant-policji", "komendant-psp", "logistyk", "orchestrator", "starosta", "wojewoda", "wojt"]}
+{"event": "orchestration.agent.start", "agent_id": "dyrektor-abw"}
+{"event": "orchestration.agent.start", "agent_id": "dyrektor-szpitala"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "llm.output", "title": "agent:dyrektor-abw", "model": "mistralai_Devstral-Small-2-24B-Instruct-2512-Q5_K_M.gguf", "answer_chars": 4408, "reasoning_chars": 0}
+{"event": "orchestration.agent.start", "agent_id": "komendant-policji"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "orchestration.agent.start", "agent_id": "komendant-psp"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "orchestration.agent.start", "agent_id": "logistyk"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "orchestration.agent.start", "agent_id": "orchestrator"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "run_agents_async"}
+{"event": "orchestration.agent.start", "agent_id": "starosta"}
+{"event": "orchestration.agent.start", "agent_id": "wojewoda"}
+{"event": "orchestration.agent.start", "agent_id": "wojt"}
+{"event": "orchestration.agent.batch.complete", "total": 9}
+{"event": "orchestration.agents.ran", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "agents": ["dyrektor-abw", "dyrektor-szpitala", "komendant-policji", "komendant-psp", "logistyk", "orchestrator", "starosta", "wojewoda", "wojt"], "failed": ["dyrektor-szpitala", "komendant-policji", "komendant-psp", "logistyk", "orchestrator", "starosta", "wojewoda", "wojt"]}
+{"event": "orchestration.step.complete", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "state": "run_agents_async", "output_keys": ["total", "failures", "failed_agents"]}
+{"event": "orchestration.step.start", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "state": "resolve_conflicts"}
+{"event": "orchestration.conflicts.resolved", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "agreements": 1, "conflicts": 8}
+{"event": "orchestration.step.complete", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "state": "resolve_conflicts", "output_keys": ["agreements", "conflicts", "gaps", "agent_summary"]}
+{"event": "orchestration.step.start", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "state": "generate_scenarios"}
+{"event": "mcp.gateway.dispatch", "tool": "scenario_estimate_cost", "server": "ScenarioGenMCPServer"}
+{"event": "mcp.scenario.request", "tool": "scenario_estimate_cost"}
+{"event": "mcp.scenario.response", "tool": "scenario_estimate_cost", "result": "{\"estimated_cost\": \"50000\"}"}
+{"event": "mcp.gateway.dispatch", "tool": "scenario_risk_score", "server": "ScenarioGenMCPServer"}
+{"event": "mcp.scenario.request", "tool": "scenario_risk_score"}
+{"event": "mcp.scenario.response", "tool": "scenario_risk_score", "result": "{\"score\": 30.0}"}
+{"event": "mcp.gateway.dispatch", "tool": "scenario_risk_score", "server": "ScenarioGenMCPServer"}
+{"event": "mcp.scenario.request", "tool": "scenario_risk_score"}
+{"event": "mcp.scenario.response", "tool": "scenario_risk_score", "result": "{\"score\": 15.0}"}
+{"event": "mcp.gateway.dispatch", "tool": "scenario_risk_score", "server": "ScenarioGenMCPServer"}
+{"event": "mcp.scenario.request", "tool": "scenario_risk_score"}
+{"event": "mcp.scenario.response", "tool": "scenario_risk_score", "result": "{\"score\": 15.0}"}
+{"event": "orchestration.scenario.scored", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "best_label": "B", "best_score": 15.0}
+{"event": "orchestration.scenarios.generated", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "scenario_version_id": "2d987ca4-3fee-401f-a157-ff78b81c6764", "recommendation": "B"}
+{"event": "orchestration.step.complete", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "state": "generate_scenarios", "output_keys": ["scenario_version_id", "recommended"]}
+{"event": "orchestration.step.start", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "state": "sync_resources"}
+{"event": "mcp.gateway.dispatch", "tool": "resource_list", "server": "ResourceCrudMCPServer"}
+{"event": "mcp.resource.request", "method": "GET", "path": "/api/resources?incident_id=5b86909c43bb4d969dd8d1b6"}
+{"event": "mcp.resource.response", "method": "GET", "path": "/api/resources?incident_id=5b86909c43bb4d969dd8d1b6"}
+{"event": "orchestration.resources.synced", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "resource_count": 0}
+{"event": "orchestration.step.complete", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "state": "sync_resources", "output_keys": ["resource_sync"]}
+{"event": "orchestration.step.start", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "state": "comms_mock_call"}
+{"event": "mcp.gateway.dispatch", "tool": "call_user_for_incident_info", "server": "CommsMockMCPServer"}
+{"event": "mcp.comms.request", "tool": "call_user_for_incident_info", "incident_id": "5b86909c43bb4d969dd8d1b6"}
+{"event": "llm.output", "title": "mcp:comms_mock_call", "model": "mistralai_Devstral-Small-2-24B-Instruct-2512-Q5_K_M.gguf", "answer_chars": 390, "reasoning_chars": 0}
+{"event": "mcp.comms.response", "tool": "call_user_for_incident_info", "incident_id": "5b86909c43bb4d969dd8d1b6"}
+{"event": "orchestration.comms.mocked", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "summary": "**Phone Call Summary (Incident ID: 5b86909c43bb4d969dd8d1b6)**\n\n1. **Location**: Train derailment near Tomaszow Lubelski.\n2. **Casualties**: 150 injured passengers.\n3. **Action Required**: Immediate dispatch of emergency services (ambulances, firefighters) and transport of injured to nearby hospitals.\n4. **Urgent**: High priority due to large number of victims and potential health risks."}
+{"event": "orchestration.step.complete", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "state": "comms_mock_call", "output_keys": ["incident_id", "phone", "summary"]}
+Narrative intake: json_object failed (Error code: 400 - {'error': {'code': 'invalid_request_error', 'message': "response_format.type: Input should be 'json_schema'", 'type': 'invalid_request_error', 'param': None}}); plain completion
+{"event": "llm.output", "title": "intake:narrative_draft_plain", "model": "claude-sonnet-4-6", "answer_chars": 1041, "reasoning_chars": 0}
+{"event": "api.incident.intake", "incident_id": "7c814681b4aa457299867b5f", "organization_external_id": "org_lubelskie", "workflow_org_id": "org_lubelskie"}
+{"event": "orchestration.run.created", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "incident_id": "7c814681b4aa457299867b5f", "org_id": "org_lubelskie"}
+{"event": "api.orchestration.start", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "incident_id": "7c814681b4aa457299867b5f", "org_id": "org_lubelskie"}
+{"event": "orchestration.graph.invoke", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1"}
+{"event": "orchestration.step.start", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "state": "fetch_hierarchy"}
+{"event": "orchestration.hierarchy.loaded", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "incident_id": "7c814681b4aa457299867b5f"}
+{"event": "orchestration.step.complete", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "state": "fetch_hierarchy", "output_keys": ["organization", "incident", "hierarchy_found", "hierarchy"]}
+{"event": "orchestration.step.start", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "state": "select_agents"}
+{"event": "orchestration.agents.selected", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "agents": ["dyrektor-abw", "dyrektor-szpitala", "komendant-policji", "komendant-psp", "logistyk", "orchestrator", "starosta", "wojewoda", "wojt"]}
+{"event": "orchestration.step.complete", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "state": "select_agents", "output_keys": ["agents"]}
+{"event": "orchestration.step.start", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "state": "run_agents_async"}
+{"event": "orchestration.agent.batch.start", "agent_ids": ["dyrektor-abw", "dyrektor-szpitala", "komendant-policji", "komendant-psp", "logistyk", "orchestrator", "starosta", "wojewoda", "wojt"]}
+{"event": "orchestration.agent.start", "agent_id": "dyrektor-szpitala"}
+{"event": "orchestration.agent.start", "agent_id": "dyrektor-abw"}
+{"event": "api.orchestration.result", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "status": "run_agents_async"}
+{"event": "llm.output", "title": "agent:dyrektor-szpitala", "model": "claude-sonnet-4-6", "answer_chars": 8717, "reasoning_chars": 0}
+{"event": "llm.output", "title": "agent:dyrektor-abw", "model": "claude-sonnet-4-6", "answer_chars": 9433, "reasoning_chars": 0}
+{"event": "orchestration.agent.start", "agent_id": "komendant-policji"}
+{"event": "orchestration.agent.start", "agent_id": "komendant-psp"}
+{"event": "api.orchestration.result", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "status": "run_agents_async"}
+{"event": "mcp.scenario.request", "tool": "scenario_risk_score"}
+{"event": "mcp.scenario.response", "tool": "scenario_risk_score", "result": "{\"score\": 24.0}"}
+{"event": "mcp.scenario.request", "tool": "scenario_estimate_cost"}
+{"event": "mcp.scenario.response", "tool": "scenario_estimate_cost", "result": "{\"estimated_cost\": \"50000\"}"}
+{"event": "mcp.comms.request", "tool": "call_user_for_incident_info", "incident_id": "inc-1"}
+{"event": "mcp.comms.response", "tool": "call_user_for_incident_info", "incident_id": "inc-1"}
+{"event": "mcp.gateway.dispatch", "tool": "scenario_estimate_cost", "server": "ScenarioGenMCPServer"}
+{"event": "mcp.scenario.request", "tool": "scenario_estimate_cost"}
+{"event": "mcp.scenario.response", "tool": "scenario_estimate_cost", "result": "{\"estimated_cost\": \"50000\"}"}
+{"event": "api.orchestration.result", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "status": "run_agents_async"}
+{"event": "llm.output", "title": "agent:komendant-psp", "model": "claude-sonnet-4-6", "answer_chars": 8576, "reasoning_chars": 0}
+{"event": "api.orchestration.result", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "status": "run_agents_async"}
+{"event": "orchestration.agent.start", "agent_id": "logistyk"}
+{"event": "api.orchestration.result", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "status": "run_agents_async"}
+{"event": "llm.output", "title": "agent:komendant-policji", "model": "claude-sonnet-4-6", "answer_chars": 10016, "reasoning_chars": 0}
+{"event": "orchestration.agent.start", "agent_id": "orchestrator"}
+{"event": "api.orchestration.result", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "status": "run_agents_async"}
+Narrative intake: json_object failed (Error code: 400 - {'error': {'code': 'invalid_request_error', 'message': "response_format.type: Input should be 'json_schema'", 'type': 'invalid_request_error', 'param': None}}); plain completion
+{"event": "llm.output", "title": "intake:narrative_draft_plain", "model": "claude-sonnet-4-6", "answer_chars": 1000, "reasoning_chars": 0}
+{"event": "api.incident.intake", "incident_id": "73a4dd1bfda14ec4a6d5785a", "organization_external_id": "org_lubelskie", "workflow_org_id": "org_lubelskie"}
+{"event": "orchestration.run.created", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "incident_id": "73a4dd1bfda14ec4a6d5785a", "org_id": "org_lubelskie"}
+{"event": "api.orchestration.start", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "incident_id": "73a4dd1bfda14ec4a6d5785a", "org_id": "org_lubelskie"}
+{"event": "orchestration.graph.invoke", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484"}
+{"event": "orchestration.step.start", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "state": "fetch_hierarchy"}
+{"event": "orchestration.hierarchy.loaded", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "incident_id": "73a4dd1bfda14ec4a6d5785a"}
+{"event": "orchestration.step.complete", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "state": "fetch_hierarchy", "output_keys": ["organization", "incident", "hierarchy_found", "hierarchy"]}
+{"event": "orchestration.step.start", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "state": "select_agents"}
+{"event": "orchestration.agents.selected", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "agents": ["dyrektor-abw", "dyrektor-szpitala", "komendant-policji", "komendant-psp", "logistyk", "orchestrator", "starosta", "wojewoda", "wojt"]}
+{"event": "orchestration.step.complete", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "state": "select_agents", "output_keys": ["agents"]}
+{"event": "orchestration.step.start", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "state": "run_agents_async"}
+{"event": "orchestration.agent.batch.start", "agent_ids": ["dyrektor-abw", "dyrektor-szpitala", "komendant-policji", "komendant-psp", "logistyk", "orchestrator", "starosta", "wojewoda", "wojt"]}
+{"event": "orchestration.agent.start", "agent_id": "dyrektor-abw"}
+{"event": "orchestration.agent.start", "agent_id": "dyrektor-szpitala"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "llm.output", "title": "agent:dyrektor-szpitala", "model": "claude-sonnet-4-6", "answer_chars": 8177, "reasoning_chars": 0}
+{"event": "orchestration.agent.start", "agent_id": "komendant-policji"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "llm.output", "title": "agent:dyrektor-abw", "model": "claude-sonnet-4-6", "answer_chars": 9772, "reasoning_chars": 0}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "orchestration.agent.start", "agent_id": "komendant-psp"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "llm.output", "title": "agent:logistyk", "model": "claude-sonnet-4-6", "answer_chars": 11684, "reasoning_chars": 0}
+{"event": "orchestration.agent.start", "agent_id": "starosta"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+Narrative intake: json_object failed (Error code: 400 - {'error': {'code': 'invalid_request_error', 'message': "response_format.type: Input should be 'json_schema'", 'type': 'invalid_request_error', 'param': None}}); plain completion
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "llm.output", "title": "agent:orchestrator", "model": "claude-sonnet-4-6", "answer_chars": 15006, "reasoning_chars": 0}
+{"event": "llm.output", "title": "intake:narrative_draft_plain", "model": "claude-sonnet-4-6", "answer_chars": 1215, "reasoning_chars": 0}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.incident.intake", "incident_id": "43e119cf1a5443f9bc36736b", "organization_external_id": "org_lubelskie", "workflow_org_id": "org_lubelskie"}
+{"event": "orchestration.run.created", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "incident_id": "43e119cf1a5443f9bc36736b", "org_id": "org_lubelskie"}
+{"event": "api.orchestration.start", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "incident_id": "43e119cf1a5443f9bc36736b", "org_id": "org_lubelskie"}
+{"event": "orchestration.graph.invoke", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1"}
+{"event": "orchestration.step.start", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "state": "fetch_hierarchy"}
+{"event": "orchestration.hierarchy.loaded", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "incident_id": "43e119cf1a5443f9bc36736b"}
+{"event": "orchestration.step.complete", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "state": "fetch_hierarchy", "output_keys": ["organization", "incident", "hierarchy_found", "hierarchy"]}
+{"event": "orchestration.step.start", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "state": "select_agents"}
+{"event": "orchestration.agents.selected", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "agents": ["dyrektor-abw", "dyrektor-szpitala", "komendant-policji", "komendant-psp", "logistyk", "orchestrator", "starosta", "wojewoda", "wojt"]}
+{"event": "orchestration.step.complete", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "state": "select_agents", "output_keys": ["agents"]}
+{"event": "orchestration.agent.start", "agent_id": "wojewoda"}
+{"event": "orchestration.step.start", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "state": "run_agents_async"}
+{"event": "orchestration.agent.batch.start", "agent_ids": ["dyrektor-abw", "dyrektor-szpitala", "komendant-policji", "komendant-psp", "logistyk", "orchestrator", "starosta", "wojewoda", "wojt"]}
+{"event": "orchestration.agent.start", "agent_id": "dyrektor-abw"}
+{"event": "orchestration.agent.start", "agent_id": "dyrektor-szpitala"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "llm.output", "title": "agent:komendant-policji", "model": "claude-sonnet-4-6", "answer_chars": 9138, "reasoning_chars": 0}
+{"event": "orchestration.agent.start", "agent_id": "logistyk"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "llm.output", "title": "agent:komendant-psp", "model": "claude-sonnet-4-6", "answer_chars": 8868, "reasoning_chars": 0}
+{"event": "orchestration.agent.start", "agent_id": "orchestrator"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "llm.output", "title": "agent:dyrektor-szpitala", "model": "claude-sonnet-4-6", "answer_chars": 7164, "reasoning_chars": 0}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "orchestration.agent.start", "agent_id": "komendant-policji"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "llm.output", "title": "agent:starosta", "model": "claude-sonnet-4-6", "answer_chars": 10673, "reasoning_chars": 0}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "orchestration.agent.start", "agent_id": "wojt"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "llm.output", "title": "agent:dyrektor-abw", "model": "claude-sonnet-4-6", "answer_chars": 9344, "reasoning_chars": 0}
+{"event": "orchestration.agent.start", "agent_id": "komendant-psp"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "llm.output", "title": "agent:wojewoda", "model": "claude-sonnet-4-6", "answer_chars": 11435, "reasoning_chars": 0}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "llm.output", "title": "agent:wojt", "model": "claude-sonnet-4-6", "answer_chars": 6672, "reasoning_chars": 0}
+{"event": "orchestration.agent.batch.complete", "total": 9}
+{"event": "orchestration.agents.ran", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "agents": ["dyrektor-abw", "dyrektor-szpitala", "komendant-policji", "komendant-psp", "logistyk", "orchestrator", "starosta", "wojewoda", "wojt"], "failed": []}
+{"event": "orchestration.step.complete", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "state": "run_agents_async", "output_keys": ["total", "failures", "failed_agents"]}
+{"event": "orchestration.step.start", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "state": "resolve_conflicts"}
+{"event": "orchestration.conflicts.resolved", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "agreements": 3, "conflicts": 0}
+{"event": "orchestration.step.complete", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "state": "resolve_conflicts", "output_keys": ["agreements", "conflicts", "gaps", "agent_summary"]}
+{"event": "orchestration.step.start", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "state": "generate_scenarios"}
+{"event": "llm.output", "title": "agent:logistyk", "model": "claude-sonnet-4-6", "answer_chars": 9223, "reasoning_chars": 0}
+{"event": "mcp.gateway.dispatch", "tool": "scenario_estimate_cost", "server": "ScenarioGenMCPServer"}
+{"event": "mcp.scenario.request", "tool": "scenario_estimate_cost"}
+{"event": "mcp.scenario.response", "tool": "scenario_estimate_cost", "result": "{\"estimated_cost\": \"50000\"}"}
+{"event": "mcp.gateway.dispatch", "tool": "scenario_risk_score", "server": "ScenarioGenMCPServer"}
+{"event": "mcp.scenario.request", "tool": "scenario_risk_score"}
+{"event": "mcp.scenario.response", "tool": "scenario_risk_score", "result": "{\"score\": 30.0}"}
+{"event": "mcp.gateway.dispatch", "tool": "scenario_risk_score", "server": "ScenarioGenMCPServer"}
+{"event": "mcp.scenario.request", "tool": "scenario_risk_score"}
+{"event": "mcp.scenario.response", "tool": "scenario_risk_score", "result": "{\"score\": 15.0}"}
+{"event": "mcp.gateway.dispatch", "tool": "scenario_risk_score", "server": "ScenarioGenMCPServer"}
+{"event": "mcp.scenario.request", "tool": "scenario_risk_score"}
+{"event": "mcp.scenario.response", "tool": "scenario_risk_score", "result": "{\"score\": 15.0}"}
+{"event": "orchestration.scenario.scored", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "best_label": "B", "best_score": 15.0}
+{"event": "orchestration.scenarios.generated", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "scenario_version_id": "fe9ce6ff-22a8-4c56-9a76-5869adcd5ad9", "recommendation": "B"}
+{"event": "orchestration.step.complete", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "state": "generate_scenarios", "output_keys": ["scenario_version_id", "recommended"]}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "orchestration.step.start", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "state": "sync_resources"}
+{"event": "mcp.gateway.dispatch", "tool": "resource_list", "server": "ResourceCrudMCPServer"}
+{"event": "mcp.resource.request", "method": "GET", "path": "/api/resources?incident_id=7c814681b4aa457299867b5f"}
+{"event": "mcp.resource.response", "method": "GET", "path": "/api/resources?incident_id=7c814681b4aa457299867b5f"}
+{"event": "orchestration.resources.synced", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "resource_count": 0}
+{"event": "orchestration.step.complete", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "state": "sync_resources", "output_keys": ["resource_sync"]}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "orchestration.step.start", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "state": "comms_mock_call"}
+{"event": "mcp.gateway.dispatch", "tool": "call_user_for_incident_info", "server": "CommsMockMCPServer"}
+{"event": "mcp.comms.request", "tool": "call_user_for_incident_info", "incident_id": "7c814681b4aa457299867b5f"}
+{"event": "llm.output", "title": "mcp:comms_mock_call", "model": "claude-sonnet-4-6", "answer_chars": 554, "reasoning_chars": 0}
+{"event": "mcp.comms.response", "tool": "call_user_for_incident_info", "incident_id": "7c814681b4aa457299867b5f"}
+{"event": "orchestration.comms.mocked", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "summary": "## Phone Call Summary\n\n**Incident ID:** 7c814681b4aa457299867b5f\n**Phone:** unknown\n\n---\n\n### Summary\nCaller reported a train derailment in Tomaszów Lubelski requiring immediate multi-agency emergency response.\n\n---\n\n### Extracted Facts\n\n1. **Event Type:** Train derailment occurred in Tomaszów Lubelski.\n2. **Casualties:** At least 150 people injured.\n3. **Response Required:** Emergency services requested on scene — ambulance, fire brigade, and police.\n4. **Rail Impact:** PKP dispatch notified; rail traffic on the affected section must be suspended."}
+{"event": "orchestration.step.complete", "run_id": "7c1cffd3-f400-4014-b492-92edd1a29eb1", "state": "comms_mock_call", "output_keys": ["incident_id", "phone", "summary"]}
+{"event": "orchestration.agent.start", "agent_id": "starosta"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "llm.output", "title": "agent:komendant-policji", "model": "claude-sonnet-4-6", "answer_chars": 9492, "reasoning_chars": 0}
+{"event": "orchestration.agent.start", "agent_id": "logistyk"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "llm.output", "title": "agent:komendant-psp", "model": "claude-sonnet-4-6", "answer_chars": 9491, "reasoning_chars": 0}
+{"event": "orchestration.agent.start", "agent_id": "orchestrator"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "llm.output", "title": "agent:orchestrator", "model": "claude-sonnet-4-6", "answer_chars": 15439, "reasoning_chars": 0}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "orchestration.agent.start", "agent_id": "wojewoda"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "llm.output", "title": "agent:starosta", "model": "claude-sonnet-4-6", "answer_chars": 10129, "reasoning_chars": 0}
+{"event": "orchestration.agent.start", "agent_id": "wojt"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "llm.output", "title": "agent:logistyk", "model": "claude-sonnet-4-6", "answer_chars": 11231, "reasoning_chars": 0}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "orchestration.agent.start", "agent_id": "starosta"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "llm.output", "title": "agent:wojewoda", "model": "claude-sonnet-4-6", "answer_chars": 11165, "reasoning_chars": 0}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "llm.output", "title": "agent:orchestrator", "model": "claude-sonnet-4-6", "answer_chars": 16704, "reasoning_chars": 0}
+{"event": "orchestration.agent.start", "agent_id": "wojewoda"}
+{"event": "llm.output", "title": "agent:wojt", "model": "claude-sonnet-4-6", "answer_chars": 9575, "reasoning_chars": 0}
+{"event": "orchestration.agent.batch.complete", "total": 9}
+{"event": "orchestration.agents.ran", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "agents": ["dyrektor-abw", "dyrektor-szpitala", "komendant-policji", "komendant-psp", "logistyk", "orchestrator", "starosta", "wojewoda", "wojt"], "failed": []}
+{"event": "orchestration.step.complete", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "state": "run_agents_async", "output_keys": ["total", "failures", "failed_agents"]}
+{"event": "orchestration.step.start", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "state": "resolve_conflicts"}
+{"event": "orchestration.conflicts.resolved", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "agreements": 3, "conflicts": 0}
+{"event": "orchestration.step.complete", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "state": "resolve_conflicts", "output_keys": ["agreements", "conflicts", "gaps", "agent_summary"]}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "orchestration.step.start", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "state": "generate_scenarios"}
+{"event": "mcp.gateway.dispatch", "tool": "scenario_estimate_cost", "server": "ScenarioGenMCPServer"}
+{"event": "mcp.scenario.request", "tool": "scenario_estimate_cost"}
+{"event": "mcp.scenario.response", "tool": "scenario_estimate_cost", "result": "{\"estimated_cost\": \"50000\"}"}
+{"event": "mcp.gateway.dispatch", "tool": "scenario_risk_score", "server": "ScenarioGenMCPServer"}
+{"event": "mcp.scenario.request", "tool": "scenario_risk_score"}
+{"event": "mcp.scenario.response", "tool": "scenario_risk_score", "result": "{\"score\": 30.0}"}
+{"event": "mcp.gateway.dispatch", "tool": "scenario_risk_score", "server": "ScenarioGenMCPServer"}
+{"event": "mcp.scenario.request", "tool": "scenario_risk_score"}
+{"event": "mcp.scenario.response", "tool": "scenario_risk_score", "result": "{\"score\": 15.0}"}
+{"event": "mcp.gateway.dispatch", "tool": "scenario_risk_score", "server": "ScenarioGenMCPServer"}
+{"event": "mcp.scenario.request", "tool": "scenario_risk_score"}
+{"event": "mcp.scenario.response", "tool": "scenario_risk_score", "result": "{\"score\": 15.0}"}
+{"event": "orchestration.scenario.scored", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "best_label": "B", "best_score": 15.0}
+{"event": "orchestration.scenarios.generated", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "scenario_version_id": "56a13ab1-b56c-45d7-a507-e48d36ea5259", "recommendation": "B"}
+{"event": "orchestration.step.complete", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "state": "generate_scenarios", "output_keys": ["scenario_version_id", "recommended"]}
+{"event": "orchestration.step.start", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "state": "sync_resources"}
+{"event": "mcp.gateway.dispatch", "tool": "resource_list", "server": "ResourceCrudMCPServer"}
+{"event": "mcp.resource.request", "method": "GET", "path": "/api/resources?incident_id=73a4dd1bfda14ec4a6d5785a"}
+{"event": "mcp.resource.response", "method": "GET", "path": "/api/resources?incident_id=73a4dd1bfda14ec4a6d5785a"}
+{"event": "orchestration.resources.synced", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "resource_count": 0}
+{"event": "orchestration.step.complete", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "state": "sync_resources", "output_keys": ["resource_sync"]}
+{"event": "orchestration.step.start", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "state": "comms_mock_call"}
+{"event": "mcp.gateway.dispatch", "tool": "call_user_for_incident_info", "server": "CommsMockMCPServer"}
+{"event": "mcp.comms.request", "tool": "call_user_for_incident_info", "incident_id": "73a4dd1bfda14ec4a6d5785a"}
+{"event": "llm.output", "title": "mcp:comms_mock_call", "model": "claude-sonnet-4-6", "answer_chars": 512, "reasoning_chars": 0}
+{"event": "mcp.comms.response", "tool": "call_user_for_incident_info", "incident_id": "73a4dd1bfda14ec4a6d5785a"}
+{"event": "orchestration.comms.mocked", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "summary": "## Phone Call Summary\n\n**Incident ID:** 73a4dd1bfda14ec4a6d5785a\n**Phone:** unknown\n\n---\n\n### Summary\nCaller reported a train derailment in Tomaszów Lubelski requiring immediate multi-service emergency response.\n\n---\n\n### Extracted Facts\n\n| # | Fact |\n|---|------|\n| 1 | Train derailment occurred in **Tomaszów Lubelski** |\n| 2 | Approximately **150 persons injured** |\n| 3 | Emergency services required: **ambulance, fire brigade, police** |\n| 4 | Railway traffic **must be suspended** on the affected section |"}
+{"event": "orchestration.step.complete", "run_id": "367eeca9-6632-4b91-b3c9-d30e3cfd0484", "state": "comms_mock_call", "output_keys": ["incident_id", "phone", "summary"]}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "llm.output", "title": "agent:starosta", "model": "claude-sonnet-4-6", "answer_chars": 10767, "reasoning_chars": 0}
+{"event": "orchestration.agent.start", "agent_id": "wojt"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "status": "run_agents_async"}
+{"event": "llm.output", "title": "agent:wojewoda", "model": "claude-sonnet-4-6", "answer_chars": 11318, "reasoning_chars": 0}
+{"event": "api.orchestration.result", "run_id": "6b080e95-4c6f-48f1-8fd3-5d0b372cf153", "status": "completed"}
+{"event": "llm.output", "title": "agent:wojt", "model": "claude-sonnet-4-6", "answer_chars": 8358, "reasoning_chars": 0}
+{"event": "orchestration.agent.batch.complete", "total": 9}
+{"event": "orchestration.agents.ran", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "agents": ["dyrektor-abw", "dyrektor-szpitala", "komendant-policji", "komendant-psp", "logistyk", "orchestrator", "starosta", "wojewoda", "wojt"], "failed": []}
+{"event": "orchestration.step.complete", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "state": "run_agents_async", "output_keys": ["total", "failures", "failed_agents"]}
+{"event": "orchestration.step.start", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "state": "resolve_conflicts"}
+{"event": "orchestration.conflicts.resolved", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "agreements": 3, "conflicts": 0}
+{"event": "orchestration.step.complete", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "state": "resolve_conflicts", "output_keys": ["agreements", "conflicts", "gaps", "agent_summary"]}
+{"event": "orchestration.step.start", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "state": "generate_scenarios"}
+{"event": "mcp.gateway.dispatch", "tool": "scenario_estimate_cost", "server": "ScenarioGenMCPServer"}
+{"event": "mcp.scenario.request", "tool": "scenario_estimate_cost"}
+{"event": "mcp.scenario.response", "tool": "scenario_estimate_cost", "result": "{\"estimated_cost\": \"50000\"}"}
+{"event": "mcp.gateway.dispatch", "tool": "scenario_risk_score", "server": "ScenarioGenMCPServer"}
+{"event": "mcp.scenario.request", "tool": "scenario_risk_score"}
+{"event": "mcp.scenario.response", "tool": "scenario_risk_score", "result": "{\"score\": 30.0}"}
+{"event": "mcp.gateway.dispatch", "tool": "scenario_risk_score", "server": "ScenarioGenMCPServer"}
+{"event": "mcp.scenario.request", "tool": "scenario_risk_score"}
+{"event": "mcp.scenario.response", "tool": "scenario_risk_score", "result": "{\"score\": 15.0}"}
+{"event": "mcp.gateway.dispatch", "tool": "scenario_risk_score", "server": "ScenarioGenMCPServer"}
+{"event": "mcp.scenario.request", "tool": "scenario_risk_score"}
+{"event": "mcp.scenario.response", "tool": "scenario_risk_score", "result": "{\"score\": 15.0}"}
+{"event": "orchestration.scenario.scored", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "best_label": "B", "best_score": 15.0}
+{"event": "orchestration.scenarios.generated", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "scenario_version_id": "c969e5bc-2a4f-44f6-a025-93386e4febab", "recommendation": "B"}
+{"event": "orchestration.step.complete", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "state": "generate_scenarios", "output_keys": ["scenario_version_id", "recommended"]}
+{"event": "orchestration.step.start", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "state": "sync_resources"}
+{"event": "mcp.gateway.dispatch", "tool": "resource_list", "server": "ResourceCrudMCPServer"}
+{"event": "mcp.resource.request", "method": "GET", "path": "/api/resources?incident_id=43e119cf1a5443f9bc36736b"}
+{"event": "mcp.resource.response", "method": "GET", "path": "/api/resources?incident_id=43e119cf1a5443f9bc36736b"}
+{"event": "orchestration.resources.synced", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "resource_count": 0}
+{"event": "orchestration.step.complete", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "state": "sync_resources", "output_keys": ["resource_sync"]}
+{"event": "orchestration.step.start", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "state": "comms_mock_call"}
+{"event": "mcp.gateway.dispatch", "tool": "call_user_for_incident_info", "server": "CommsMockMCPServer"}
+{"event": "mcp.comms.request", "tool": "call_user_for_incident_info", "incident_id": "43e119cf1a5443f9bc36736b"}
+{"event": "llm.output", "title": "mcp:comms_mock_call", "model": "claude-sonnet-4-6", "answer_chars": 553, "reasoning_chars": 0}
+{"event": "mcp.comms.response", "tool": "call_user_for_incident_info", "incident_id": "43e119cf1a5443f9bc36736b"}
+{"event": "orchestration.comms.mocked", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "summary": "## Call Summary\n\n**Incident ID:** 43e119cf1a5443f9bc36736b\n**Phone:** unknown\n\n---\n\n### Summary\nA train derailment occurred in Tomaszów Lubelski. The caller reported mass casualties and requested immediate multi-agency emergency response.\n\n---\n\n### Extracted Facts\n\n| # | Fact |\n|---|------|\n| 1 | **Location:** Tomaszów Lubelski |\n| 2 | **Event type:** Train derailment |\n| 3 | **Casualties:** 150 injured persons requiring immediate medical attention |\n| 4 | **Response requested:** Medical rescue teams, fire brigade, and police dispatched to scene |"}
+{"event": "orchestration.step.complete", "run_id": "4c758667-153a-4dc2-947c-005f0274a8e1", "state": "comms_mock_call", "output_keys": ["incident_id", "phone", "summary"]}
+Narrative intake: json_object failed (Error code: 400 - {'error': {'code': 'invalid_request_error', 'message': "response_format.type: Input should be 'json_schema'", 'type': 'invalid_request_error', 'param': None}}); plain completion
+{"event": "llm.output", "title": "intake:narrative_draft_plain", "model": "claude-sonnet-4-6", "answer_chars": 985, "reasoning_chars": 0}
+{"event": "api.incident.intake", "incident_id": "1a0a35b64a6d48bfaf6b6d5d", "organization_external_id": "org_lubelskie", "workflow_org_id": "org_lubelskie"}
+{"event": "orchestration.run.created", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "incident_id": "1a0a35b64a6d48bfaf6b6d5d", "org_id": "org_lubelskie"}
+{"event": "api.orchestration.start", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "incident_id": "1a0a35b64a6d48bfaf6b6d5d", "org_id": "org_lubelskie"}
+{"event": "orchestration.graph.invoke", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c"}
+{"event": "orchestration.step.start", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "state": "fetch_hierarchy"}
+{"event": "orchestration.hierarchy.loaded", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "incident_id": "1a0a35b64a6d48bfaf6b6d5d"}
+{"event": "orchestration.step.complete", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "state": "fetch_hierarchy", "output_keys": ["organization", "incident", "hierarchy_found", "hierarchy"]}
+{"event": "orchestration.step.start", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "state": "select_agents"}
+{"event": "orchestration.agents.selected", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "agents": ["dyrektor-abw", "dyrektor-szpitala", "komendant-policji", "komendant-psp", "logistyk", "orchestrator", "starosta", "wojewoda", "wojt"]}
+{"event": "orchestration.step.complete", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "state": "select_agents", "output_keys": ["agents"]}
+{"event": "orchestration.step.start", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "state": "run_agents_async"}
+{"event": "orchestration.agent.batch.start", "agent_ids": ["dyrektor-abw", "dyrektor-szpitala", "komendant-policji", "komendant-psp", "logistyk", "orchestrator", "starosta", "wojewoda", "wojt"]}
+{"event": "orchestration.agent.start", "agent_id": "dyrektor-szpitala"}
+{"event": "orchestration.agent.start", "agent_id": "dyrektor-abw"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "llm.output", "title": "agent:dyrektor-szpitala", "model": "claude-sonnet-4-6", "answer_chars": 7533, "reasoning_chars": 0}
+{"event": "orchestration.agent.start", "agent_id": "komendant-policji"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "llm.output", "title": "agent:dyrektor-abw", "model": "claude-sonnet-4-6", "answer_chars": 10142, "reasoning_chars": 0}
+{"event": "orchestration.agent.start", "agent_id": "komendant-psp"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "llm.output", "title": "agent:komendant-policji", "model": "claude-sonnet-4-6", "answer_chars": 8079, "reasoning_chars": 0}
+{"event": "orchestration.agent.start", "agent_id": "logistyk"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "llm.output", "title": "agent:komendant-psp", "model": "claude-sonnet-4-6", "answer_chars": 8930, "reasoning_chars": 0}
+{"event": "orchestration.agent.start", "agent_id": "orchestrator"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "llm.output", "title": "agent:logistyk", "model": "claude-sonnet-4-6", "answer_chars": 10841, "reasoning_chars": 0}
+{"event": "orchestration.agent.start", "agent_id": "starosta"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "llm.output", "title": "agent:orchestrator", "model": "claude-sonnet-4-6", "answer_chars": 17500, "reasoning_chars": 0}
+{"event": "orchestration.agent.start", "agent_id": "wojewoda"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "llm.output", "title": "agent:starosta", "model": "claude-sonnet-4-6", "answer_chars": 11559, "reasoning_chars": 0}
+{"event": "orchestration.agent.start", "agent_id": "wojt"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "llm.output", "title": "agent:wojewoda", "model": "claude-sonnet-4-6", "answer_chars": 10582, "reasoning_chars": 0}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "run_agents_async"}
+{"event": "llm.output", "title": "agent:wojt", "model": "claude-sonnet-4-6", "answer_chars": 8483, "reasoning_chars": 0}
+{"event": "orchestration.agent.batch.complete", "total": 9}
+{"event": "orchestration.agents.ran", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "agents": ["dyrektor-abw", "dyrektor-szpitala", "komendant-policji", "komendant-psp", "logistyk", "orchestrator", "starosta", "wojewoda", "wojt"], "failed": []}
+{"event": "orchestration.step.complete", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "state": "run_agents_async", "output_keys": ["total", "failures", "failed_agents"]}
+{"event": "orchestration.step.start", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "state": "resolve_conflicts"}
+{"event": "orchestration.conflicts.resolved", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "agreements": 3, "conflicts": 0}
+{"event": "orchestration.step.complete", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "state": "resolve_conflicts", "output_keys": ["agreements", "conflicts", "gaps", "agent_summary"]}
+{"event": "orchestration.step.start", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "state": "generate_scenarios"}
+{"event": "mcp.gateway.dispatch", "tool": "scenario_estimate_cost", "server": "ScenarioGenMCPServer"}
+{"event": "mcp.scenario.request", "tool": "scenario_estimate_cost"}
+{"event": "mcp.scenario.response", "tool": "scenario_estimate_cost", "result": "{\"estimated_cost\": \"50000\"}"}
+{"event": "mcp.gateway.dispatch", "tool": "scenario_risk_score", "server": "ScenarioGenMCPServer"}
+{"event": "mcp.scenario.request", "tool": "scenario_risk_score"}
+{"event": "mcp.scenario.response", "tool": "scenario_risk_score", "result": "{\"score\": 30.0}"}
+{"event": "mcp.gateway.dispatch", "tool": "scenario_risk_score", "server": "ScenarioGenMCPServer"}
+{"event": "mcp.scenario.request", "tool": "scenario_risk_score"}
+{"event": "mcp.scenario.response", "tool": "scenario_risk_score", "result": "{\"score\": 15.0}"}
+{"event": "mcp.gateway.dispatch", "tool": "scenario_risk_score", "server": "ScenarioGenMCPServer"}
+{"event": "mcp.scenario.request", "tool": "scenario_risk_score"}
+{"event": "mcp.scenario.response", "tool": "scenario_risk_score", "result": "{\"score\": 15.0}"}
+{"event": "orchestration.scenario.scored", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "best_label": "B", "best_score": 15.0}
+{"event": "orchestration.scenarios.generated", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "scenario_version_id": "dbd4583a-a484-4153-9392-070b8e234d44", "recommendation": "B"}
+{"event": "orchestration.step.complete", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "state": "generate_scenarios", "output_keys": ["scenario_version_id", "recommended"]}
+{"event": "orchestration.step.start", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "state": "sync_resources"}
+{"event": "mcp.gateway.dispatch", "tool": "resource_list", "server": "ResourceCrudMCPServer"}
+{"event": "mcp.resource.request", "method": "GET", "path": "/api/resources?incident_id=1a0a35b64a6d48bfaf6b6d5d"}
+{"event": "mcp.resource.response", "method": "GET", "path": "/api/resources?incident_id=1a0a35b64a6d48bfaf6b6d5d"}
+{"event": "orchestration.resources.synced", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "resource_count": 0}
+{"event": "orchestration.step.complete", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "state": "sync_resources", "output_keys": ["resource_sync"]}
+{"event": "orchestration.step.start", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "state": "comms_mock_call"}
+{"event": "mcp.gateway.dispatch", "tool": "call_user_for_incident_info", "server": "CommsMockMCPServer"}
+{"event": "mcp.comms.request", "tool": "call_user_for_incident_info", "incident_id": "1a0a35b64a6d48bfaf6b6d5d"}
+{"event": "llm.output", "title": "mcp:comms_mock_call", "model": "claude-sonnet-4-6", "answer_chars": 450, "reasoning_chars": 0}
+{"event": "mcp.comms.response", "tool": "call_user_for_incident_info", "incident_id": "1a0a35b64a6d48bfaf6b6d5d"}
+{"event": "orchestration.comms.mocked", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "summary": "## Call Summary\n\n**Incident ID:** 1a0a35b64a6d48bfaf6b6d5d\n**Phone:** Unknown\n\nA train derailment occurred in Tomaszów Lubelski with at least 150 casualties reported, requiring immediate multi-agency emergency response.\n\n---\n\n### Extracted Facts\n\n1. **Location:** Tomaszów Lubelski\n2. **Event type:** Train derailment\n3. **Number of casualties:** At least 150 persons injured\n4. **Hazard concern:** Possible hazardous materials aboard derailed wagons"}
+{"event": "orchestration.step.complete", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "state": "comms_mock_call", "output_keys": ["incident_id", "phone", "summary"]}
+{"event": "api.orchestration.result", "run_id": "a62b7a45-1124-4d35-81f7-21d10184880c", "status": "completed"}

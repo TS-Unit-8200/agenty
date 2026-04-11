@@ -1,6 +1,7 @@
 """Exercise the real FastAPI app from ``agenty.api.server.create_app``.
 
-These tests are skipped unless ``DATABASE_URL`` and ``CGC_LLM_API_KEY`` resolve
+These tests are skipped unless ``DATABASE_URL`` and LLM credentials (``ANTHROPIC_API_KEY`` or
+``CGC_LLM_API_KEY``) resolve
 via ``agenty/.env`` (or the process environment): the same bar as running the
 API locally.
 
@@ -10,7 +11,7 @@ still proves the production router, engine wiring, and persistence for the
 created run. To drive a full pipeline to ``/result``, seed an organization with
 that incident and set ``TEST_ORCHESTRATION_INCIDENT_ID`` (future extension).
 
-**Requires ``DATABASE_URL``** (Mongo) **and** ``CGC_LLM_API_KEY``: the same as
+**Requires ``DATABASE_URL``** (Mongo) **and** ``ANTHROPIC_API_KEY`` or ``CGC_LLM_API_KEY``: the same as
 ``create_app()`` / ``MongoConnector``. LLM-only ``.env`` is not enough.
 
 If Atlas fails with ``SSL handshake failed`` / ``TLSV1_ALERT_INTERNAL_ERROR``, the
@@ -70,7 +71,7 @@ def _integration_skip_reason() -> str | None:
             "connects to Mongo; add DATABASE_URL (and MONGODB_DATABASE if needed) to agenty/.env."
         )
     if not (s.llm_api_key or "").strip():
-        return "CGC_LLM_API_KEY is missing or empty in agenty/.env."
+        return "ANTHROPIC_API_KEY or CGC_LLM_API_KEY is missing or empty in agenty/.env."
     return None
 
 

@@ -104,10 +104,11 @@ def draft_incident_from_narrative_llm(
         raw = runtime.llm.chat_completion(
             messages,
             response_format={"type": "json_object"},
+            log_label="intake:narrative_draft_json",
         )
     except Exception as exc:  # noqa: BLE001
         logger.info("Narrative intake: json_object failed (%s); plain completion", exc)
-        raw = runtime.llm.chat_completion(messages)
+        raw = runtime.llm.chat_completion(messages, log_label="intake:narrative_draft_plain")
     try:
         data = _parse_llm_json_object(raw)
         draft = NarrativeIncidentDraft.model_validate(data)
@@ -149,10 +150,11 @@ def enrich_report_with_llm(runtime: AgentRuntime, payload: dict[str, Any]) -> In
         raw = runtime.llm.chat_completion(
             messages,
             response_format={"type": "json_object"},
+            log_label="intake:enrich_report_json",
         )
     except Exception as exc:  # noqa: BLE001
         logger.info("LLM json_object unsupported or failed (%s); retrying plain completion", exc)
-        raw = runtime.llm.chat_completion(messages)
+        raw = runtime.llm.chat_completion(messages, log_label="intake:enrich_report_plain")
     raw = (raw or "").strip()
     if raw.startswith("```"):
         raw = re.sub(r"^```\w*\n?", "", raw)

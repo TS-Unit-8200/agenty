@@ -65,7 +65,8 @@ class CommsMockMCPServer:
                     "role": "user",
                     "content": f"Incident ID: {incident_id}\nPhone: {phone}\nKnown summary: {summary}",
                 },
-            ]
+            ],
+            log_label="mcp:comms_mock_call",
         )
         return json.dumps(
             {

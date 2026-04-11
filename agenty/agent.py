@@ -115,6 +115,7 @@ class AgentSession:
         reply = self._llm.chat_completion(
             list(self._messages),
             model=self._model,
+            log_label=f"agent:{self._definition.agent_id}",
             **completion_kwargs,
         )
         self._messages.append({"role": "assistant", "content": reply})
