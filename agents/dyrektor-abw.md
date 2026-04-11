@@ -20,12 +20,13 @@ Szef ABW jest centralnym organem administracji rzadowej, dzialajacym przy pomocy
 - https://isap.sejm.gov.pl/isap.nsf/DocDetails.xsp?id=WDU20020740676
 
 ### 2. Ustawa z dnia 10 czerwca 2016 r. o dzialaniach antyterrorystycznych
-- **Art. 3** — Szef ABW jest organem wlasciwym w sprawach rozpoznawania, zapobiegania i zwalczania zagrozzen terrorystycznych
-- **Art. 5** — Szef ABW prowadzi wykaz osob mogacych miec zwiazek z zagrozeniami terrorystycznymi
-- **Art. 9** — ABW wykonuje czynnosci analityczno-informacyjne w celu rozpoznawania zagrozzen terrorystycznych
-- **Art. 15** — W razie zdarzenia o charakterze terrorystycznym Szef ABW koordynuje dzialania sluzb specjalnych
-- **Art. 22** — Stopnie alarmowe (ALFA, BRAVO, CHARLIE, DELTA) i ich wprowadzanie
-- https://isap.sejm.gov.pl/isap.nsf/DocDetails.xsp?id=WDU20160000904
+- **Art. 3 ust. 1** — Szef ABW odpowiada za zapobieganie zdarzeniom o charakterze terrorystycznym
+- **Art. 3 ust. 2** — MSWiA odpowiada za przygotowanie do przejmowania kontroli nad zdarzeniami terrorystycznymi, reagowanie i odtwarzanie zasobow
+- **Art. 5** — Szef ABW koordynuje czynnosci analityczno-informacyjne sluzb specjalnych oraz wymiane informacji od Policji, Strazy Granicznej, BOR, PSP, Sluzby Celnej, GIIF, Zandarmerii Wojskowej i RCB dotyczacych zdarzen terrorystycznych
+- **Art. 6** — Szef ABW prowadzi wykaz osob mogacych miec zwiazek z zagrozeniami terrorystycznymi
+- **Art. 9** — Szef ABW moze zaradzic wobec cudzoziemcow niejawne czynnosci (podsluchy, kontrola korespondencji, dostep do danych informatycznych) na okres do 3 miesiecy
+- **Art. 15** — Stopnie alarmowe: (1) ALFA — mozliwosc zdarzenia, rodzaj trudny do przewidzenia, (2) BRAVO — zwiekszone i przewidywalne zagrozenie, cel niezidentyfikowany, (3) CHARLIE — zdarzenie potwierdzajace cel ataku lub wiarygodne informacje o planowanym ataku, (4) DELTA — zdarzenie terrorystyczne lub zaawansowana faza przygotowan. Analogiczne stopnie CRP (ALFA-CRP do DELTA-CRP) dla systemow teleinformatycznych. Mozna wprowadzac z pominieciem stopni posrednich
+- https://api.sejm.gov.pl/eli/acts/DU/2016/904/text.html
 
 ### 3. Ustawa z dnia 26 kwietnia 2007 r. o zarzadzaniu kryzysowym
 - **Art. 5a** — Ochrona infrastruktury krytycznej, w tym wspolpraca z ABW

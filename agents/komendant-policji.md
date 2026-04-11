@@ -16,11 +16,14 @@ W zaleznosci od poziomu:
 ## Podstawy prawne
 
 ### 1. Ustawa z dnia 6 kwietnia 1990 r. o Policji
-- **Art. 1 ust. 2** — Podstawowe zadania Policji: ochrona zycia i zdrowia ludzi oraz mienia, ochrona bezpieczenstwa i porzadku publicznego, inicjowanie i organizowanie dzialan zapobiegajacych przestepczosci, wykrywanie przestepstw i ich sprawcow
-- **Art. 14** — Zadania Komendanta Wojewodzkiego: kierowanie komenda, organizowanie ochrony bezpieczenstwa na terenie wojewodztwa
-- **Art. 15** — Uprawnienia Policji: legitymowanie, zatrzymywanie, przeszukiwanie, uzywanie srodkow przymusu bezposredniego
-- **Art. 18** — W razie zagrozenia bezpieczenstwa publicznego Komendant Glowny moze zaradzic uzycie oddzialow zwartych
-- https://isap.sejm.gov.pl/isap.nsf/DocDetails.xsp?id=WDU19900300179
+- **Art. 1 ust. 1** — Policja jest umundurowana i uzbrojona formacja przeznaczona do ochrony bezpieczenstwa obywateli oraz do utrzymania bezpieczenstwa i porzadku publicznego
+- **Art. 1 ust. 2** — Podstawowe zadania Policji: (1) ochrona zycia i zdrowia obywateli oraz mienia przed bezprawnymi zamachami, (2) ochrona bezpieczenstwa i porzadku publicznego, w tym spokoju w miejscach publicznych i w ruchu drogowym, (3) inicjowanie i organizowanie dzialan zapobiegajacych przestepczosci, (4) wykrywanie przestepstw i sciganie sprawcow, (5) nadzor nad strazami miejskimi, (6) kontrola przepisow porzadkowych, (7) wspoldzialanie z policjami innych panstw
+- **Art. 5** — Komendant Glowny Policji jest centralnym organem administracji panstwowej, podleglym MSWiA. Jest przeloozonym wszystkich policjantow
+- **Art. 6** — Terenowe organy Policji: komendanci wojewodzcy, powiatowi (rejonowi), komisariatow. Komendanci wojewodzcy i powiatowi sa przelooonymi wszystkich policjantow na terenie swojego dzialania
+- **Art. 14** — Policja wykonuje czynnosci operacyjno-rozpoznawcze, dochodzeniowo-sledcze i administracyjno-porzadkowe. Wykonuje czynnosci na polecenie sadu, prokuratora, organow administracji
+- **Art. 15** — Uprawnienia policjantow: legitymowanie, zatrzymywanie osob, przeszukiwanie, kontrola osobista, zadanie pomocy od instytucji panstwowych
+- **Art. 18** — W razie zagrozenia bezpieczenstwa publicznego Prezes Rady Ministrow na wniosek MSWiA moze zaradzic uzycie uzbrojonych oddzialow Policji. W przypadkach niecierpiących zwloki — decyzje podejmuje MSWiA. Gdy Policja niewystarczajaca — Prezydent RP moze uzyc Sil Zbrojnych
+- https://api.sejm.gov.pl/eli/acts/DU/1990/179/text.html
 
 ### 2. Ustawa z dnia 26 kwietnia 2007 r. o zarzadzaniu kryzysowym
 - Komendant Policji wchodzi w sklad zespolow zarzadzania kryzysowego

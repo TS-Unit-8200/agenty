@@ -10,19 +10,19 @@ Logistyk kryzysowy laczy kompetencje wielu podmiotow: Rzadowej Agencji Rezerw St
 
 ## Podstawy prawne
 
-### 1. Ustawa z dnia 17 grudnia 2020 r. o rezerwach strategicznych
-- **Art. 3** — Rezerwy strategiczne tworzy sie w celu wsparcia realizacji zadan w zakresie bezpieczenstwa i obrony panstwa, ochrony zdrowia, zywienia ludnosci
-- **Art. 8** — RARS (Rzadowa Agencja Rezerw Strategicznych) gromadzi, utrzymuje i udostepnia rezerwy strategiczne
-- **Art. 14** — Rezerwy obejmuja: paliwa, leki, srodki medyczne, zywnosc, materialy budowlane, agregaty pradotworcze
-- **Art. 22** — Udostepnienie rezerw nastepuje na wniosek organow administracji (wojewody, ministra)
-- https://isap.sejm.gov.pl/isap.nsf/DocDetails.xsp?id=WDU20210000017
+### 1. Ustawa z dnia 17 grudnia 2020 r. o rezerwach strategicznych (Dz.U. z 2024 r. poz. 1598)
+- RARS (Rzadowa Agencja Rezerw Strategicznych) — agencja wykonawcza podlegla MSWiA, nastepca Agencji Rezerw Materialowych, siedziba Warszawa
+- Zadania RARS: utrzymywanie, przechowywanie, wymiana, zamiana i konserwacja rezerw strategicznych; wykonywanie decyzji Premiera o tworzeniu, udostepnianiu i likwidacji rezerw; organizowanie uslug transportowo-logistycznych; zarzadzanie nieruchomosciami; tworzenie i utrzymywanie zapasow agencyjnych ropy naftowej i paliw
+- Zakres rezerw: paliwa, leki, srodki medyczne, zywnosc, materialy budowlane, agregaty pradotworcze, zapasy agencyjne ropy naftowej
+- Udostepnienie rezerw: na podstawie decyzji Prezesa Rady Ministrow, na wniosek organow administracji (wojewody, ministra). RARS przekazuje uprawnionym organom aktualny wykaz ilosci oraz miejsc przechowywania asortymentow
+- https://pl.wikipedia.org/wiki/Rz%C4%85dowa_Agencja_Rezerw_Strategicznych
 
 ### 2. Ustawa z dnia 10 kwietnia 1997 r. — Prawo energetyczne
-- **Art. 9c-9h** — Operator systemu przesylowego (PSE S.A.) odpowiada za bezpieczenstwo dostaw energii
-- **Art. 11** — Ograniczenia w dostarczaniu i poborze energii elektrycznej (stopnie zasilania)
-- **Art. 11c** — Obowiazek opracowania planow wprowadzania ograniczen
-- Operatorzy systemow dystrybucyjnych (OSD) — zarzadzaja siecia na poziomie regionu
-- https://isap.sejm.gov.pl/isap.nsf/DocDetails.xsp?id=WDU19970540348
+- **Art. 11 ust. 1** — Rada Ministrow moze wprowadzic, na czas oznaczony, na terenie kraju lub jego czesci ograniczenia w sprzedazy paliw stalych lub cieklych oraz w dostarczaniu i poborze paliw gazowych, energii elektrycznej i ciepla w przypadku mozliwosci wystapienia: (1) zagrozenia bezpieczenstwa energetycznego panstwa, (2) zagrozenia bezpieczenstwa osob, (3) znacznych strat materialnych
+- **Art. 11 ust. 3** — Przedsiebiorstwa energetyczne nie ponosza odpowiedzialnosci za skutki ograniczen wprowadzonych rozporzadzeniem
+- Operator systemu przesylowego (PSE S.A.) odpowiada za bezpieczenstwo dostaw energii na poziomie krajowym
+- Operatorzy systemow dystrybucyjnych (OSD: PGE, Tauron, Energa, Enea) — zarzadzaja siecia na poziomie regionu
+- https://api.sejm.gov.pl/eli/acts/DU/1997/348/text.html
 
 ### 3. Ustawa z dnia 26 kwietnia 2007 r. o zarzadzaniu kryzysowym
 - **Art. 3 pkt 2** — Infrastruktura krytyczna: systemy energetyczne, paliwowe, lacznosci, wodociagowe, transportowe, zdrowotne, finansowe
