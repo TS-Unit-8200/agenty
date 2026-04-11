@@ -33,6 +33,16 @@ class Settings(BaseSettings):
         default="llama3-8b",
         validation_alias="CGC_LLM_CHAT_MODEL",
     )
+    database_url: str | None = Field(
+        default=None,
+        validation_alias="DATABASE_URL",
+        description="MongoDB connection URI (e.g. Atlas mongodb+srv://…).",
+    )
+    mongodb_database: str | None = Field(
+        default=None,
+        validation_alias="MONGODB_DATABASE",
+        description="Database name when the URI has no path segment.",
+    )
 
 
 @lru_cache

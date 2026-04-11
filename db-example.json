@@ -1,0 +1,956 @@
+{
+  "exported_at": "2026-04-11T17:15:29.184Z",
+  "collections": {
+    "users": [
+      {
+        "createdAt": "2026-04-11T11:30:00.432Z",
+        "updatedAt": "2026-04-11T11:30:00.433Z",
+        "email": "admin@gmail.com",
+        "sessions": [
+          {
+            "id": "5685abeb-0a09-4083-9ffd-0697556e0bcc",
+            "createdAt": "2026-04-11T17:15:03.866Z",
+            "expiresAt": "2026-04-11T19:15:03.866Z"
+          }
+        ],
+        "id": "69da30b80c1f5004b2982617",
+        "collection": "users",
+        "roles": ["operator"]
+      }
+    ],
+    "media": [],
+    "organizations": [
+      {
+        "createdAt": "2026-04-11T16:09:51.957Z",
+        "updatedAt": "2026-04-11T17:10:13.397Z",
+        "external_id": "org_kghm",
+        "name": "KGHM",
+        "slug": "kghm",
+        "type": "company",
+        "region": "dolnoslaskie",
+        "is_active": true,
+        "created_at": "2025-01-02T00:00:00.000Z",
+        "hierarchy": {
+          "role": "Prezes Zarzadu",
+          "slug": "prezes_kghm",
+          "level": 1,
+          "permissions": [
+            "incidents:read",
+            "incidents:write",
+            "incidents:delete",
+            "agents:trigger",
+            "users:manage",
+            "resources:read",
+            "resources:write",
+            "scenarios:read",
+            "scenarios:write"
+          ],
+          "summary": "Centralny szczebel decyzyjny dla scenariuszy KGHM.",
+          "activation": "Zawsze dla zdarzen korporacyjnych i bezpieczenstwa zakladow.",
+          "escalation": "zarzad",
+          "constraints": [
+            "Nie zastepuje operacji terenowych.",
+            "Nie prowadzi ratownictwa bezposrednio."
+          ],
+          "competencies": [
+            "Nadzor zarzadzania",
+            "Eskalacja do dyrektora operacyjnego"
+          ],
+          "source_file": "agenty/HIERARCHIA.md",
+          "children": [
+            {
+              "role": "Dyrektor Operacyjny",
+              "slug": "dyrektor_operacyjny",
+              "level": 2,
+              "permissions": [
+                "incidents:read",
+                "incidents:write",
+                "agents:trigger",
+                "resources:read",
+                "resources:write",
+                "scenarios:read",
+                "scenarios:write"
+              ],
+              "summary": "Koordynuje dzialania operacyjne w zakladzie.",
+              "activation": "Gdy incydent dotyczy produkcji, bezpieczenstwa lub logistyki zakladu.",
+              "escalation": "operacyjny",
+              "constraints": [
+                "Nie podejmuje decyzji strategicznych zarzadu.",
+                "Nie zastępuje ratownikow gorniczych."
+              ],
+              "competencies": [
+                "Koordynacja zmian",
+                "Bezpieczenstwo produkcji",
+                "Zlecanie dzialan terenowych"
+              ],
+              "source_file": "agenty/HIERARCHIA.md",
+              "children": [
+                {
+                  "role": "Kierownik Zmiany",
+                  "slug": "kierownik_zmiany",
+                  "level": 3,
+                  "permissions": [
+                    "incidents:read",
+                    "incidents:write",
+                    "resources:read",
+                    "resources:write"
+                  ],
+                  "summary": "Reaguje lokalnie na poziomie zmiany i przekazuje sytuacje wyzej.",
+                  "activation": "Zawsze na poziomie zmiany.",
+                  "escalation": "zmianowy",
+                  "constraints": [
+                    "Nie kieruje calym zakladem.",
+                    "Nie podejmuje decyzji strategicznych."
+                  ],
+                  "competencies": [
+                    "Zarządzanie zmiana",
+                    "Alarmowanie zalogi",
+                    "Raportowanie do dyrektora"
+                  ],
+                  "source_file": "agenty/HIERARCHIA.md",
+                  "children": [
+                    {
+                      "role": "Ratownik Gorniczy",
+                      "slug": "ratownik_gorniczy",
+                      "level": 4,
+                      "permissions": ["incidents:read", "resources:read"],
+                      "summary": "Dziala w bezposrednim terenie zagrozenia i wykonuje zadania ratownicze.",
+                      "activation": "Na polecenie kierownika zmiany lub dyspozytora ratowniczego.",
+                      "escalation": "terenowy",
+                      "constraints": [
+                        "Nie zarzadza calym zakladem.",
+                        "Dziala w ramach polecen operacyjnych."
+                      ],
+                      "competencies": [
+                        "Ratownictwo gornicze",
+                        "Ewakuacja zalogi",
+                        "Obsluga sprzetu ratowniczego"
+                      ],
+                      "source_file": "agenty/HIERARCHIA.md",
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "incidents": [
+          {
+            "external_id": "inc_kghm_001",
+            "title": "Awaria wentylacji - szyb Rudna",
+            "type": "infrastructure",
+            "priority": "critical",
+            "status": "active",
+            "description": "Spadek wydajnosci wentylacji w rejonie szybu Rudna. Zaloga z dwoch przodkow zostala przekierowana do punktow zbiórki.",
+            "affected_population": 86,
+            "assigned_to": "dyrektor_operacyjny",
+            "created_by": "kierownik_zmiany",
+            "created_at": "2025-04-11T04:40:00.000Z",
+            "updated_at": "2025-04-11T05:30:00.000Z",
+            "resolved_at": null,
+            "map_metadata": {
+              "location": {
+                "lat": 51.5129,
+                "lng": 16.0761,
+                "geojson": {
+                  "type": "Point",
+                  "coordinates": [16.0761, 51.5129]
+                }
+              },
+              "address": "Zaklad Gorniczy Rudna",
+              "powiat": "polkowicki",
+              "gmina": "Polkowice",
+              "voivodeship": "dolnoslaskie",
+              "shaft": "R-III"
+            },
+            "updates": [
+              {
+                "external_id": "upd_kghm_001",
+                "author_role": "kierownik_zmiany",
+                "content": "Zaloga wycofana do punktow zbiórki, ratownicy górniczy w gotowosci.",
+                "type": "safety_action",
+                "created_at": "2025-04-11T04:50:00.000Z",
+                "id": "69da80758985cd3bb4480c03"
+              }
+            ],
+            "resources": [
+              {
+                "resource_id": "res_kghm_001",
+                "name": "Zespol ratownictwa gorniczego - Sobin",
+                "type": "crew",
+                "status": "assigned",
+                "assigned_at": "2025-04-11T04:55:00.000Z",
+                "released_at": null,
+                "id": "69da80758985cd3bb4480c04"
+              },
+              {
+                "resource_id": "res_kghm_002",
+                "name": "Mobilny wentylator rezerwowy W-250",
+                "type": "equipment",
+                "status": "in_transit",
+                "assigned_at": "2025-04-11T05:05:00.000Z",
+                "released_at": null,
+                "id": "69da80758985cd3bb4480c05"
+              }
+            ],
+            "scenarios": [
+              {
+                "label": "A",
+                "title": "Pelne zatrzymanie rejonu",
+                "type": "fast",
+                "estimated_cost": "580000",
+                "time_to_resolve": "3-5h",
+                "is_recommended": true,
+                "risks": [
+                  "Wysoka strata produkcyjna",
+                  "Duzy koszt ponownego uruchomienia"
+                ],
+                "benefits": [
+                  "Maksymalne bezpieczenstwo zalogi",
+                  "Pelna kontrola nad strefa"
+                ],
+                "consequences_of_inaction": "Dalsza praca przy ograniczonej wentylacji zwieksza ryzyko przekroczenia norm gazowych.",
+                "actions": {
+                  "h2": [
+                    "Wycofac zaloge z rejonu",
+                    "Uruchomic wentylator W-250"
+                  ],
+                  "h12": [
+                    "Przeglad kanalow wentylacyjnych",
+                    "Decyzja o wznowieniu pracy"
+                  ],
+                  "h24": ["Raport BHP i audyt procedury alarmowej"]
+                },
+                "id": "69da80758985cd3bb4480c06"
+              },
+              {
+                "label": "B",
+                "title": "Ograniczona praca z eskorta",
+                "type": "balanced",
+                "estimated_cost": "240000",
+                "time_to_resolve": "6-10h",
+                "is_recommended": false,
+                "risks": [
+                  "Wymaga stalych pomiarow",
+                  "Ryzyko przerwania pracy po kolejnym alarmie"
+                ],
+                "benefits": ["Mniejszy postoj", "Utrzymanie czesci produkcji"],
+                "consequences_of_inaction": "Bez stabilizacji wentylacji decyzja bedzie nieobronna BHP.",
+                "actions": {
+                  "h2": [
+                    "Wstrzymac roboty strzalowe",
+                    "Wpuscic wylacznie zespol pomiarowy"
+                  ],
+                  "h12": [
+                    "Praca tylko w strefie zielonej",
+                    "Aktualizacja co 30 minut"
+                  ],
+                  "h24": ["Ocena strat i plan naprawy stalej"]
+                },
+                "id": "69da80758985cd3bb4480c07"
+              }
+            ],
+            "id": "69da80758985cd3bb4480c08"
+          },
+          {
+            "external_id": "inc_kghm_002",
+            "title": "Wyciek reagentu - ciag flotacji",
+            "type": "chemical",
+            "priority": "high",
+            "status": "monitoring",
+            "description": "Wyciek reagentu flotacyjnego w hali przerobki. Zdarzenie ograniczone do jednej sekcji, trwa neutralizacja.",
+            "affected_population": 18,
+            "assigned_to": "kierownik_zmiany",
+            "created_by": "dyrektor_operacyjny",
+            "created_at": "2025-04-11T09:20:00.000Z",
+            "updated_at": "2025-04-11T10:05:00.000Z",
+            "resolved_at": null,
+            "map_metadata": {
+              "location": {
+                "lat": 51.5032,
+                "lng": 16.0602,
+                "geojson": {
+                  "type": "Point",
+                  "coordinates": [16.0602, 51.5032]
+                }
+              },
+              "address": "Zaklad wzbogacania rudy",
+              "powiat": "polkowicki",
+              "gmina": "Polkowice",
+              "voivodeship": "dolnoslaskie",
+              "section": "flotacja-2"
+            },
+            "updates": [
+              {
+                "external_id": "upd_kghm_002",
+                "author_role": "ratownik_gorniczy",
+                "content": "Sekcja odgrodzona, czujniki nie wykazuja przekroczen poza hala.",
+                "type": "status_change",
+                "created_at": "2025-04-11T09:40:00.000Z",
+                "id": "69da80758985cd3bb4480c09"
+              }
+            ],
+            "resources": [
+              {
+                "resource_id": "res_kghm_003",
+                "name": "Zestaw sorpcyjny chemiczny CH-4",
+                "type": "equipment",
+                "status": "assigned",
+                "assigned_at": "2025-04-11T09:25:00.000Z",
+                "released_at": null,
+                "id": "69da80758985cd3bb4480c0a"
+              }
+            ],
+            "scenarios": [
+              {
+                "label": "A",
+                "title": "Izolacja i dekontaminacja",
+                "type": "fast",
+                "estimated_cost": "155000",
+                "time_to_resolve": "4-8h",
+                "is_recommended": true,
+                "risks": ["Postoj calej linii", "Koszt utylizacji sorbentu"],
+                "benefits": [
+                  "Szybkie zamkniecie ryzyka srodowiskowego",
+                  "Czytelna sciezka BHP"
+                ],
+                "consequences_of_inaction": "Rozprzestrzenienie reagentu moze wymusic zatrzymanie calego zakladu.",
+                "actions": {
+                  "h2": [
+                    "Zamknac sekcje flotacja-2",
+                    "Rozstawic sorbenty i wentylacje miejscowa"
+                  ],
+                  "h12": [
+                    "Przekazac odpady do utylizacji",
+                    "Pomiary kontrolne"
+                  ],
+                  "h24": [
+                    "Przeglad armatury i aktualizacja instrukcji stanowiskowej"
+                  ]
+                },
+                "id": "69da80758985cd3bb4480c0b"
+              }
+            ],
+            "id": "69da80758985cd3bb4480c0c"
+          }
+        ],
+        "id": "69da724f05d1c4dd36ae5af0"
+      },
+      {
+        "createdAt": "2026-04-11T16:09:51.544Z",
+        "updatedAt": "2026-04-11T17:10:12.313Z",
+        "external_id": "org_lubelskie",
+        "name": "Wojewodztwo Lubelskie",
+        "slug": "wojewodztwo-lubelskie",
+        "type": "voivodeship",
+        "region": "lubelskie",
+        "is_active": true,
+        "created_at": "2025-01-01T00:00:00.000Z",
+        "hierarchy": {
+          "role": "Orchestrator",
+          "slug": "orchestrator",
+          "level": 1,
+          "permissions": [
+            "incidents:read",
+            "incidents:write",
+            "incidents:delete",
+            "agents:trigger",
+            "users:manage",
+            "resources:read",
+            "resources:write",
+            "scenarios:read",
+            "scenarios:write"
+          ],
+          "summary": "Centralny koordynator rady agentow, zbiera perspektywy i generuje trzy scenariusze dzialania.",
+          "activation": "Zawsze, jako korzen systemu decyzyjnego.",
+          "escalation": "koordynacyjny",
+          "constraints": [
+            "Nigdy nie generuje jednego scenariusza.",
+            "Nie podejmuje decyzji za czlowieka."
+          ],
+          "competencies": [
+            "Klasyfikacja incydentow",
+            "Zbieranie perspektyw agentow",
+            "Generowanie scenariuszy",
+            "Identyfikacja konfliktow"
+          ],
+          "source_file": "agenty/agents/orchestrator.md",
+          "children": [
+            {
+              "role": "Administracja",
+              "slug": "administracja",
+              "level": 2,
+              "permissions": [
+                "incidents:read",
+                "incidents:write",
+                "resources:read",
+                "scenarios:read"
+              ],
+              "summary": "Pion eskalacji administracyjnej dla poziomu gminy, powiatu i wojewodztwa.",
+              "activation": "Aktywny gdy incydent wymaga decyzji organu administracyjnego lub wsparcia z wyzszego szczebla.",
+              "escalation": "warstwowy",
+              "constraints": [
+                "Nie prowadzi bezposrednich dzialan terenowych.",
+                "Nie zastepuje PSP, Policji ani szpitali."
+              ],
+              "competencies": [
+                "Eskalacja decyzji",
+                "Koordynacja miedzy poziomami",
+                "Udzielanie wsparcia zasobami administracyjnymi"
+              ],
+              "source_file": "agenty/HIERARCHIA.md",
+              "children": [
+                {
+                  "role": "Wojewoda",
+                  "slug": "wojewoda",
+                  "level": 3,
+                  "permissions": [
+                    "incidents:read",
+                    "incidents:write",
+                    "agents:trigger",
+                    "resources:read",
+                    "scenarios:read"
+                  ],
+                  "summary": "Strategiczny koordynator wojewodzki, odpowiedzialny za zarzadzanie kryzysowe na terenie wojewodztwa.",
+                  "activation": "Gdy zdarzenie obejmuje wiecej niz jeden powiat albo wymaga koordynacji wojewodzkiej.",
+                  "escalation": "wojewodzki",
+                  "constraints": [
+                    "Nie kieruje dzialaniami ratowniczymi w terenie.",
+                    "Nie zarzadza bezposrednio szpitalami."
+                  ],
+                  "competencies": [
+                    "Kierowanie ZK na poziomie wojewodztwa",
+                    "Wnioskowanie o wojsko i rezerwy strategiczne",
+                    "Koordynacja sluzb zespolonych"
+                  ],
+                  "source_file": "agenty/agents/wojewoda.md",
+                  "children": [
+                    {
+                      "role": "Starosta",
+                      "slug": "starosta",
+                      "level": 4,
+                      "permissions": [
+                        "incidents:read",
+                        "incidents:write",
+                        "resources:read",
+                        "scenarios:read"
+                      ],
+                      "summary": "Koordynator powiatowy, laczy gminy i spina lokalne zasoby w jedna odpowiedz.",
+                      "activation": "Gdy incydent dotyczy wiecej niz jednej gminy w powiecie.",
+                      "escalation": "powiatowy",
+                      "constraints": [
+                        "Nie kieruje bezposrednio PSP.",
+                        "Nie podejmuje decyzji strategicznych dla calego wojewodztwa."
+                      ],
+                      "competencies": [
+                        "Koordynacja miedzygminna",
+                        "Zarzadzanie powiatowym zespol em ZK",
+                        "Wnioskowanie o wsparcie do wojewody"
+                      ],
+                      "source_file": "agenty/agents/starosta.md",
+                      "children": [
+                        {
+                          "role": "Wójt / Burmistrz / Prezydent Miasta",
+                          "slug": "wojt-burmistrz-prezydent-miasta",
+                          "level": 5,
+                          "permissions": [
+                            "incidents:read",
+                            "resources:read",
+                            "scenarios:read"
+                          ],
+                          "summary": "Pierwsza linia reakcji w gminie, najblizej ludzi i lokalnego terenu.",
+                          "activation": "Zawsze przy incydencie lokalnym lub gdy gmina jest bezposrednio dotknieta.",
+                          "escalation": "gminny",
+                          "constraints": [
+                            "Nie koordynuje miedzy powiatami.",
+                            "Nie zarzadza szpitalami wojewodzkimi."
+                          ],
+                          "competencies": [
+                            "Pierwsza reakcja lokalna",
+                            "Ewakuacja i schronienie",
+                            "Komunikacja z mieszkancami i OSP"
+                          ],
+                          "source_file": "agenty/agents/wojt.md",
+                          "children": []
+                        }
+                      ]
+                    },
+                    {
+                      "role": "Marszałek Województwa Lubelskiego",
+                      "slug": "marszalek-wojewodztwa-lubelskiego",
+                      "level": 3,
+                      "permissions": [
+                        "incidents:read",
+                        "incidents:write",
+                        "resources:read",
+                        "resources:write",
+                        "scenarios:read",
+                        "scenarios:write"
+                      ],
+                      "summary": "Samorzadowy dostawca zasobow regionalnych: szpitali wojewodzkich, drog, transportu i finansowania.",
+                      "activation": "Gdy potrzeba zasobow regionalnych, transportu, leczenia albo wsparcia finansowego.",
+                      "escalation": "regionalny",
+                      "constraints": [
+                        "Nie kieruje zarzadzaniem kryzysowym.",
+                        "Nie wydaje wiazacych polecen PSP ani Policji."
+                      ],
+                      "competencies": [
+                        "Udzielanie zasobow wojewodzkich",
+                        "Zarzadzanie szpitalami wojewodzkimi",
+                        "Koordynacja transportu regionalnego"
+                      ],
+                      "source_file": "agenty/agents/marszalek-wojewodztwa.md",
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "role": "Operacyjni",
+              "slug": "operacyjni",
+              "level": 2,
+              "permissions": [
+                "incidents:read",
+                "incidents:write",
+                "agents:trigger",
+                "resources:read",
+                "scenarios:read"
+              ],
+              "summary": "Rdzen reagowania terenowego, aktywowany przy kazdym incydencie.",
+              "activation": "ZAWSZE, niezaleznie od skali zdarzenia.",
+              "escalation": "operacyjny",
+              "constraints": [
+                "Nie podejmuja decyzji strategicznych.",
+                "Dzialaja w ramach swojej specjalizacji."
+              ],
+              "competencies": [
+                "Ratownictwo",
+                "Bezpieczenstwo publiczne",
+                "Opieka medyczna",
+                "Logistyka zasobow"
+              ],
+              "source_file": "agenty/HIERARCHIA.md",
+              "children": [
+                {
+                  "role": "Komendant PSP",
+                  "slug": "komendant-psp",
+                  "level": 3,
+                  "permissions": [
+                    "incidents:read",
+                    "incidents:write",
+                    "agents:trigger",
+                    "resources:read",
+                    "scenarios:read"
+                  ],
+                  "summary": "Kieruje dzialaniami ratowniczymi i dysponuje silami KSRG na miejscu zdarzenia.",
+                  "activation": "Zawsze.",
+                  "escalation": "operacyjny",
+                  "constraints": [
+                    "Nie zarzadza szpitalami.",
+                    "Nie prowadzi czynnosci sledczych."
+                  ],
+                  "competencies": [
+                    "Kierowanie dzialaniami ratowniczymi",
+                    "Wyznaczanie stref zagrozenia",
+                    "Dysponowanie PSP i OSP"
+                  ],
+                  "source_file": "agenty/agents/komendant-psp.md",
+                  "children": []
+                },
+                {
+                  "role": "Komendant Policji",
+                  "slug": "komendant-policji",
+                  "level": 3,
+                  "permissions": [
+                    "incidents:read",
+                    "incidents:write",
+                    "resources:read",
+                    "scenarios:read"
+                  ],
+                  "summary": "Zabezpiecza teren, ruch i porzadek publiczny wokol zdarzenia.",
+                  "activation": "Zawsze.",
+                  "escalation": "operacyjny",
+                  "constraints": [
+                    "Nie kieruje gaszeniem ani medycznym triage.",
+                    "Nie podejmuje decyzji strategicznych."
+                  ],
+                  "competencies": [
+                    "Zabezpieczenie terenu",
+                    "Kontrola ruchu drogowego",
+                    "Ochrona mienia",
+                    "Eskorta transportow"
+                  ],
+                  "source_file": "agenty/agents/komendant-policji.md",
+                  "children": []
+                },
+                {
+                  "role": "Dyrektor Szpitala",
+                  "slug": "dyrektor-szpitala",
+                  "level": 3,
+                  "permissions": [
+                    "incidents:read",
+                    "resources:read",
+                    "scenarios:read"
+                  ],
+                  "summary": "Odpowiada za ciaglosc leczenia, pojemnosc i zasoby krytyczne szpitala.",
+                  "activation": "Zawsze.",
+                  "escalation": "operacyjny",
+                  "constraints": [
+                    "Zarzadza tylko swoim szpitalem.",
+                    "Nie koordynuje PSP ani Policji."
+                  ],
+                  "competencies": [
+                    "Ciaglosc dzialania szpitala",
+                    "Triage i przyjecie masowe",
+                    "Pojemnosc OIOM i SOR",
+                    "Zaopatrzenie w tlen, leki i paliwo"
+                  ],
+                  "source_file": "agenty/agents/dyrektor-szpitala.md",
+                  "children": []
+                },
+                {
+                  "role": "Logistyk",
+                  "slug": "logistyk",
+                  "level": 3,
+                  "permissions": [
+                    "incidents:read",
+                    "resources:read",
+                    "resources:write",
+                    "scenarios:read"
+                  ],
+                  "summary": "Mowi prawde o stanie zasobow i planuje dostawy paliwa, energii, wody i transportu.",
+                  "activation": "Zawsze.",
+                  "escalation": "operacyjny",
+                  "constraints": [
+                    "Nie podejmuje decyzji strategicznych.",
+                    "Nie kieruje ratownictwem ani porzadkiem publicznym."
+                  ],
+                  "competencies": [
+                    "Ocena deficytow",
+                    "Planowanie dostaw",
+                    "Koordynacja z RARS i operatorami sieci"
+                  ],
+                  "source_file": "agenty/agents/logistyk.md",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "role": "Bezpieczeństwo",
+              "slug": "bezpieczenstwo",
+              "level": 2,
+              "permissions": [
+                "incidents:read",
+                "agents:trigger",
+                "resources:read",
+                "scenarios:read"
+              ],
+              "summary": "Warstwa analityczna dla zdarzen celowych, hybrydowych i cybernetycznych.",
+              "activation": "Gdy pojawia sie podejrzenie sabotazu, terroryzmu, cyberataku albo dzialania hybrydowego.",
+              "escalation": "warunkowy",
+              "constraints": [
+                "Nie prowadzi dzialan ratowniczych.",
+                "Nie zabezpiecza porzadku publicznego w terenie."
+              ],
+              "competencies": [
+                "Ocena charakteru zdarzenia",
+                "Ochrona infrastruktury krytycznej",
+                "Rekomendacje stopni alarmowych"
+              ],
+              "source_file": "agenty/HIERARCHIA.md",
+              "children": [
+                {
+                  "role": "Dyrektor ABW",
+                  "slug": "dyrektor-abw",
+                  "level": 3,
+                  "permissions": [
+                    "incidents:read",
+                    "agents:trigger",
+                    "resources:read",
+                    "scenarios:read"
+                  ],
+                  "summary": "Analizuje, czy zdarzenie jest przypadkowe, czy stanowi celowe zagrozenie dla bezpieczenstwa wewnetrznego.",
+                  "activation": "Gdy jest podejrzenie sabotazu, terroryzmu, cyberataku albo operacji hybrydowej.",
+                  "escalation": "warunkowy",
+                  "constraints": [
+                    "Nie kieruje PSP ani Policja.",
+                    "Nie zarzadza szpitalami ani administracja terenowa."
+                  ],
+                  "competencies": [
+                    "Rozpoznanie i ocena zagrozen",
+                    "Rekomendacja stopni alarmowych",
+                    "Analiza dezinformacji i cyberzagrozen"
+                  ],
+                  "source_file": "agenty/agents/dyrektor-abw.md",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        },
+        "incidents": [
+          {
+            "external_id": "inc_001",
+            "title": "Blackout - powiat lubelski",
+            "type": "blackout",
+            "priority": "critical",
+            "status": "active",
+            "description": "Awaria zasilania obejmujaca kilka dzielnic Lublina. Dwa szpitale dzialaja na agregatach, paliwo wystarcza na kilka godzin.",
+            "affected_population": 47000,
+            "assigned_to": "wojewoda",
+            "created_by": "marszalek",
+            "created_at": "2025-04-11T07:23:00.000Z",
+            "updated_at": "2025-04-11T09:00:00.000Z",
+            "resolved_at": null,
+            "map_metadata": {
+              "location": {
+                "lat": 51.2465,
+                "lng": 22.5684,
+                "geojson": {
+                  "type": "Point",
+                  "coordinates": [22.5684, 51.2465]
+                }
+              },
+              "address": "GPZ Lublin-Połnoc",
+              "powiat": "lubelski",
+              "gmina": "Lublin",
+              "voivodeship": "lubelskie",
+              "risk_area": {
+                "type": "Polygon",
+                "coordinates": [
+                  [
+                    [22.53, 51.28],
+                    [22.59, 51.28],
+                    [22.59, 51.255],
+                    [22.53, 51.255],
+                    [22.53, 51.28]
+                  ]
+                ]
+              }
+            },
+            "updates": [
+              {
+                "external_id": "upd_001",
+                "author_role": "marszalek",
+                "content": "Incydent zgloszony. WZZK powiadomione.",
+                "type": "status_change",
+                "created_at": "2025-04-11T07:23:00.000Z",
+                "id": "69da80748985cd3bb4480bf6"
+              },
+              {
+                "external_id": "upd_002",
+                "author_role": "wojewoda",
+                "content": "Wyslano cysterne #1 do szpitala dziecięcego.",
+                "type": "action_taken",
+                "created_at": "2025-04-11T08:10:00.000Z",
+                "id": "69da80748985cd3bb4480bf7"
+              }
+            ],
+            "resources": [
+              {
+                "resource_id": "res_001",
+                "name": "Cysterna ON #1 - Swidnik",
+                "type": "fuel",
+                "status": "assigned",
+                "assigned_at": "2025-04-11T07:45:00.000Z",
+                "released_at": null,
+                "id": "69da80748985cd3bb4480bf8"
+              },
+              {
+                "resource_id": "res_002",
+                "name": "Agregat 200kVA - WZMiUW",
+                "type": "generator",
+                "status": "in_transit",
+                "assigned_at": "2025-04-11T08:00:00.000Z",
+                "released_at": null,
+                "id": "69da80748985cd3bb4480bf9"
+              }
+            ],
+            "scenarios": [
+              {
+                "label": "A",
+                "title": "Szybka stabilizacja",
+                "type": "fast",
+                "estimated_cost": "340000",
+                "time_to_resolve": "6-8h",
+                "is_recommended": false,
+                "risks": ["Wysokie koszty mobilizacji", "Przeciazenie sluzb"],
+                "benefits": [
+                  "Natychmiastowe zabezpieczenie zycia",
+                  "Pelna kontrola narracji"
+                ],
+                "consequences_of_inaction": "W ciagu 6h utrata zasilania OIOM, reczna wentylacja 12 pacjentow.",
+                "actions": {
+                  "h2": [
+                    "Wyslac cysterne #1 do szpitala",
+                    "Uruchomic agregat mobilny"
+                  ],
+                  "h12": [
+                    "Przywrocic zasilanie dzielnicy Czechow",
+                    "Dostarczyc cysterne #2"
+                  ],
+                  "h24": ["Pelne przywrocenie zasilania", "Raport do RCB"]
+                },
+                "id": "69da80748985cd3bb4480bfa"
+              },
+              {
+                "label": "B",
+                "title": "Optymalizacja zasobow",
+                "type": "balanced",
+                "estimated_cost": "210000",
+                "time_to_resolve": "10-14h",
+                "is_recommended": true,
+                "risks": [
+                  "Dluzszy czas bez zasilania",
+                  "Ryzyko niezadowolenia spolecznego"
+                ],
+                "benefits": ["Nizszy koszt", "Lepsze rozlozenie zasobow"],
+                "consequences_of_inaction": "Bez dzialania w 8h szpital na granicy wydolnosci.",
+                "actions": {
+                  "h2": ["Wyslac cysterne #1", "Ustalic harmonogram z PGE"],
+                  "h12": [
+                    "Przywrocic zasilanie szpitali",
+                    "Uruchomic cysterne #2"
+                  ],
+                  "h24": [
+                    "Pelne przywrocenie lub zasilanie zastepcze",
+                    "Raport strat"
+                  ]
+                },
+                "id": "69da80748985cd3bb4480bfb"
+              },
+              {
+                "label": "C",
+                "title": "Obrona infrastruktury krytycznej",
+                "type": "conservative",
+                "estimated_cost": "95000",
+                "time_to_resolve": "18-36h",
+                "is_recommended": false,
+                "risks": ["Dlugi czas bez zasilania", "Wtórne incydenty"],
+                "benefits": [
+                  "Minimalne zaangazowanie zasobow",
+                  "Zachowanie rezerw"
+                ],
+                "consequences_of_inaction": "Akceptowalny krotkoterminowo, nieakceptowalny powyzej 12h.",
+                "actions": {
+                  "h2": [
+                    "Zabezpieczyc wylacznie szpitale",
+                    "Aktywowac komunikat RWA"
+                  ],
+                  "h12": ["Monitorowanie z WZZK"],
+                  "h24": ["Ocena i decyzja o eskalacji"]
+                },
+                "id": "69da80748985cd3bb4480bfc"
+              }
+            ],
+            "id": "69da80748985cd3bb4480bfd"
+          },
+          {
+            "external_id": "inc_002",
+            "title": "Podtopienia - gmina Piaski",
+            "type": "flood",
+            "priority": "high",
+            "status": "monitoring",
+            "description": "Wylew lokalnego cieku. Podtopione posesje, droga DW843 nieprzejezdna, ewakuacja mieszkancow w toku.",
+            "affected_population": 230,
+            "assigned_to": "starosta",
+            "created_by": "wojewoda",
+            "created_at": "2025-04-11T06:45:00.000Z",
+            "updated_at": "2025-04-11T10:15:00.000Z",
+            "resolved_at": null,
+            "map_metadata": {
+              "location": {
+                "lat": 51.1321,
+                "lng": 22.8456,
+                "geojson": {
+                  "type": "Point",
+                  "coordinates": [22.8456, 51.1321]
+                }
+              },
+              "address": "ul. Lubelska, Piaski",
+              "powiat": "swidnicki",
+              "gmina": "Piaski",
+              "voivodeship": "lubelskie"
+            },
+            "updates": [
+              {
+                "external_id": "upd_003",
+                "author_role": "starosta",
+                "content": "OSP Piaski i PSP Swidnik rozpoczely wypompowywanie wody.",
+                "type": "action_taken",
+                "created_at": "2025-04-11T07:05:00.000Z",
+                "id": "69da80748985cd3bb4480bfe"
+              }
+            ],
+            "resources": [
+              {
+                "resource_id": "res_003",
+                "name": "Pompa wysokiej wydajnosci - PSP Swidnik",
+                "type": "equipment",
+                "status": "assigned",
+                "assigned_at": "2025-04-11T07:00:00.000Z",
+                "released_at": null,
+                "id": "69da80748985cd3bb4480bff"
+              }
+            ],
+            "scenarios": [
+              {
+                "label": "A",
+                "title": "Natychmiastowa ewakuacja",
+                "type": "fast",
+                "estimated_cost": "120000",
+                "time_to_resolve": "4-6h",
+                "is_recommended": false,
+                "risks": ["Wysoki koszt relokacji", "Chaos komunikacyjny"],
+                "benefits": [
+                  "Brak ryzyka dla mieszkancow",
+                  "Szybkie odciecie strefy"
+                ],
+                "consequences_of_inaction": "Przy wzroscie poziomu wody ewakuacja nocna bedzie trudniejsza.",
+                "actions": {
+                  "h2": [
+                    "Podstawic autobusy",
+                    "Uruchomic punkt recepcyjny w szkolę"
+                  ],
+                  "h12": ["Osuszyc droge DW843", "Ocenić szkody w posesjach"],
+                  "h24": ["Powrot mieszkancow lub zakwaterowanie zastepcze"]
+                },
+                "id": "69da80748985cd3bb4480c00"
+              },
+              {
+                "label": "B",
+                "title": "Kontrola strefowa",
+                "type": "balanced",
+                "estimated_cost": "62000",
+                "time_to_resolve": "8-12h",
+                "is_recommended": true,
+                "risks": ["Wymaga stalego monitoringu walow"],
+                "benefits": [
+                  "Nizszy koszt",
+                  "Ewakuacja tylko najbardziej zagrozonych"
+                ],
+                "consequences_of_inaction": "Bez odpompowania droga pozostanie nieprzejezdna do rana.",
+                "actions": {
+                  "h2": [
+                    "Rozstawic pompy",
+                    "Ewakuowac 12 osob z najnizszej czesci ulicy"
+                  ],
+                  "h12": [
+                    "Udroznic przepust",
+                    "Zabezpieczyc workami 8 posesji"
+                  ],
+                  "h24": ["Raport do WZZK i wyplata pomocy doraźnej"]
+                },
+                "id": "69da80748985cd3bb4480c01"
+              }
+            ],
+            "id": "69da80748985cd3bb4480c02"
+          }
+        ],
+        "id": "69da724f05d1c4dd36ae5aea"
+      }
+    ]
+  }
+}
