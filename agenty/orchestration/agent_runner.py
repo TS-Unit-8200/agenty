@@ -8,7 +8,7 @@ from datetime import UTC, datetime
 from agenty.agent import AgentRuntime
 from agenty.context import AgentContext
 from agenty.orchestration.models import AgentRun
-from agenty.orchestration.tracing import trace_event
+from agenty.orchestration.tracing import trace_event, trace_human_block
 
 
 class AgentRunner:
@@ -25,6 +25,10 @@ class AgentRunner:
 
     async def run(self, agent_ids: list[str], prompt: str, context_sections: dict[str, str]) -> list[AgentRun]:
         trace_event("orchestration.agent.batch.start", agent_ids=agent_ids)
+        trace_human_block(
+            f"Agent batch  │  {len(agent_ids)} roles",
+            "Agents: " + ", ".join(agent_ids) + "\n\nPrompt (preview):\n" + (prompt[:2000] + ("…" if len(prompt) > 2000 else "")),
+        )
         semaphore = asyncio.Semaphore(self._max_concurrency)
 
         async def execute(agent_id: str) -> AgentRun:
@@ -39,36 +43,53 @@ class AgentRunner:
                         timeout=self._timeout_s,
                     )
                     finished = datetime.now(UTC)
+                    latency_ms = int((finished.timestamp() - start_ts) * 1000)
+                    trace_human_block(
+                        f"Agent «{agent_id}»  │  completed  │  {latency_ms} ms",
+                        response or "(empty reply)",
+                    )
                     return AgentRun(
                         run_id="",
                         agent_id=agent_id,
                         status="completed",
                         started_at=started,
                         finished_at=finished,
-                        latency_ms=int((finished.timestamp() - start_ts) * 1000),
+                        latency_ms=latency_ms,
                         response=response,
                     )
                 except TimeoutError:
                     finished = datetime.now(UTC)
+                    latency_ms = int((finished.timestamp() - start_ts) * 1000)
+                    err = f"Timed out after {self._timeout_s}s"
+                    trace_human_block(
+                        f"Agent «{agent_id}»  │  timed_out  │  {latency_ms} ms",
+                        err,
+                    )
                     return AgentRun(
                         run_id="",
                         agent_id=agent_id,
                         status="timed_out",
                         started_at=started,
                         finished_at=finished,
-                        latency_ms=int((finished.timestamp() - start_ts) * 1000),
-                        error=f"Timed out after {self._timeout_s}s",
+                        latency_ms=latency_ms,
+                        error=err,
                     )
                 except Exception as exc:  # noqa: BLE001
                     finished = datetime.now(UTC)
+                    latency_ms = int((finished.timestamp() - start_ts) * 1000)
+                    err = str(exc)
+                    trace_human_block(
+                        f"Agent «{agent_id}»  │  failed  │  {latency_ms} ms",
+                        err,
+                    )
                     return AgentRun(
                         run_id="",
                         agent_id=agent_id,
                         status="failed",
                         started_at=started,
                         finished_at=finished,
-                        latency_ms=int((finished.timestamp() - start_ts) * 1000),
-                        error=str(exc),
+                        latency_ms=latency_ms,
+                        error=err,
                     )
 
         results = await asyncio.gather(*(execute(agent_id) for agent_id in agent_ids))

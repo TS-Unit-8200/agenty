@@ -111,18 +111,21 @@ class OrchestrationRepository:
         scenario_version_id: str | None,
     ) -> None:
         set_payload: dict[str, Any] = {
-            "incidents.$.latest_orchestration_run_id": run_id,
+            "incidents.$[elem].latest_orchestration_run_id": run_id,
         }
         if scenario_version_id:
-            set_payload["incidents.$.latest_scenario_version_id"] = scenario_version_id
-        self._organizations.update_many(
-            {"incidents.id": incident_id},
-            {"$set": set_payload},
-        )
+            set_payload["incidents.$[elem].latest_scenario_version_id"] = scenario_version_id
+        for filter_key, array_filter in (
+            ("id", {"elem.id": incident_id}),
+            ("external_id", {"elem.external_id": incident_id}),
+        ):
+            filt: dict[str, Any] = {f"incidents.{filter_key}": incident_id}
+            self._organizations.update_many(filt, {"$set": set_payload}, array_filters=[array_filter])
 
     def find_org_hierarchy_for_incident(self, incident_id: str) -> dict[str, Any] | None:
+        elem = {"$elemMatch": {"$or": [{"id": incident_id}, {"external_id": incident_id}]}}
         doc = self._organizations.find_one(
-            {"incidents.id": incident_id},
+            {"incidents": elem},
             {
                 "_id": 0,
                 "id": 1,
@@ -130,7 +133,19 @@ class OrchestrationRepository:
                 "slug": 1,
                 "name": 1,
                 "hierarchy": 1,
-                "incidents": {"$elemMatch": {"id": incident_id}},
+                "incidents": elem,
             },
         )
         return doc
+
+    def append_incident_to_organization(self, organization_external_id: str, incident: dict[str, Any]) -> None:
+        """$push a new incident subdocument; ``incident`` must include a unique string ``id``."""
+        result = self._organizations.update_one(
+            {"external_id": organization_external_id},
+            {"$push": {"incidents": incident}},
+        )
+        if result.matched_count == 0:
+            raise KeyError(
+                f"Organization with external_id={organization_external_id!r} not found. "
+                "Seed Mongo or set INTAKE_DEFAULT_ORG_EXTERNAL_ID to match an existing org."
+            )

@@ -4,10 +4,24 @@ from __future__ import annotations
 
 from typing import Any
 
+import certifi
 from pymongo import MongoClient
 from pymongo.database import Database
 
 from agenty.config import Settings, get_settings
+
+
+def _mongo_client_kwargs(database_url: str) -> dict[str, Any]:
+    """Extra PyMongo options; use Mozilla CA bundle for TLS URLs (Atlas, TLS ``mongodb://``)."""
+    kwargs: dict[str, Any] = {
+        "appname": "agenty",
+        "serverSelectionTimeoutMS": 15_000,
+    }
+    lower = database_url.strip().lower()
+    if lower.startswith("mongodb+srv://") or "tls=true" in lower or "ssl=true" in lower:
+        # Avoid relying on the OS trust store alone (helps some macOS / dev setups and Atlas).
+        kwargs["tlsCAFile"] = certifi.where()
+    return kwargs
 
 
 class MongoConnector:
@@ -20,11 +34,7 @@ class MongoConnector:
             raise ValueError(
                 "DATABASE_URL is missing or empty. Set it in .env (see .env.example)."
             )
-        self._client: MongoClient[dict[str, Any]] = MongoClient(
-            url,
-            appname="agenty",
-            serverSelectionTimeoutMS=15_000,
-        )
+        self._client: MongoClient[dict[str, Any]] = MongoClient(url, **_mongo_client_kwargs(url))
 
     @property
     def client(self) -> MongoClient[dict[str, Any]]:

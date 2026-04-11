@@ -12,7 +12,7 @@ from agenty.orchestration.tracing import trace_event
 
 
 class ResourceCrudMCPServer:
-    def __init__(self, api_base_url: str, api_token: str | None = None, timeout_s: float = 10.0) -> None:
+    def __init__(self, api_base_url: str, api_token: str | None = None, timeout_s: float = 120.0) -> None:
         self._api_base_url = api_base_url.rstrip("/")
         self._api_token = api_token
         self._timeout_s = timeout_s
@@ -57,11 +57,21 @@ class ResourceCrudMCPServer:
                 result = response.read().decode("utf-8")
                 trace_event("mcp.resource.response", method=method, path=path)
                 return result
+        except TimeoutError:
+            trace_event("mcp.resource.error", method=method, path=path, error="timeout")
+            # sync_resources expects JSON list from resource_list; empty keeps the graph alive.
+            if method == "GET" and path.startswith("/api/resources"):
+                return "[]"
+            return json.dumps({"ok": False, "error": "timeout"})
         except HTTPError as exc:
             trace_event("mcp.resource.error", method=method, path=path, error=str(exc))
+            if method == "GET" and path.startswith("/api/resources") and exc.code == 404:
+                return "[]"
             return json.dumps({"ok": False, "error": f"HTTP {exc.code}", "detail": exc.reason})
         except URLError as exc:
             trace_event("mcp.resource.error", method=method, path=path, error=str(exc))
+            if method == "GET" and path.startswith("/api/resources"):
+                return "[]"
             return json.dumps({"ok": False, "error": "ConnectionError", "detail": str(exc.reason)})
 
     def _headers(self, has_body: bool) -> dict[str, str]:

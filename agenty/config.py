@@ -53,6 +53,16 @@ class Settings(BaseSettings):
         validation_alias="NEXTJS_API_TOKEN",
         description="Optional bearer token for service-to-service calls to Next.js.",
     )
+    nextjs_http_timeout_s: float = Field(
+        default=120.0,
+        validation_alias="NEXTJS_HTTP_TIMEOUT_S",
+        description="Timeout for agenty → Next.js MCP resource HTTP calls (resource_list, etc.).",
+    )
+    agent_llm_timeout_s: float = Field(
+        default=120.0,
+        validation_alias="AGENT_LLM_TIMEOUT_S",
+        description="Per-agent LLM call timeout in run_agents_async (many roles in parallel).",
+    )
     orchestrator_version: str = Field(
         default="v1",
         validation_alias="ORCHESTRATOR_VERSION",
@@ -62,6 +72,25 @@ class Settings(BaseSettings):
         default="logs/orchestration-trace.log",
         validation_alias="ORCHESTRATION_LOG_FILE",
         description="Optional file path for orchestration trace logging.",
+    )
+    orchestration_human_log_file: str | None = Field(
+        default="logs/orchestration-pretty.log",
+        validation_alias="ORCHESTRATION_HUMAN_LOG_FILE",
+        description="Human-readable orchestration log (agents, steps). Set empty to disable.",
+    )
+    intake_default_organization_external_id: str = Field(
+        default="org_kghm",
+        validation_alias="INTAKE_DEFAULT_ORG_EXTERNAL_ID",
+        description="Mongo organizations.external_id used when ingesting a new incident from the UI.",
+    )
+    cors_origins: str = Field(
+        default="http://localhost:3000,http://127.0.0.1:3000",
+        validation_alias="CORS_ORIGINS",
+        description=(
+            "Comma-separated browser Origins for CORS (e.g. your Next.js URL). "
+            "Include both localhost and 127.0.0.1 if you use either. "
+            "The API also allows any port on localhost/127.0.0.1 via regex in dev."
+        ),
     )
 
 

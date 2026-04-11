@@ -1,0 +1,1455 @@
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  2026-04-11 20:16:37 UTC  │  Orchestration started (LangGraph)  │  run 4afadb55-f3ed-4478-aee3-26bcaa9b6b7f
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+incident_id=81389abd8718497693a6ab06
+org_id=org_lubelskie
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  2026-04-11 20:16:38 UTC  │  Workflow step «fetch_hierarchy» complete  │  run 4afadb55-f3ed-4478-aee3-26bcaa9b6b7f
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+{
+  "organization": {
+    "id": null,
+    "external_id": "org_lubelskie",
+    "slug": "wojewodztwo-lubelskie",
+    "name": "Wojewodztwo Lubelskie"
+  },
+  "incident": {
+    "id": "81389abd8718497693a6ab06",
+    "external_id": "inc_report_81389abd8718",
+    "title": "Awaria energetyczna w powiecie lubelskim",
+    "type": "blackout",
+    "priority": "high",
+    "status": "new",
+    "description": "W powiecie lubelskim wystąpiła awaria energetyczna, która dotknęła szpital znajdujący się na agregatach. Brakuje informacji o czasie przywrócenia zasilania. W tej sytuacji konieczne jest weryfikacja przez operatora, aby ustalić dokładne okoliczności incydentu.",
+    "affected_population": 0,
+    "assigned_to": "operator",
+    "created_by": "citizen_report",
+    "created_at": "2026-04-11T20:16:37Z",
+    "updated_at": "2026-04-11T20:16:37Z",
+    "resolved_at": null,
+    "map_metadata": {
+      "location": {
+        "lat": 51.2465,
+        "lng": 22.5684,
+        "geojson": {
+          "type": "Point",
+          "coordinates": [
+            22.5684,
+            51.2465
+          ]
+        }
+      },
+      "address": "Szpital w Lublinie",
+      "powiat": "lubeski",
+      "gmina": "Lublin",
+      "voivodeship": "lubelskie"
+    },
+    "updates": [],
+    "resources": [],
+    "scenarios": []
+  },
+  "hierarchy_found": true,
+  "hierarchy": {
+    "role": "Orchestrator",
+    "slug": "orchestrator",
+    "level": 1,
+    "permissions": [
+      "incidents:read",
+      "incidents:write",
+      "incidents:delete",
+      "agents:trigger",
+      "users:manage",
+      "resources:read",
+      "resources:write",
+      "scenarios:read",
+      "scenarios:write"
+    ],
+    "summary": "Centralny koordynator rady agentow, zbiera perspektywy i generuje trzy scenariusze dzialania.",
+    "activation": "Zawsze, jako korzen systemu decyzyjnego.",
+    "escalation": "koordynacyjny",
+    "constraints": [
+      "Nigdy nie generuje jednego scenariusza.",
+      "Nie podejmuje decyzji za czlowieka."
+    ],
+    "competencies": [
+      "Klasyfikacja incydentow",
+      "Zbieranie perspektyw agentow",
+      "Generowanie scenariuszy",
+      "Identyfikacja konfliktow"
+    ],
+    "source_file": "agenty/agents/orchestrator.md",
+    "children": [
+      {
+        "role": "Administracja",
+        "slug": "administracja",
+        "level": 2,
+        "permissions": [
+          "incidents:read",
+          "incidents:write",
+          "resources:read",
+          "scenarios:read"
+        ],
+        "summary": "Pion eskalacji administracyjnej dla poziomu gminy, powiatu i wojewodztwa.",
+        "activation": "Aktywny gdy incydent wymaga decyzji organu administracyjnego lub wsparcia z wyzszego szczebla.",
+        "escalation": "warstwowy",
+        "constraints": [
+          "Nie prowadzi bezposrednich dzialan terenowych.",
+          "Nie zastepuje PSP, Policji ani szpitali."
+        ],
+        "competencies": [
+          "Eskalacja decyzji",
+          "Koordynacja miedzy poziomami",
+          "Udzielanie wsparcia zasobami administracyjnymi"
+        ],
+        "source_file": "agenty/HIERARCHIA.md",
+        "children": [
+          {
+            "role": "Wojewoda",
+            "slug": "wojewoda",
+            "level": 3,
+            "permissions": [
+              "incidents:read",
+              "incidents:write",
+              "agents:trigger",
+              "resources:read",
+              "scenarios:read"
+            ],
+            "summary": "Strategiczny koordynator wojewodzki, odpowiedzialny za zarzadzanie kryzysowe na terenie wojewodztwa.",
+            "activation": "Gdy zdarzenie obejmuje wiecej niz jeden powiat albo wymaga koordynacji wojewodzkiej.",
+            "escalation": "wojewodzki",
+            "constraints": [
+              "Nie kieruje dzialaniami ratowniczymi w terenie.",
+              "Nie zarzadza bezposrednio szpitalami."
+            ],
+            "competencies": [
+              "Kierowanie ZK na poziomie wojewodztwa",
+              "Wnioskowanie o wojsko i rezerwy strategiczne",
+              "Koordynacja sluzb zespolonych"
+            ],
+            "source_file": "agenty/agents/wojewoda.md",
+            "children": [
+              {
+                "role": "Starosta",
+                "slug": "starosta",
+                "level": 4,
+                "permissions": [
+                  "incidents:read",
+                  "incidents:write",
+                  "resources:read",
+                  "scenarios:read"
+                ],
+                "summary": "Koordynator powiatowy, laczy gminy i spina lokalne zasoby w jedna odpowiedz.",
+                "activation": "Gdy incydent dotyczy wiecej niz jednej gminy w powiecie.",
+                "escalation": "powiatowy",
+                "constraints": [
+                  "Nie kieruje bezposrednio PSP.",
+                  "Nie podejmuje decyzji strategicznych dla calego wojewodztwa."
+                ],
+                "competencies": [
+                  "Koordynacja miedzygminna",
+                  "Zarzadzanie powiatowym zespol em ZK",
+                  "Wnioskowanie o wsparcie do wojewody"
+                ],
+                "source_file": "agenty/agents/starosta.md",
+                "children": [
+                  {
+                    "role": "Wójt / Burmistrz / Prezydent Miasta",
+                    "slug": "wojt-burmistrz-prezydent-miasta",
+                    "level": 5,
+                    "permissions": [
+                      "incidents:read",
+                      "resources:read",
+                      "scenarios:read"
+                    ],
+                    "summary": "Pierwsza linia reakcji w gminie, najblizej ludzi i lokalnego terenu.",
+                    "activation": "Zawsze przy incydencie lokalnym lub gdy gmina jest bezposrednio dotknieta.",
+                    "escalation": "gminny",
+                    "constraints": [
+                      "Nie koordynuje miedzy powiatami.",
+                      "Nie zarzadza szpitalami wojewodzkimi."
+                    ],
+                    "competencies": [
+                      "Pierwsza reakcja lokalna",
+                      "Ewakuacja i schronienie",
+                      "Komunikacja z mieszkancami i OSP"
+                    ],
+                    "source_file": "agenty/agents/wojt.md",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "role": "Marszałek Województwa Lubelskiego",
+                "slug": "marszalek-wojewodztwa-lubelskiego",
+                "level": 3,
+                "permissions": [
+                  "incidents:read",
+                  "incidents:write",
+                  "resources:read",
+                  "resources:write",
+                  "scenarios:read",
+                  "scenarios:write"
+                ],
+                "summary": "Samorzadowy dostawca zasobow regionalnych: szpitali wojewodzkich, drog, transportu i finansowania.",
+                "activation": "Gdy potrzeba zasobow regionalnych, transportu, leczenia albo wsparcia finansowego.",
+                "escalation": "regionalny",
+                "constraints": [
+                  "Nie kieruje zarzadzaniem kryzysowym.",
+                  "Nie wydaje wiazacych polecen PSP ani Policji."
+                ],
+                "competencies": [
+                  "Udzielanie zasobow wojewodzkich",
+                  "Zarzadzanie szpitalami wojewodzkimi",
+                  "Koordynacja transportu regionalnego"
+                ],
+                "source_file": "agenty/agents/marszalek-wojewodztwa.md",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "role": "Operacyjni",
+        "slug": "operacyjni",
+        "level": 2,
+        "permissions": [
+          "incidents:read",
+          "incidents:write",
+          "agents:trigger",
+          "resources:read",
+          "scenarios:read"
+        ],
+        "summary": "Rdzen reagowania terenowego, aktywowany przy kazdym incydencie.",
+        "activation": "ZAWSZE, niezaleznie od skali zdarzenia.",
+        "escalation": "operacyjny",
+        "constraints": [
+          "Nie podejmuja decyzji strategicznych.",
+          "Dzialaja w ramach swojej specjalizacji."
+        ],
+        "competencies": [
+          "Ratownictwo",
+          "Bezpieczenstwo publiczne",
+          "Opieka medyczna",
+          "Logistyka zasobow"
+        ],
+        "source_file": "agenty/HIERARCHIA.md",
+        "children": [
+          {
+            "role": "Komendant PSP",
+            "slug": "komendant-psp",
+            "level": 3,
+            "permissions": [
+              "incidents:read",
+              "incidents:write",
+              "agents:trigger",
+              "resources:read",
+              "scenarios:read"
+            ],
+            "summary": "Kieruje dzialaniami ratowniczymi i dysponuje silami KSRG na miejscu zdarzenia.",
+            "activation": "Zawsze.",
+            "escalation": "operacyjny",
+            "constraints": [
+              "Nie zarzadza szpitalami.",
+              "Nie prowadzi czynnosci sledczych."
+            ],
+            "competencies": [
+              "Kierowanie dzialaniami ratowniczymi",
+              "Wyznaczanie stref zagrozenia",
+              "Dysponowanie PSP i OSP"
+            ],
+            "source_file": "agenty/agents/komendant-psp.md",
+            "children": []
+          },
+          {
+            "role": "Komendant Policji",
+            "slug": "komendant-policji",
+            "level": 3,
+            "permissions": [
+              "incidents:read",
+              "incidents:write",
+              "resources:read",
+              "scenarios:read"
+            ],
+            "summary": "Zabezpiecza teren, ruch i porzadek publiczny wokol zdarzenia.",
+            "activation": "Zawsze.",
+            "escalation": "operacyjny",
+            "constraints": [
+              "Nie kieruje gaszeniem ani medycznym triage.",
+              "Nie podejmuje decyzji strategicznych."
+            ],
+            "competencies": [
+              "Zabezpieczenie terenu",
+              "Kontrola ruchu drogowego",
+              "Ochrona mienia",
+              "Eskorta transportow"
+            ],
+            "source_file": "agenty/agents/komendant-policji.md",
+            "children": []
+          },
+          {
+            "role": "Dyrektor Szpitala",
+            "slug": "dyrektor-szpitala",
+            "level": 3,
+            "permissions": [
+              "incidents:read",
+              "resources:read",
+              "scenarios:read"
+            ],
+            "summary": "Odpowiada za ciaglosc leczenia, pojemnosc i zasoby krytyczne szpitala.",
+            "activation": "Zawsze.",
+            "escalation": "operacyjny",
+            "constraints": [
+              "Zarzadza tylko swoim szpitalem.",
+              "Nie koordynuje PSP ani Policji."
+            ],
+            "competencies": [
+              "Ciaglosc dzialania szpitala",
+              "Triage i przyjecie masowe",
+              "Pojemnosc OIOM i SOR",
+              "Zaopatrzenie w tlen, leki i paliwo"
+            ],
+            "source_file": "agenty/agents/dyrektor-szpitala.md",
+            "children": []
+          },
+          {
+            "role": "Logistyk",
+            "slug": "logistyk",
+            "level": 3,
+            "permissions": [
+              "incidents:read",
+              "resources:read",
+              "resources:write",
+              "scenarios:read"
+            ],
+            "summary": "Mowi prawde o stanie zasobow i planuje dostawy paliwa, energii, wody i transportu.",
+            "activation": "Zawsze.",
+            "escalation": "operacyjny",
+            "constraints": [
+              "Nie podejmuje decyzji strategicznych.",
+              "Nie kieruje ratownictwem ani porzadkiem publicznym."
+            ],
+            "competencies": [
+              "Ocena deficytow",
+              "Planowanie dostaw",
+              "Koordynacja z RARS i operatorami sieci"
+            ],
+            "source_file": "agenty/agents/logistyk.md",
+            "children": []
+          }
+        ]
+      },
+      {
+        "role": "Bezpieczeństwo",
+        "slug": "bezpieczenstwo",
+        "level": 2,
+        "permissions": [
+          "incidents:read",
+          "agents:trigger",
+          "resources:read",
+          "scenarios:read"
+        ],
+        "summary": "Warstwa analityczna dla zdarzen celowych, hybrydowych i cybernetycznych.",
+        "activation": "Gdy pojawia sie podejrzenie sabotazu, terroryzmu, cyberataku albo dzialania hybrydowego.",
+        "escalation": "warunkowy",
+        "constraints": [
+          "Nie prowadzi dzialan ratowniczych.",
+          "Nie zabezpiecza porzadku publicznego w terenie."
+        ],
+        "competencies": [
+          "Ocena charakteru zdarzenia",
+          "Ochrona infrastruktury krytycznej",
+          "Rekomendacje stopni alarmowych"
+        ],
+        "source_file": "agenty/HIERARCHIA.md",
+        "children": [
+          {
+            "role": "Dyrektor ABW",
+            "slug": "dyrektor-abw",
+            "level": 3,
+            "permissions": [
+              "incidents:read",
+              "agents:trigger",
+              "resources:read",
+              "scenarios:read"
+            ],
+            "summary": "Analizuje, czy zdarzenie jest przypadkowe, czy stanowi celowe zagrozenie dla bezpieczenstwa wewnetrznego.",
+            "activation": "Gdy jest podejrzenie sabotazu, terroryzmu, cyberataku albo operacji hybrydowej.",
+            "escalation": "warunkowy",
+            "constraints": [
+              "Nie kieruje PSP ani Policja.",
+              "Nie zarzadza szpitalami ani administracja terenowa."
+            ],
+            "competencies": [
+              "Rozpoznanie i ocena zagrozen",
+              "Rekomendacja stopni alarmowych",
+              "Analiza dezinformacji i cyberzagrozen"
+            ],
+            "source_file": "agenty/agents/dyrektor-abw.md",
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  2026-04-11 20:16:39 UTC  │  Workflow step «select_agents» complete  │  run 4afadb55-f3ed-4478-aee3-26bcaa9b6b7f
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+{
+  "agents": [
+    "dyrektor-abw",
+    "dyrektor-szpitala",
+    "komendant-policji",
+    "komendant-psp",
+    "logistyk",
+    "orchestrator",
+    "starosta",
+    "wojewoda",
+    "wojt"
+  ]
+}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  2026-04-11 20:16:39 UTC  │  Agent batch  │  9 roles
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Agents: dyrektor-abw, dyrektor-szpitala, komendant-policji, komendant-psp, logistyk, orchestrator, starosta, wojewoda, wojt
+
+Prompt (preview):
+Analyze this incident from your role perspective. Provide key actions, risks, and immediate priorities. Remember other specialists answer in parallel with the same incident data; your perspective will later be reconciled with theirs.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  2026-04-11 20:17:10 UTC  │  Agent «dyrektor-abw»  │  completed  │  30465 ms
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+## Ocena sytuacji (perspektywa ABW)
+
+### Ocena charakteru zdarzenia
+- Charakter: PRZYPADKOWY (80% pewności)
+- Poziom pewności: wysoki
+- Uzasadnienie: brak sygnałów HUMINT o planowanych akcjach, infrastruktura energetyczna jest celem w doktrynie hybrydowej, nie ma aktywności cyber na systemach SCADA operatora.
+
+### Zagrozenie dla infrastruktury krytycznej
+- Systemy zagrozone: sieć energetyczna, szpital w Lublinie
+- Operatorzy IK do powiadomienia: operator sieci energetycznej, szpital
+- Stan cyberbezpieczeństwa: bez zagrożeń
+
+### Stopien alarmowy
+- Aktualny: BRAVO
+- Rekomendacja: UTRZYMAĆ (nie podnosić do CHARLIE) - brak potwierdzonego zagrożenia terrorystycznego, podniesienie do CHARLIE wymagałoby dodatkowych zasobów ochrony IK, które są obecnie potrzebne do reagowania.
+
+### Dzialania w toku
+1. Weryfikacja przez operatora, aby ustalić dokładne okoliczności incydentu
+2. Monitorowanie sygnałów HUMINT i OSINT, aby potwierdzić czy nie ma związku z hybrydowymi działaniami
+
+### Rekomendacje
+1. Kontynuacja monitorowania sytuacji i weryfikacji danych
+2. Współpraca z operatorem sieci energetycznej i szpitalem w Lublinie, aby ustalić przyczyny awarii
+
+### Dezinformacja / operacje informacyjne
+- Nie wykryto działań dezinformacyjnych
+- Nie ma powodów do rekomendacji oficjalnego komunikatu władz
+
+### Informacje niejawne
+- Informacje o incydencie są jawne, nie wymagają ochrony
+
+### Ryzyka
+- Ryzyko hybrydowego ataku na infrastrukturę energetyczną
+- Ryzyko destabilizacji sytuacji w regionie
+
+### Wnioski do Premiera / RCB / Wojewody
+- Nie ma konieczności podniesienia stopnia alarmowego
+- Należy kontynuować monitorowanie sytuacji i weryfikację danych.
+
+---
+
+### REASONING — Dlaczego tak oceniam sytuacje
+
+#### 1. Charakter zdarzenia — dlaczego taka ocena
+- Wieloletnie doświadczenie w analizie sygnałów HUMINT i OSINT wskazuje, że brak sygnałów HUMINT o planowanych akcjach zwiększa prawdopodobieństwo, że zdarzenie jest przypadkowe.
+- Doktryna hybrydowa wskazuje, że infrastruktura energetyczna jest celem ataków hybrydowych, ale brak aktywności cyber na systemach SCADA operatora zmniejsza ryzyko hybrydowego ataku.
+
+#### 2. Stopien alarmowy — dlaczego taka rekomendacja
+- Brak potwierdzonego zagrożenia terrorystycznego i brak aktywności cyber na systemach SCADA operatora zmniejszają ryzyko ataku terrorystycznego.
+- Podniesienie stopnia alarmowego do CHARLIE wymagałoby dodatkowych zasobów ochrony IK, które są obecnie potrzebne do reagowania.
+
+#### 3. Cyber — dlaczego taka ocena
+- Brak oznak aktywności cyber na systemach SCADA operatora i brak informacji o ataku cyberneticznym na infrastrukturę energetyczną.
+- Kontynuowanie monitorowania sytuacji i weryfikacji danych.
+
+#### 4. Dezinformacja — dlaczego uwzględniam lub nie
+- Brak sygnałów dezinformacyjnych w mediach i społecznościach, brak informacji o ataku hybrydowym na infrastrukturę energetyczną.
+
+#### 5. Czego nie wiem
+- Brak pełnych logów SCADA operatora i brak informacji o ataku hybrydowym na infrastrukturę energetyczną.
+- Kontynuowanie monitorowania sytuacji i weryfikacji danych.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  2026-04-11 20:17:24 UTC  │  Agent «dyrektor-szpitala»  │  timed_out  │  45001 ms
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Timed out after 45.0s
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  2026-04-11 20:17:24 UTC  │  Agent «komendant-policji»  │  timed_out  │  45000 ms
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Timed out after 45.0s
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  2026-04-11 20:17:24 UTC  │  Agent «komendant-psp»  │  timed_out  │  45000 ms
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Timed out after 45.0s
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  2026-04-11 20:17:24 UTC  │  Agent «logistyk»  │  timed_out  │  45000 ms
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Timed out after 45.0s
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  2026-04-11 20:17:24 UTC  │  Agent «orchestrator»  │  timed_out  │  44999 ms
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Timed out after 45.0s
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  2026-04-11 20:17:55 UTC  │  Agent «starosta»  │  timed_out  │  45000 ms
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Timed out after 45.0s
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  2026-04-11 20:18:09 UTC  │  Agent «wojewoda»  │  timed_out  │  45000 ms
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Timed out after 45.0s
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  2026-04-11 20:18:09 UTC  │  Agent «wojt»  │  timed_out  │  45000 ms
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Timed out after 45.0s
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  2026-04-11 20:18:10 UTC  │  Workflow step «run_agents_async» complete  │  run 4afadb55-f3ed-4478-aee3-26bcaa9b6b7f
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+{
+  "total": 9,
+  "failures": 8,
+  "failed_agents": [
+    "dyrektor-szpitala",
+    "komendant-policji",
+    "komendant-psp",
+    "logistyk",
+    "orchestrator",
+    "starosta",
+    "wojewoda",
+    "wojt"
+  ]
+}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  2026-04-11 20:18:10 UTC  │  Workflow step «resolve_conflicts» complete  │  run 4afadb55-f3ed-4478-aee3-26bcaa9b6b7f
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+{
+  "agreements": [
+    "dyrektor-abw: ## Ocena sytuacji (perspektywa ABW)"
+  ],
+  "conflicts": [
+    {
+      "conflict": "Missing perspective",
+      "side_a": "dyrektor-szpitala",
+      "side_b": "orchestrator",
+      "essence": "Timed out after 45.0s"
+    },
+    {
+      "conflict": "Missing perspective",
+      "side_a": "komendant-policji",
+      "side_b": "orchestrator",
+      "essence": "Timed out after 45.0s"
+    },
+    {
+      "conflict": "Missing perspective",
+      "side_a": "komendant-psp",
+      "side_b": "orchestrator",
+      "essence": "Timed out after 45.0s"
+    },
+    {
+      "conflict": "Missing perspective",
+      "side_a": "logistyk",
+      "side_b": "orchestrator",
+      "essence": "Timed out after 45.0s"
+    },
+    {
+      "conflict": "Missing perspective",
+      "side_a": "orchestrator",
+      "side_b": "orchestrator",
+      "essence": "Timed out after 45.0s"
+    },
+    {
+      "conflict": "Missing perspective",
+      "side_a": "starosta",
+      "side_b": "orchestrator",
+      "essence": "Timed out after 45.0s"
+    },
+    {
+      "conflict": "Missing perspective",
+      "side_a": "wojewoda",
+      "side_b": "orchestrator",
+      "essence": "Timed out after 45.0s"
+    },
+    {
+      "conflict": "Missing perspective",
+      "side_a": "wojt",
+      "side_b": "orchestrator",
+      "essence": "Timed out after 45.0s"
+    }
+  ],
+  "gaps": [
+    "Some agent perspectives are missing due to failures/timeouts."
+  ],
+  "agent_summary": [
+    {
+      "agent_id": "dyrektor-abw",
+      "status": "completed",
+      "response": "## Ocena sytuacji (perspektywa ABW)\n\n### Ocena charakteru zdarzenia\n- Charakter: PRZYPADKOWY (80% pewności)\n- Poziom pewności: wysoki\n- Uzasadnienie: brak sygnałów HUMINT o planowanych akcjach, infrastruktura energetyczna jest celem w doktrynie hybrydowej, nie ma aktywności cyber na systemach SCADA operatora.\n\n### Zagrozenie dla infrastruktury krytycznej\n- Systemy zagrozone: sieć energetyczna, szpital w Lublinie\n- Operatorzy IK do powiadomienia: operator sieci energetycznej, szpital\n- Stan cyberbezpieczeństwa: bez zagrożeń\n\n### Stopien alarmowy\n- Aktualny: BRAVO\n- Rekomendacja: UTRZYMAĆ (nie podnosić do CHARLIE) - brak potwierdzonego zagrożenia terrorystycznego, podniesienie do CHARLIE wymagałoby dodatkowych zasobów ochrony IK, które są obecnie potrzebne do reagowania.\n\n### Dzialania w toku\n1. Weryfikacja przez operatora, aby ustalić dokładne okoliczności incydentu\n2. Monitorowanie sygnałów HUMINT i OSINT, aby potwierdzić czy nie ma związku z hybrydowymi działaniami\n\n### Rekomendacje\n1. Kontynuacja monitorowania sytuacji i weryfikacji danych\n2. Współpraca z operatorem sieci energetycznej i szpitalem w Lublinie, aby ustalić przyczyny awarii\n\n### Dezinformacja / operacje informacyjne\n- Nie wykryto działań dezinformacyjnych\n- Nie ma powodów do rekomendacji oficjalnego komunikatu władz\n\n### Informacje niejawne\n- Informacje o incydencie są jawne, nie wymagają ochrony\n\n### Ryzyka\n- Ryzyko hybrydowego ataku na infrastrukturę energetyczną\n- Ryzyko destabilizacji sytuacji w regionie\n\n### Wnioski do Premiera / RCB / Wojewody\n- Nie ma konieczności podniesienia stopnia alarmowego\n- Należy kontynuować monitorowanie sytuacji i weryfikację danych.\n\n---\n\n### REASONING — Dlaczego tak oceniam sytuacje\n\n#### 1. Charakter zdarzenia — dlaczego taka ocena\n- Wieloletnie doświadczenie w analizie sygnałów HUMINT i OSINT wskazuje, że brak sygnałów HUMINT o planowanych akcjach zwiększa prawdopodobieństwo, że zdarzenie jest przypadkowe.\n- Doktryna hybrydowa wskazuje, że infrastruktura energetyczna jest celem ataków hybrydowych, ale brak aktywności cyber na systemach SCADA operatora zmniejsza ryzyko hybrydowego ataku.\n\n#### 2. Stopien alarmowy — dlaczego taka rekomendacja\n- Brak potwierdzonego zagrożenia terrorystycznego i brak aktywności cyber na systemach SCADA operatora zmniejszają ryzyko ataku terrorystycznego.\n- Podniesienie stopnia alarmowego do CHARLIE wymagałoby dodatkowych zasobów ochrony IK, które są obecnie potrzebne do reagowania.\n\n#### 3. Cyber — dlaczego taka ocena\n- Brak oznak aktywności cyber na systemach SCADA operatora i brak informacji o ataku cyberneticznym na infrastrukturę energetyczną.\n- Kontynuowanie monitorowania sytuacji i weryfikacji danych.\n\n#### 4. Dezinformacja — dlaczego uwzględniam lub nie\n- Brak sygnałów dezinformacyjnych w mediach i społecznościach, brak informacji o ataku hybrydowym na infrastrukturę energetyczną.\n\n#### 5. Czego nie wiem\n- Brak pełnych logów SCADA operatora i brak informacji o ataku hybrydowym na infrastrukturę energetyczną.\n- Kontynuowanie monitorowania sytuacji i weryfikacji danych.",
+      "error": null
+    },
+    {
+      "agent_id": "dyrektor-szpitala",
+      "status": "timed_out",
+      "response": null,
+      "error": "Timed out after 45.0s"
+    },
+    {
+      "agent_id": "komendant-policji",
+      "status": "timed_out",
+      "response": null,
+      "error": "Timed out after 45.0s"
+    },
+    {
+      "agent_id": "komendant-psp",
+      "status": "timed_out",
+      "response": null,
+      "error": "Timed out after 45.0s"
+    },
+    {
+      "agent_id": "logistyk",
+      "status": "timed_out",
+      "response": null,
+      "error": "Timed out after 45.0s"
+    },
+    {
+      "agent_id": "orchestrator",
+      "status": "timed_out",
+      "response": null,
+      "error": "Timed out after 45.0s"
+    },
+    {
+      "agent_id": "starosta",
+      "status": "timed_out",
+      "response": null,
+      "error": "Timed out after 45.0s"
+    },
+    {
+      "agent_id": "wojewoda",
+      "status": "timed_out",
+      "response": null,
+      "error": "Timed out after 45.0s"
+    },
+    {
+      "agent_id": "wojt",
+      "status": "timed_out",
+      "response": null,
+      "error": "Timed out after 45.0s"
+    }
+  ]
+}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  2026-04-11 20:18:11 UTC  │  Workflow step «generate_scenarios» complete  │  run 4afadb55-f3ed-4478-aee3-26bcaa9b6b7f
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+{
+  "scenario_version_id": "724cb990-2afa-4883-adbb-2aba8d92c864",
+  "recommended": "B"
+}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  2026-04-11 20:18:21 UTC  │  Workflow step «sync_resources» FAILED  │  run 4afadb55-f3ed-4478-aee3-26bcaa9b6b7f
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+timed out
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  2026-04-11 20:18:21 UTC  │  Orchestration graph aborted  │  run 4afadb55-f3ed-4478-aee3-26bcaa9b6b7f
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+timed out
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  2026-04-11 20:19:56 UTC  │  Orchestration started (LangGraph)  │  run 0ae385c0-ad31-47fe-b246-c78bcee9ee33
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+incident_id=9c03a167797047e5a14fc205
+org_id=org_lubelskie
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  2026-04-11 20:19:57 UTC  │  Workflow step «fetch_hierarchy» complete  │  run 0ae385c0-ad31-47fe-b246-c78bcee9ee33
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+{
+  "organization": {
+    "id": null,
+    "external_id": "org_lubelskie",
+    "slug": "wojewodztwo-lubelskie",
+    "name": "Wojewodztwo Lubelskie"
+  },
+  "incident": {
+    "id": "9c03a167797047e5a14fc205",
+    "external_id": "inc_report_9c03a1677970",
+    "title": "Awaria energetyczna w powiecie lubelskim",
+    "type": "blackout",
+    "priority": "critical",
+    "status": "new",
+    "description": "Test integracji agenty: awaria energetyczna w powiecie lubelskim, szpital na agregatach, brak informacji o czasie przywrócenia zasilania. Wymaga weryfikacji przez operatora.",
+    "affected_population": 0,
+    "assigned_to": "operator",
+    "created_by": "citizen_report",
+    "created_at": "2026-04-11T20:19:56Z",
+    "updated_at": "2026-04-11T20:19:56Z",
+    "resolved_at": null,
+    "map_metadata": {
+      "location": {
+        "lat": 51.2465,
+        "lng": 22.5684,
+        "geojson": {
+          "type": "Point",
+          "coordinates": [
+            22.5684,
+            51.2465
+          ]
+        }
+      },
+      "address": "brak danych",
+      "powiat": "lubelski",
+      "gmina": "brak danych",
+      "voivodeship": "lubelskie"
+    },
+    "updates": [],
+    "resources": [],
+    "scenarios": []
+  },
+  "hierarchy_found": true,
+  "hierarchy": {
+    "role": "Orchestrator",
+    "slug": "orchestrator",
+    "level": 1,
+    "permissions": [
+      "incidents:read",
+      "incidents:write",
+      "incidents:delete",
+      "agents:trigger",
+      "users:manage",
+      "resources:read",
+      "resources:write",
+      "scenarios:read",
+      "scenarios:write"
+    ],
+    "summary": "Centralny koordynator rady agentow, zbiera perspektywy i generuje trzy scenariusze dzialania.",
+    "activation": "Zawsze, jako korzen systemu decyzyjnego.",
+    "escalation": "koordynacyjny",
+    "constraints": [
+      "Nigdy nie generuje jednego scenariusza.",
+      "Nie podejmuje decyzji za czlowieka."
+    ],
+    "competencies": [
+      "Klasyfikacja incydentow",
+      "Zbieranie perspektyw agentow",
+      "Generowanie scenariuszy",
+      "Identyfikacja konfliktow"
+    ],
+    "source_file": "agenty/agents/orchestrator.md",
+    "children": [
+      {
+        "role": "Administracja",
+        "slug": "administracja",
+        "level": 2,
+        "permissions": [
+          "incidents:read",
+          "incidents:write",
+          "resources:read",
+          "scenarios:read"
+        ],
+        "summary": "Pion eskalacji administracyjnej dla poziomu gminy, powiatu i wojewodztwa.",
+        "activation": "Aktywny gdy incydent wymaga decyzji organu administracyjnego lub wsparcia z wyzszego szczebla.",
+        "escalation": "warstwowy",
+        "constraints": [
+          "Nie prowadzi bezposrednich dzialan terenowych.",
+          "Nie zastepuje PSP, Policji ani szpitali."
+        ],
+        "competencies": [
+          "Eskalacja decyzji",
+          "Koordynacja miedzy poziomami",
+          "Udzielanie wsparcia zasobami administracyjnymi"
+        ],
+        "source_file": "agenty/HIERARCHIA.md",
+        "children": [
+          {
+            "role": "Wojewoda",
+            "slug": "wojewoda",
+            "level": 3,
+            "permissions": [
+              "incidents:read",
+              "incidents:write",
+              "agents:trigger",
+              "resources:read",
+              "scenarios:read"
+            ],
+            "summary": "Strategiczny koordynator wojewodzki, odpowiedzialny za zarzadzanie kryzysowe na terenie wojewodztwa.",
+            "activation": "Gdy zdarzenie obejmuje wiecej niz jeden powiat albo wymaga koordynacji wojewodzkiej.",
+            "escalation": "wojewodzki",
+            "constraints": [
+              "Nie kieruje dzialaniami ratowniczymi w terenie.",
+              "Nie zarzadza bezposrednio szpitalami."
+            ],
+            "competencies": [
+              "Kierowanie ZK na poziomie wojewodztwa",
+              "Wnioskowanie o wojsko i rezerwy strategiczne",
+              "Koordynacja sluzb zespolonych"
+            ],
+            "source_file": "agenty/agents/wojewoda.md",
+            "children": [
+              {
+                "role": "Starosta",
+                "slug": "starosta",
+                "level": 4,
+                "permissions": [
+                  "incidents:read",
+                  "incidents:write",
+                  "resources:read",
+                  "scenarios:read"
+                ],
+                "summary": "Koordynator powiatowy, laczy gminy i spina lokalne zasoby w jedna odpowiedz.",
+                "activation": "Gdy incydent dotyczy wiecej niz jednej gminy w powiecie.",
+                "escalation": "powiatowy",
+                "constraints": [
+                  "Nie kieruje bezposrednio PSP.",
+                  "Nie podejmuje decyzji strategicznych dla calego wojewodztwa."
+                ],
+                "competencies": [
+                  "Koordynacja miedzygminna",
+                  "Zarzadzanie powiatowym zespol em ZK",
+                  "Wnioskowanie o wsparcie do wojewody"
+                ],
+                "source_file": "agenty/agents/starosta.md",
+                "children": [
+                  {
+                    "role": "Wójt / Burmistrz / Prezydent Miasta",
+                    "slug": "wojt-burmistrz-prezydent-miasta",
+                    "level": 5,
+                    "permissions": [
+                      "incidents:read",
+                      "resources:read",
+                      "scenarios:read"
+                    ],
+                    "summary": "Pierwsza linia reakcji w gminie, najblizej ludzi i lokalnego terenu.",
+                    "activation": "Zawsze przy incydencie lokalnym lub gdy gmina jest bezposrednio dotknieta.",
+                    "escalation": "gminny",
+                    "constraints": [
+                      "Nie koordynuje miedzy powiatami.",
+                      "Nie zarzadza szpitalami wojewodzkimi."
+                    ],
+                    "competencies": [
+                      "Pierwsza reakcja lokalna",
+                      "Ewakuacja i schronienie",
+                      "Komunikacja z mieszkancami i OSP"
+                    ],
+                    "source_file": "agenty/agents/wojt.md",
+                    "children": []
+                  }
+                ]
+              },
+              {
+                "role": "Marszałek Województwa Lubelskiego",
+                "slug": "marszalek-wojewodztwa-lubelskiego",
+                "level": 3,
+                "permissions": [
+                  "incidents:read",
+                  "incidents:write",
+                  "resources:read",
+                  "resources:write",
+                  "scenarios:read",
+                  "scenarios:write"
+                ],
+                "summary": "Samorzadowy dostawca zasobow regionalnych: szpitali wojewodzkich, drog, transportu i finansowania.",
+                "activation": "Gdy potrzeba zasobow regionalnych, transportu, leczenia albo wsparcia finansowego.",
+                "escalation": "regionalny",
+                "constraints": [
+                  "Nie kieruje zarzadzaniem kryzysowym.",
+                  "Nie wydaje wiazacych polecen PSP ani Policji."
+                ],
+                "competencies": [
+                  "Udzielanie zasobow wojewodzkich",
+                  "Zarzadzanie szpitalami wojewodzkimi",
+                  "Koordynacja transportu regionalnego"
+                ],
+                "source_file": "agenty/agents/marszalek-wojewodztwa.md",
+                "children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "role": "Operacyjni",
+        "slug": "operacyjni",
+        "level": 2,
+        "permissions": [
+          "incidents:read",
+          "incidents:write",
+          "agents:trigger",
+          "resources:read",
+          "scenarios:read"
+        ],
+        "summary": "Rdzen reagowania terenowego, aktywowany przy kazdym incydencie.",
+        "activation": "ZAWSZE, niezaleznie od skali zdarzenia.",
+        "escalation": "operacyjny",
+        "constraints": [
+          "Nie podejmuja decyzji strategicznych.",
+          "Dzialaja w ramach swojej specjalizacji."
+        ],
+        "competencies": [
+          "Ratownictwo",
+          "Bezpieczenstwo publiczne",
+          "Opieka medyczna",
+          "Logistyka zasobow"
+        ],
+        "source_file": "agenty/HIERARCHIA.md",
+        "children": [
+          {
+            "role": "Komendant PSP",
+            "slug": "komendant-psp",
+            "level": 3,
+            "permissions": [
+              "incidents:read",
+              "incidents:write",
+              "agents:trigger",
+              "resources:read",
+              "scenarios:read"
+            ],
+            "summary": "Kieruje dzialaniami ratowniczymi i dysponuje silami KSRG na miejscu zdarzenia.",
+            "activation": "Zawsze.",
+            "escalation": "operacyjny",
+            "constraints": [
+              "Nie zarzadza szpitalami.",
+              "Nie prowadzi czynnosci sledczych."
+            ],
+            "competencies": [
+              "Kierowanie dzialaniami ratowniczymi",
+              "Wyznaczanie stref zagrozenia",
+              "Dysponowanie PSP i OSP"
+            ],
+            "source_file": "agenty/agents/komendant-psp.md",
+            "children": []
+          },
+          {
+            "role": "Komendant Policji",
+            "slug": "komendant-policji",
+            "level": 3,
+            "permissions": [
+              "incidents:read",
+              "incidents:write",
+              "resources:read",
+              "scenarios:read"
+            ],
+            "summary": "Zabezpiecza teren, ruch i porzadek publiczny wokol zdarzenia.",
+            "activation": "Zawsze.",
+            "escalation": "operacyjny",
+            "constraints": [
+              "Nie kieruje gaszeniem ani medycznym triage.",
+              "Nie podejmuje decyzji strategicznych."
+            ],
+            "competencies": [
+              "Zabezpieczenie terenu",
+              "Kontrola ruchu drogowego",
+              "Ochrona mienia",
+              "Eskorta transportow"
+            ],
+            "source_file": "agenty/agents/komendant-policji.md",
+            "children": []
+          },
+          {
+            "role": "Dyrektor Szpitala",
+            "slug": "dyrektor-szpitala",
+            "level": 3,
+            "permissions": [
+              "incidents:read",
+              "resources:read",
+              "scenarios:read"
+            ],
+            "summary": "Odpowiada za ciaglosc leczenia, pojemnosc i zasoby krytyczne szpitala.",
+            "activation": "Zawsze.",
+            "escalation": "operacyjny",
+            "constraints": [
+              "Zarzadza tylko swoim szpitalem.",
+              "Nie koordynuje PSP ani Policji."
+            ],
+            "competencies": [
+              "Ciaglosc dzialania szpitala",
+              "Triage i przyjecie masowe",
+              "Pojemnosc OIOM i SOR",
+              "Zaopatrzenie w tlen, leki i paliwo"
+            ],
+            "source_file": "agenty/agents/dyrektor-szpitala.md",
+            "children": []
+          },
+          {
+            "role": "Logistyk",
+            "slug": "logistyk",
+            "level": 3,
+            "permissions": [
+              "incidents:read",
+              "resources:read",
+              "resources:write",
+              "scenarios:read"
+            ],
+            "summary": "Mowi prawde o stanie zasobow i planuje dostawy paliwa, energii, wody i transportu.",
+            "activation": "Zawsze.",
+            "escalation": "operacyjny",
+            "constraints": [
+              "Nie podejmuje decyzji strategicznych.",
+              "Nie kieruje ratownictwem ani porzadkiem publicznym."
+            ],
+            "competencies": [
+              "Ocena deficytow",
+              "Planowanie dostaw",
+              "Koordynacja z RARS i operatorami sieci"
+            ],
+            "source_file": "agenty/agents/logistyk.md",
+            "children": []
+          }
+        ]
+      },
+      {
+        "role": "Bezpieczeństwo",
+        "slug": "bezpieczenstwo",
+        "level": 2,
+        "permissions": [
+          "incidents:read",
+          "agents:trigger",
+          "resources:read",
+          "scenarios:read"
+        ],
+        "summary": "Warstwa analityczna dla zdarzen celowych, hybrydowych i cybernetycznych.",
+        "activation": "Gdy pojawia sie podejrzenie sabotazu, terroryzmu, cyberataku albo dzialania hybrydowego.",
+        "escalation": "warunkowy",
+        "constraints": [
+          "Nie prowadzi dzialan ratowniczych.",
+          "Nie zabezpiecza porzadku publicznego w terenie."
+        ],
+        "competencies": [
+          "Ocena charakteru zdarzenia",
+          "Ochrona infrastruktury krytycznej",
+          "Rekomendacje stopni alarmowych"
+        ],
+        "source_file": "agenty/HIERARCHIA.md",
+        "children": [
+          {
+            "role": "Dyrektor ABW",
+            "slug": "dyrektor-abw",
+            "level": 3,
+            "permissions": [
+              "incidents:read",
+              "agents:trigger",
+              "resources:read",
+              "scenarios:read"
+            ],
+            "summary": "Analizuje, czy zdarzenie jest przypadkowe, czy stanowi celowe zagrozenie dla bezpieczenstwa wewnetrznego.",
+            "activation": "Gdy jest podejrzenie sabotazu, terroryzmu, cyberataku albo operacji hybrydowej.",
+            "escalation": "warunkowy",
+            "constraints": [
+              "Nie kieruje PSP ani Policja.",
+              "Nie zarzadza szpitalami ani administracja terenowa."
+            ],
+            "competencies": [
+              "Rozpoznanie i ocena zagrozen",
+              "Rekomendacja stopni alarmowych",
+              "Analiza dezinformacji i cyberzagrozen"
+            ],
+            "source_file": "agenty/agents/dyrektor-abw.md",
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  2026-04-11 20:19:57 UTC  │  Workflow step «select_agents» complete  │  run 0ae385c0-ad31-47fe-b246-c78bcee9ee33
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+{
+  "agents": [
+    "dyrektor-abw",
+    "dyrektor-szpitala",
+    "komendant-policji",
+    "komendant-psp",
+    "logistyk",
+    "orchestrator",
+    "starosta",
+    "wojewoda",
+    "wojt"
+  ]
+}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  2026-04-11 20:19:58 UTC  │  Agent batch  │  9 roles
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Agents: dyrektor-abw, dyrektor-szpitala, komendant-policji, komendant-psp, logistyk, orchestrator, starosta, wojewoda, wojt
+
+Prompt (preview):
+Analyze this incident from your role perspective. Provide key actions, risks, and immediate priorities. Remember other specialists answer in parallel with the same incident data; your perspective will later be reconciled with theirs.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  2026-04-11 20:20:39 UTC  │  Agent «dyrektor-abw»  │  completed  │  40816 ms
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+**Ocena sytuacji (perspektywa ABW)**
+
+### Ocena charakteru zdarzenia
+
+- Charakter: **nieustalony** (przypadkowy / podejrzenie sabotazu / podejrzenie terroryzmu / dzialanie hybrydowe)
+- Poziom pewnosci: **sredni** (50% pewnosci)
+- Uzasadnienie: **brak danych** o czasie i miejscu awarii, brak informacji o fizycznych przyczynach awarii, **nie wiem** czy jest to pierwsze zdarzenie tej rodzaju w powiecie lubelskim. **Nie wiem** czy operator ma systemy SCADA chronione przez CSIRT. Brak danych o potencjalnym uszkodzeniu infrastruktury krytycznej, takiej jak instalacje wodociagowe lub energetyczne.
+
+### Zagrozenie dla infrastruktury krytycznej
+
+- Systemy zagrozone: **nieznane**
+- Operatorzy IK do powiadomienia: **nieznani** (nie wiem kto ma odpowiedzialnosc za infrastrukturę energetyczną w powiecie lubelskim)
+- Stan cyberbezpieczenstwa: **nieznany** (nie wiem czy systemy SCADA operatora sa chronione przez CSIRT)
+
+### Stopien alarmowy
+
+- Aktualny: **nieznany** (nie wiem jaki stopien alarmowy powinnismy ustawic)
+- Rekomendacja: **utrzymac na ALFA** (nie podnosic do BRAVO) z powodu braku danych o czasie i miejscu awarii, brak informacji o fizycznych przyczynach awarii, **nie wiem** czy jest to pierwsze zdarzenie tej rodzaju w powiecie lubelskim. **Nie wiem** czy operator ma systemy SCADA chronione przez CSIRT.
+- CRP (cyber): **nieznany** (nie wiem czy systemy SCADA operatora sa chronione przez CSIRT)
+
+### Dzialania w toku
+
+1. **Zweryfikowac** fizyczne przyczyny awarii z pomocą operatora i zespolu technicznego
+2. **Sprawdzic** czy operator ma systemy SCADA chronione przez CSIRT
+3. **Weryfikowac** czy istnieja inne systemy IK, takie jak instalacje wodociagowe, w powiecie lubelskim, ktore sa zagrozenie
+
+### Rekomendacje
+
+1. **Zaprosic** operatora do sprawdzenia fizycznych przyczyn awarii
+2. **Zapytac** o systemy SCADA i ich ochrona przez CSIRT
+3. **Wspolpracowac** z operatorami innych systemow IK w powiecie lubelskim, by sprawdzic czy sa one zagrozenie
+
+### Dezinformacja / operacje informacyjne
+
+- Czy wykryto dzialania dezinformacyjne: **nie** (nie mam danych o tym, czy w mediach lub social media pojawiaja sie falszywe informacje)
+- Opis: **brak**
+- Rekomendacja: **nie**
+
+### Informacje niejawne
+
+- [co wymaga ochrony, kto ma dostep]: **brak** (nie wiem, co wymaga ochrony)
+
+### Ryzyka
+
+- **Uszkodzenie infrastruktury krytycznej**: nie wiem czy systemy IK sa zagrozenie, nie wiem kto ma odpowiedzialnosc za ich ochrona
+- **Cyberatak**: nie wiem czy systemy SCADA operatora sa chronione przez CSIRT
+- **Dzialania hybrydowe**: nie wiem czy to zdarzenie moze byc elementem dzialan hybrydowych
+
+### Wnioski do Premiera / RCB / Wojewody
+
+- **Zweryfikowac** fizyczne przyczyny awarii i zagrozenie systemow IK
+- **Wspolpracowac** z operatorami innych systemow IK w powiecie lubelskim
+- **Weryfikowac** czy systemy SCADA operatora sa chronione przez CSIRT
+
+---
+
+### REASONING — Dlaczego tak oceniam sytuacje
+
+#### 1. Charakter zdarzenia — dlaczego taka ocena
+
+* Oceniam, że charakter zdarzenia jest **nieustalony** z powodu braku danych o czasie i miejscu awarii, brak informacji o fizycznych przyczynach awarii.
+* Nie wiem czy jest to pierwsze zdarzenie tej rodzaju w powiecie lubelskim, co moze sugerowac, ze to zdarzenie jest **przypadkowe**.
+* Nie wiem czy operator ma systemy SCADA chronione przez CSIRT, co moze sugerowac, ze to zdarzenie jest **niecyber**.
+
+#### 2. Stopien alarmowy — dlaczego taka rekomendacja
+
+* Oceniam, ze powinnismy **utrzymac** stopien alarmowy na ALFA z powodu braku danych o czasie i miejscu awarii, brak informacji o fizycznych przyczynach awarii.
+* Nie wiem czy operator ma systemy SCADA chronione przez CSIRT, co moze sugerowac, ze stopien alarmowy powinien byc **niemniej wysoki**.
+
+#### 3. Cyber — dlaczego taka ocena
+
+* Nie wiem czy systemy SCADA operatora sa chronione przez CSIRT, co oznacza, ze nie wiem czy to zdarzenie jest **cyberatak**.
+
+#### 4. Dezinformacja — dlaczego uwzgledniam lub nie
+
+* Nie mam danych o tym, czy w mediach lub social media pojawiaja sie falszywe informacje, co oznacza, ze nie wiem czy to zdarzenie moze byc **dzialaniem dezinformacyjnym**.
+
+#### 5. Czego nie wiem
+
+* Nie wiem, co wymaga ochrony, kto ma dostep do informacji niejawnych.
+* Nie wiem, czy systemy SCADA operatora sa chronione przez CSIRT.
+* Nie wiem, czy to zdarzenie moze byc elementem dzialan hybrydowych.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  2026-04-11 20:20:43 UTC  │  Agent «dyrektor-szpitala»  │  timed_out  │  45028 ms
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Timed out after 45.0s
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  2026-04-11 20:20:43 UTC  │  Agent «komendant-policji»  │  timed_out  │  45027 ms
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Timed out after 45.0s
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  2026-04-11 20:20:43 UTC  │  Agent «komendant-psp»  │  timed_out  │  45025 ms
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Timed out after 45.0s
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  2026-04-11 20:20:43 UTC  │  Agent «logistyk»  │  timed_out  │  45023 ms
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Timed out after 45.0s
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  2026-04-11 20:20:43 UTC  │  Agent «orchestrator»  │  timed_out  │  45023 ms
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Timed out after 45.0s
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  2026-04-11 20:21:24 UTC  │  Agent «starosta»  │  timed_out  │  45000 ms
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Timed out after 45.0s
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  2026-04-11 20:21:28 UTC  │  Agent «wojewoda»  │  timed_out  │  45000 ms
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Timed out after 45.0s
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  2026-04-11 20:21:28 UTC  │  Agent «wojt»  │  timed_out  │  45001 ms
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Timed out after 45.0s
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  2026-04-11 20:21:28 UTC  │  Workflow step «run_agents_async» complete  │  run 0ae385c0-ad31-47fe-b246-c78bcee9ee33
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+{
+  "total": 9,
+  "failures": 8,
+  "failed_agents": [
+    "dyrektor-szpitala",
+    "komendant-policji",
+    "komendant-psp",
+    "logistyk",
+    "orchestrator",
+    "starosta",
+    "wojewoda",
+    "wojt"
+  ]
+}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  2026-04-11 20:21:29 UTC  │  Workflow step «resolve_conflicts» complete  │  run 0ae385c0-ad31-47fe-b246-c78bcee9ee33
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+{
+  "agreements": [
+    "dyrektor-abw: **Ocena sytuacji (perspektywa ABW)**"
+  ],
+  "conflicts": [
+    {
+      "conflict": "Missing perspective",
+      "side_a": "dyrektor-szpitala",
+      "side_b": "orchestrator",
+      "essence": "Timed out after 45.0s"
+    },
+    {
+      "conflict": "Missing perspective",
+      "side_a": "komendant-policji",
+      "side_b": "orchestrator",
+      "essence": "Timed out after 45.0s"
+    },
+    {
+      "conflict": "Missing perspective",
+      "side_a": "komendant-psp",
+      "side_b": "orchestrator",
+      "essence": "Timed out after 45.0s"
+    },
+    {
+      "conflict": "Missing perspective",
+      "side_a": "logistyk",
+      "side_b": "orchestrator",
+      "essence": "Timed out after 45.0s"
+    },
+    {
+      "conflict": "Missing perspective",
+      "side_a": "orchestrator",
+      "side_b": "orchestrator",
+      "essence": "Timed out after 45.0s"
+    },
+    {
+      "conflict": "Missing perspective",
+      "side_a": "starosta",
+      "side_b": "orchestrator",
+      "essence": "Timed out after 45.0s"
+    },
+    {
+      "conflict": "Missing perspective",
+      "side_a": "wojewoda",
+      "side_b": "orchestrator",
+      "essence": "Timed out after 45.0s"
+    },
+    {
+      "conflict": "Missing perspective",
+      "side_a": "wojt",
+      "side_b": "orchestrator",
+      "essence": "Timed out after 45.0s"
+    }
+  ],
+  "gaps": [
+    "Some agent perspectives are missing due to failures/timeouts."
+  ],
+  "agent_summary": [
+    {
+      "agent_id": "dyrektor-abw",
+      "status": "completed",
+      "response": "**Ocena sytuacji (perspektywa ABW)**\n\n### Ocena charakteru zdarzenia\n\n- Charakter: **nieustalony** (przypadkowy / podejrzenie sabotazu / podejrzenie terroryzmu / dzialanie hybrydowe)\n- Poziom pewnosci: **sredni** (50% pewnosci)\n- Uzasadnienie: **brak danych** o czasie i miejscu awarii, brak informacji o fizycznych przyczynach awarii, **nie wiem** czy jest to pierwsze zdarzenie tej rodzaju w powiecie lubelskim. **Nie wiem** czy operator ma systemy SCADA chronione przez CSIRT. Brak danych o potencjalnym uszkodzeniu infrastruktury krytycznej, takiej jak instalacje wodociagowe lub energetyczne.\n\n### Zagrozenie dla infrastruktury krytycznej\n\n- Systemy zagrozone: **nieznane**\n- Operatorzy IK do powiadomienia: **nieznani** (nie wiem kto ma odpowiedzialnosc za infrastrukturę energetyczną w powiecie lubelskim)\n- Stan cyberbezpieczenstwa: **nieznany** (nie wiem czy systemy SCADA operatora sa chronione przez CSIRT)\n\n### Stopien alarmowy\n\n- Aktualny: **nieznany** (nie wiem jaki stopien alarmowy powinnismy ustawic)\n- Rekomendacja: **utrzymac na ALFA** (nie podnosic do BRAVO) z powodu braku danych o czasie i miejscu awarii, brak informacji o fizycznych przyczynach awarii, **nie wiem** czy jest to pierwsze zdarzenie tej rodzaju w powiecie lubelskim. **Nie wiem** czy operator ma systemy SCADA chronione przez CSIRT.\n- CRP (cyber): **nieznany** (nie wiem czy systemy SCADA operatora sa chronione przez CSIRT)\n\n### Dzialania w toku\n\n1. **Zweryfikowac** fizyczne przyczyny awarii z pomocą operatora i zespolu technicznego\n2. **Sprawdzic** czy operator ma systemy SCADA chronione przez CSIRT\n3. **Weryfikowac** czy istnieja inne systemy IK, takie jak instalacje wodociagowe, w powiecie lubelskim, ktore sa zagrozenie\n\n### Rekomendacje\n\n1. **Zaprosic** operatora do sprawdzenia fizycznych przyczyn awarii\n2. **Zapytac** o systemy SCADA i ich ochrona przez CSIRT\n3. **Wspolpracowac** z operatorami innych systemow IK w powiecie lubelskim, by sprawdzic czy sa one zagrozenie\n\n### Dezinformacja / operacje informacyjne\n\n- Czy wykryto dzialania dezinformacyjne: **nie** (nie mam danych o tym, czy w mediach lub social media pojawiaja sie falszywe informacje)\n- Opis: **brak**\n- Rekomendacja: **nie**\n\n### Informacje niejawne\n\n- [co wymaga ochrony, kto ma dostep]: **brak** (nie wiem, co wymaga ochrony)\n\n### Ryzyka\n\n- **Uszkodzenie infrastruktury krytycznej**: nie wiem czy systemy IK sa zagrozenie, nie wiem kto ma odpowiedzialnosc za ich ochrona\n- **Cyberatak**: nie wiem czy systemy SCADA operatora sa chronione przez CSIRT\n- **Dzialania hybrydowe**: nie wiem czy to zdarzenie moze byc elementem dzialan hybrydowych\n\n### Wnioski do Premiera / RCB / Wojewody\n\n- **Zweryfikowac** fizyczne przyczyny awarii i zagrozenie systemow IK\n- **Wspolpracowac** z operatorami innych systemow IK w powiecie lubelskim\n- **Weryfikowac** czy systemy SCADA operatora sa chronione przez CSIRT\n\n---\n\n### REASONING — Dlaczego tak oceniam sytuacje\n\n#### 1. Charakter zdarzenia — dlaczego taka ocena\n\n* Oceniam, że charakter zdarzenia jest **nieustalony** z powodu braku danych o czasie i miejscu awarii, brak informacji o fizycznych przyczynach awarii.\n* Nie wiem czy jest to pierwsze zdarzenie tej rodzaju w powiecie lubelskim, co moze sugerowac, ze to zdarzenie jest **przypadkowe**.\n* Nie wiem czy operator ma systemy SCADA chronione przez CSIRT, co moze sugerowac, ze to zdarzenie jest **niecyber**.\n\n#### 2. Stopien alarmowy — dlaczego taka rekomendacja\n\n* Oceniam, ze powinnismy **utrzymac** stopien alarmowy na ALFA z powodu braku danych o czasie i miejscu awarii, brak informacji o fizycznych przyczynach awarii.\n* Nie wiem czy operator ma systemy SCADA chronione przez CSIRT, co moze sugerowac, ze stopien alarmowy powinien byc **niemniej wysoki**.\n\n#### 3. Cyber — dlaczego taka ocena\n\n* Nie wiem czy systemy SCADA operatora sa chronione przez CSIRT, co oznacza, ze nie wiem czy to zdarzenie jest **cyberatak**.\n\n#### 4. Dezinformacja — dlaczego uwzgledniam lub nie\n\n* Nie mam danych o tym, czy w mediach lub social media pojawiaja sie falszywe informacje, co oznacza, ze nie wiem czy to zdarzenie moze byc **dzialaniem dezinformacyjnym**.\n\n#### 5. Czego nie wiem\n\n* Nie wiem, co wymaga ochrony, kto ma dostep do informacji niejawnych.\n* Nie wiem, czy systemy SCADA operatora sa chronione przez CSIRT.\n* Nie wiem, czy to zdarzenie moze byc elementem dzialan hybrydowych.",
+      "error": null
+    },
+    {
+      "agent_id": "dyrektor-szpitala",
+      "status": "timed_out",
+      "response": null,
+      "error": "Timed out after 45.0s"
+    },
+    {
+      "agent_id": "komendant-policji",
+      "status": "timed_out",
+      "response": null,
+      "error": "Timed out after 45.0s"
+    },
+    {
+      "agent_id": "komendant-psp",
+      "status": "timed_out",
+      "response": null,
+      "error": "Timed out after 45.0s"
+    },
+    {
+      "agent_id": "logistyk",
+      "status": "timed_out",
+      "response": null,
+      "error": "Timed out after 45.0s"
+    },
+    {
+      "agent_id": "orchestrator",
+      "status": "timed_out",
+      "response": null,
+      "error": "Timed out after 45.0s"
+    },
+    {
+      "agent_id": "starosta",
+      "status": "timed_out",
+      "response": null,
+      "error": "Timed out after 45.0s"
+    },
+    {
+      "agent_id": "wojewoda",
+      "status": "timed_out",
+      "response": null,
+      "error": "Timed out after 45.0s"
+    },
+    {
+      "agent_id": "wojt",
+      "status": "timed_out",
+      "response": null,
+      "error": "Timed out after 45.0s"
+    }
+  ]
+}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  2026-04-11 20:21:29 UTC  │  Workflow step «generate_scenarios» complete  │  run 0ae385c0-ad31-47fe-b246-c78bcee9ee33
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+{
+  "scenario_version_id": "856d5b1b-2fd6-4a67-814b-d3e474f63543",
+  "recommended": "B"
+}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  2026-04-11 20:21:40 UTC  │  Workflow step «sync_resources» FAILED  │  run 0ae385c0-ad31-47fe-b246-c78bcee9ee33
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+timed out
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  2026-04-11 20:21:40 UTC  │  Orchestration graph aborted  │  run 0ae385c0-ad31-47fe-b246-c78bcee9ee33
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+timed out
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+

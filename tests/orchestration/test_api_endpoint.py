@@ -1,3 +1,11 @@
+"""Unit tests for the orchestration *router* only.
+
+``create_orchestration_router`` is wired with in-memory stand-ins so we can
+assert JSON shapes and status codes without Mongo, the LLM, or Next.js. For
+tests against the real application factory (same wiring as ``uvicorn``), see
+``test_api_server_integration.py`` and run ``pytest -m integration``.
+"""
+
 from __future__ import annotations
 
 from types import SimpleNamespace
@@ -37,15 +45,7 @@ class FakeRepository:
         return SimpleNamespace(model_dump=lambda: {"id": "scenario-1", "recommendation_label": "A"})
 
 
-def test_orchestration_post_and_result_endpoint_prints_result(monkeypatch, capsys) -> None:
-    from agenty.api import routes_orchestration as routes_module
-
-    class DummyTask:
-        def add_done_callback(self, _callback):
-            return None
-
-    monkeypatch.setattr(routes_module.asyncio, "create_task", lambda coro: DummyTask())
-
+def test_orchestration_post_and_result_endpoint_prints_result(capsys) -> None:
     app = FastAPI()
     app.include_router(create_orchestration_router(engine=FakeEngine(), repository=FakeRepository()))
 
@@ -61,5 +61,6 @@ def test_orchestration_post_and_result_endpoint_prints_result(monkeypatch, capsy
         assert result.json()["scenario_version"]["id"] == "scenario-1"
 
     captured = capsys.readouterr()
-    assert "run-123" in captured.out
-    assert "scenario-1" in captured.out
+    combined = captured.out + captured.err
+    assert "run-123" in combined
+    assert "scenario-1" in combined

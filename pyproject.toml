@@ -9,6 +9,8 @@ description = "CrisisTwin agent runtime (CGC LLM + extensible MCP hooks)"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "certifi>=2024.0.0",
+    "langgraph>=0.2.0",
     "openai>=1.59.0",
     "pydantic>=2.6.0",
     "pydantic-settings>=2.6.0",
@@ -22,3 +24,6 @@ dev = ["pytest>=8.0.0"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+markers = [
+    "integration: uses create_app(), Mongo, and LLM settings from .env (skipped when unset).",
+]
