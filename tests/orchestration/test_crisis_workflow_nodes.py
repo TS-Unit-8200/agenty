@@ -1,8 +1,9 @@
 import asyncio
+import json
 from datetime import UTC, datetime
 
 from agenty.orchestration.crisis_workflow_nodes import CrisisWorkflowNodes
-from agenty.orchestration.models import AgentRun, AgentRunSummary, WorkflowRun, WorkflowStep
+from agenty.orchestration.models import AgentRun, AgentRunSummary, ExternalInfoRequest, WorkflowRun, WorkflowStep
 
 
 class FakeRepository:
@@ -36,6 +37,7 @@ class FakeRepository:
                 ),
             )
         ]
+        self.external_request: ExternalInfoRequest | None = None
 
     def get_run(self, run_id: str) -> WorkflowRun | None:
         return self.run if run_id == self.run.id else None
@@ -77,6 +79,27 @@ class FakeRepository:
     def append_agent_run(self, agent_run: AgentRun) -> AgentRun:
         self.agent_runs.append(agent_run)
         return agent_run
+
+    def get_external_info_request(self, run_id: str):
+        if run_id != self.run.id:
+            return None
+        return self.external_request
+
+    def upsert_external_info_request(self, request: ExternalInfoRequest) -> ExternalInfoRequest:
+        self.external_request = request
+        return request
+
+
+class FakeMCP:
+    def __init__(self, resources: list[dict[str, object]]) -> None:
+        self.resources = resources
+        self.calls: list[tuple[str, dict[str, object]]] = []
+
+    def call_tool(self, name: str, arguments: dict[str, object]) -> str:
+        self.calls.append((name, arguments))
+        if name == "resource_list":
+            return json.dumps(self.resources, ensure_ascii=False)
+        raise KeyError(name)
 
 
 class FakeRunner:
@@ -127,6 +150,11 @@ class DummyService:
         raise AttributeError
 
 
+class FakePlannerLlm:
+    def chat_completion(self, *_args, **_kwargs) -> str:
+        return '{"should_call": false}'
+
+
 def test_run_orchestrator_happens_after_reconciliation() -> None:
     repository = FakeRepository()
     runner = FakeRunner()
@@ -138,6 +166,9 @@ def test_run_orchestrator_happens_after_reconciliation() -> None:
         reconciliation=DummyService(),
         scenarios=DummyService(),
         mcp=DummyService(),
+        planner_llm=FakePlannerLlm(),
+        phone_poll_interval_s=5.0,
+        phone_max_wait_s=60.0,
     )
 
     state = {
@@ -175,6 +206,9 @@ def test_run_orchestrator_failure_does_not_abort_scenario_pipeline() -> None:
         reconciliation=DummyService(),
         scenarios=DummyService(),
         mcp=DummyService(),
+        planner_llm=FakePlannerLlm(),
+        phone_poll_interval_s=5.0,
+        phone_max_wait_s=60.0,
     )
 
     state = {
@@ -197,3 +231,149 @@ def test_run_orchestrator_failure_does_not_abort_scenario_pipeline() -> None:
     assert repository.run.current_state == "run_orchestrator"
     assert repository.agent_runs[-1].agent_id == "orchestrator"
     assert repository.agent_runs[-1].status == "failed"
+
+
+def test_plan_external_info_forces_phone_call_for_explicit_unknowns() -> None:
+    repository = FakeRepository()
+    repository.agent_runs = [
+        AgentRun(
+            run_id="run-1",
+            agent_id="dyrektor-abw",
+            status="completed",
+            started_at=datetime.now(UTC),
+            finished_at=datetime.now(UTC),
+            latency_ms=900,
+            response=(
+                "## Czego nie wiem - luki analityczne\n"
+                "1. Tozsamosc i profil instalacji - czy to zaklad SEVESO?\n"
+                "2. Sklad chemiczny emisji - od WIOS/GIS.\n"
+            ),
+            summary=AgentRunSummary(
+                perspective="Potrzebna weryfikacja operatora.",
+                concerns=["Nieznane logi SCADA i brak danych operatora."],
+                recommendations=["Skontaktowac sie z operatorem instalacji."],
+                urgency="immediate",
+            ),
+        )
+    ]
+    mcp = FakeMCP(
+        [
+            {
+                "resource_id": "res_hospital",
+                "name": "Szpital Powiatowy",
+                "type": "hospital",
+                "contact_phone": "+48111222333",
+                "contact_role": "dyrektor-szpitala",
+            },
+            {
+                "resource_id": "res_operator",
+                "name": "Operator zakladu chemicznego",
+                "type": "operator",
+                "contact_phone": "+48444555666",
+                "contact_role": "operator instalacji",
+            },
+        ]
+    )
+    nodes = CrisisWorkflowNodes(
+        repository=repository,
+        hierarchy=DummyService(),
+        selector=DummyService(),
+        runner=FakeRunner(),
+        reconciliation=DummyService(),
+        scenarios=DummyService(),
+        mcp=mcp,
+        planner_llm=FakePlannerLlm(),
+        phone_poll_interval_s=5.0,
+        phone_max_wait_s=60.0,
+    )
+
+    state = {
+        "run_id": "run-1",
+        "fetch_hierarchy": {
+            "incident": {
+                "id": "inc-1",
+                "title": "Pozar przemyslowy",
+                "priority": "critical",
+                "description": "Pozar instalacji przemyslowej z emisja.",
+            },
+        },
+        "resolve_conflicts": {
+            "agreements": [],
+            "conflicts": [],
+            "gaps": [],
+        },
+    }
+
+    result = asyncio.run(nodes.plan_external_info(state))
+
+    assert result["plan_external_info"]["should_call"] is True
+    assert result["plan_external_info"]["resource_id"] == "res_operator"
+    assert "Tozsamosc i profil instalacji" in "\n".join(result["plan_external_info"]["explicit_gaps"])
+    assert repository.external_request is not None
+    assert repository.external_request.resource_id == "res_operator"
+    assert "SEVESO" in repository.external_request.requirements
+    assert mcp.calls[0][0] == "resource_list"
+
+
+def test_plan_external_info_uses_fallback_phone_when_incident_has_no_resources() -> None:
+    repository = FakeRepository()
+    repository.agent_runs = [
+        AgentRun(
+            run_id="run-1",
+            agent_id="dyrektor-abw",
+            status="completed",
+            started_at=datetime.now(UTC),
+            finished_at=datetime.now(UTC),
+            latency_ms=700,
+            response=(
+                "## Czego nie wiem - luki analityczne\n"
+                "- Tozsamosc operatora instalacji i logi SCADA.\n"
+            ),
+            summary=AgentRunSummary(
+                perspective="Brakuje potwierdzenia od operatora.",
+                concerns=["Nieznane dane operatora i systemow sterowania."],
+                recommendations=["Wykonac telefon w celu potwierdzenia sytuacji."],
+                urgency="immediate",
+            ),
+        )
+    ]
+    mcp = FakeMCP([])
+    nodes = CrisisWorkflowNodes(
+        repository=repository,
+        hierarchy=DummyService(),
+        selector=DummyService(),
+        runner=FakeRunner(),
+        reconciliation=DummyService(),
+        scenarios=DummyService(),
+        mcp=mcp,
+        planner_llm=FakePlannerLlm(),
+        phone_poll_interval_s=5.0,
+        phone_max_wait_s=60.0,
+        phone_agent_default_phone_number="+48695031104",
+    )
+
+    state = {
+        "run_id": "run-1",
+        "fetch_hierarchy": {
+            "incident": {
+                "id": "inc-1",
+                "title": "Pozar przemyslowy",
+                "priority": "critical",
+                "description": "Pozar instalacji przemyslowej z emisja.",
+                "resources": [],
+            },
+        },
+        "resolve_conflicts": {
+            "agreements": [],
+            "conflicts": [],
+            "gaps": [],
+        },
+    }
+
+    result = asyncio.run(nodes.plan_external_info(state))
+
+    assert result["plan_external_info"]["should_call"] is True
+    assert repository.external_request is not None
+    assert repository.external_request.phone_number == "+48695031104"
+    assert repository.external_request.resource_id == "fallback_operator_phone"
+    assert repository.external_request.owner_agent_id == "dyrektor-abw"

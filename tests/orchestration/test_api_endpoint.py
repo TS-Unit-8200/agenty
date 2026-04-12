@@ -57,6 +57,28 @@ class FakeRepository:
         return [
             SimpleNamespace(
                 agent_id="komendant-policji",
+                response="Stara odpowiedz.",
+                status="completed",
+                summary={
+                    "perspective": "Wczesniejsza perspektywa.",
+                    "concerns": ["Stare ryzyko."],
+                    "recommendations": ["Stare zalecenie."],
+                    "urgency": "hours",
+                },
+                model_dump=lambda *args, **kwargs: {
+                    "agent_id": "komendant-policji",
+                    "response": "Stara odpowiedz.",
+                    "status": "completed",
+                    "summary": {
+                        "perspective": "Wczesniejsza perspektywa.",
+                        "concerns": ["Stare ryzyko."],
+                        "recommendations": ["Stare zalecenie."],
+                        "urgency": "hours",
+                    },
+                },
+            ),
+            SimpleNamespace(
+                agent_id="komendant-policji",
                 response="Zamknac wezly i ustawic objazd.",
                 status="completed",
                 summary={
@@ -112,6 +134,21 @@ class FakeRepository:
             }
         )
 
+    def get_external_info_request(self, run_id: str) -> SimpleNamespace | None:
+        if run_id != "run-123":
+            return None
+        return SimpleNamespace(
+            model_dump=lambda *args, **kwargs: {
+                "status": "waiting",
+                "resource_id": "res-hosp-1",
+                "resource_name": "SP ZOZ Lublin",
+                "call_id": "call-123",
+                "notice": "Trwa rozmowa z SP ZOZ Lublin.",
+                "result": None,
+                "updated_at": "2026-04-12T10:11:00Z",
+            }
+        )
+
 
 def make_client() -> tuple[TestClient, FakeEngine]:
     engine = FakeEngine()
@@ -150,7 +187,9 @@ def test_result_endpoint_omits_steps_by_default_and_can_opt_in_debug_steps() -> 
     assert result.json()["scenario_version"]["id"] == "scenario-1"
     assert result.json()["scenario_version"]["scenarios"][0]["label"] == "A"
     assert len(result.json()["agent_runs"]) == 2
+    assert result.json()["agent_runs"][0]["response"] == "Zamknac wezly i ustawic objazd."
     assert result.json()["orchestrator_report"] == "# Raport"
+    assert result.json()["external_info"]["call_id"] == "call-123"
     assert "steps" not in result.json()
 
     debug_result = client.get("/orchestrations/run-123/result?include_steps=true")

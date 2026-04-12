@@ -18,6 +18,7 @@ from agenty.orchestration.agent_selector import AgentSelector
 from agenty.orchestration.crisis_graph import build_crisis_graph
 from agenty.orchestration.crisis_graph_state import CrisisGraphState
 from agenty.orchestration.crisis_workflow_nodes import CrisisWorkflowNodes
+from agenty.orchestration.exceptions import WorkflowPause
 from agenty.orchestration.hierarchy_service import HierarchyService
 from agenty.orchestration.models import OrchestrationResult, WorkflowRun, WorkflowState
 from agenty.orchestration.reconciliation import ReconciliationService
@@ -33,10 +34,12 @@ WORKFLOW_STEPS: tuple[WorkflowState, ...] = (
     "select_agents",
     "run_agents_async",
     "resolve_conflicts",
+    "plan_external_info",
+    "await_external_info",
+    "refresh_agent_after_call",
     "run_orchestrator",
     "generate_scenarios",
     "sync_resources",
-    "comms_mock_call",
 )
 
 
@@ -72,10 +75,16 @@ class OrchestrationEngine:
             reconciliation=self._reconciliation,
             scenarios=self._scenarios,
             mcp=mcp,
+            planner_llm=runtime.llm,
+            phone_poll_interval_s=max(1.0, float(runtime._settings.phone_agent_poll_interval_s)),
+            phone_max_wait_s=max(1.0, float(runtime._settings.phone_agent_max_wait_s)),
+            phone_agent_default_phone_number=runtime._settings.phone_agent_default_phone_number,
         )
         self._checkpointer = checkpointer or MemorySaver()
         self._graph = build_crisis_graph(self._nodes, checkpointer=self._checkpointer)
         self._active_tasks: dict[str, asyncio.Task[OrchestrationResult]] = {}
+        self._resume_watchers: dict[str, asyncio.Task[None]] = {}
+        self._phone_poll_interval_s = max(1.0, float(runtime._settings.phone_agent_poll_interval_s))
 
     @property
     def orchestrator_version(self) -> str:
@@ -121,12 +130,47 @@ class OrchestrationEngine:
         current = self._active_tasks.get(run_id)
         if current is not None and not current.done():
             return False
+        watcher = self._resume_watchers.pop(run_id, None)
+        if watcher is not None and not watcher.done():
+            watcher.cancel()
 
         coroutine = self.resume(run_id) if resume else self.execute(run_id)
         task = asyncio.create_task(coroutine)
         self._active_tasks[run_id] = task
         task.add_done_callback(self._task_done_callback(run_id))
         return True
+
+    def schedule_resume(self, run_id: str, *, delay_s: float | None = None) -> bool:
+        current = self._resume_watchers.get(run_id)
+        if current is not None and not current.done():
+            return False
+
+        effective_delay = max(1.0, delay_s or self._phone_poll_interval_s)
+
+        async def _resume_later() -> None:
+            try:
+                await asyncio.sleep(effective_delay)
+            except asyncio.CancelledError:
+                return
+            run = self._repository.get_run(run_id)
+            if run is None or run.status in TERMINAL_STATES:
+                return
+            self.schedule(run_id, resume=True)
+
+        watcher = asyncio.create_task(_resume_later())
+        self._resume_watchers[run_id] = watcher
+        watcher.add_done_callback(self._watcher_done_callback(run_id))
+        return True
+
+    def restore_waiting_runs(self) -> int:
+        count = 0
+        for request in self._repository.list_external_info_requests(statuses=["initiated", "waiting"]):
+            run = self._repository.get_run(request.run_id)
+            if run is None or run.status in TERMINAL_STATES:
+                continue
+            if self.schedule_resume(request.run_id, delay_s=self._phone_poll_interval_s):
+                count += 1
+        return count
 
     def _task_done_callback(self, run_id: str):
         def _cb(task: asyncio.Task[OrchestrationResult]) -> None:
@@ -145,6 +189,19 @@ class OrchestrationEngine:
 
         return _cb
 
+    def _watcher_done_callback(self, run_id: str):
+        def _cb(task: asyncio.Task[None]) -> None:
+            self._resume_watchers.pop(run_id, None)
+            try:
+                task.result()
+            except asyncio.CancelledError:
+                pass
+            except Exception as exc:  # noqa: BLE001
+                logger.exception("Resume watcher failed run_id=%s", run_id)
+                agenty_echo(f"[agenty] resume watcher(run_id={run_id}) - FAILED: {exc!r}")
+
+        return _cb
+
     async def execute(self, run_id: str) -> OrchestrationResult:
         run = self._repository.get_run(run_id)
         if run is None:
@@ -157,7 +214,7 @@ class OrchestrationEngine:
         trace_event("orchestration.graph.invoke", run_id=run.id)
         agenty_echo(
             f"[agenty] OrchestrationEngine.execute(run_id={run_id}) - "
-            "running LangGraph (hierarchy -> council -> reconcile -> orchestrator -> scenarios -> resources -> comms)",
+            "running LangGraph (hierarchy -> council -> reconcile -> external-info -> orchestrator -> scenarios -> resources)",
         )
 
         initial: CrisisGraphState = {
@@ -166,9 +223,14 @@ class OrchestrationEngine:
             "org_id": run.org_id,
         }
         config = {"configurable": {"thread_id": run.id}}
+        paused = False
 
         try:
             await self._graph.ainvoke(initial, config)
+        except WorkflowPause as pause:
+            paused = True
+            trace_event("orchestration.graph.paused", run_id=run.id, reason=pause.reason, delay_s=pause.delay_s)
+            self.schedule_resume(run.id, delay_s=pause.delay_s)
         except asyncio.CancelledError:
             self._mark_cancelled(run.id)
             raise
@@ -179,7 +241,8 @@ class OrchestrationEngine:
                 str(exc),
             )
 
-        self._finalize_completed_run_if_needed(run.id)
+        if not paused:
+            self._finalize_completed_run_if_needed(run.id)
         result = self._collect_result(run.id)
         agenty_echo(
             f"[agenty] OrchestrationEngine.execute(run_id={run_id}) - finished; "
@@ -209,6 +272,7 @@ class OrchestrationEngine:
             self._finalize_completed_run_if_needed(run.id)
             return self._collect_result(run.id)
 
+        paused = False
         try:
             for step_name in WORKFLOW_STEPS[start_index:]:
                 node = getattr(self._nodes, step_name)
@@ -217,6 +281,10 @@ class OrchestrationEngine:
                 latest_run = self._repository.get_run(run.id)
                 if latest_run is None or latest_run.status in TERMINAL_STATES:
                     break
+        except WorkflowPause as pause:
+            paused = True
+            trace_event("orchestration.resume.paused", run_id=run.id, reason=pause.reason, delay_s=pause.delay_s)
+            self.schedule_resume(run.id, delay_s=pause.delay_s)
         except asyncio.CancelledError:
             self._mark_cancelled(run.id)
             raise
@@ -227,7 +295,8 @@ class OrchestrationEngine:
                 str(exc),
             )
 
-        self._finalize_completed_run_if_needed(run.id)
+        if not paused:
+            self._finalize_completed_run_if_needed(run.id)
         result = self._collect_result(run.id)
         agenty_echo(
             f"[agenty] OrchestrationEngine.resume(run_id={run_id}) - finished; "
@@ -287,6 +356,9 @@ class OrchestrationEngine:
             latest_orchestrator = orchestrator_runs[-1]
             if latest_orchestrator.status != "completed":
                 final_status = "partial_completed"
+        external_info = self._repository.get_external_info_request(run_id)
+        if external_info and external_info.status in {"failed", "timed_out"}:
+            final_status = "partial_completed"
 
         self._repository.update_run_state(
             run_id,
@@ -312,6 +384,7 @@ class OrchestrationEngine:
         agent_runs = self._repository.list_agent_runs(latest_run.id)
         scenario_id = self._scenario_version_id(latest_run.id)
         scenario_version = self._repository.get_scenario_version(scenario_id) if scenario_id else None
+        external_info = self._repository.get_external_info_request(latest_run.id)
         comms_summary = None
         for step in steps:
             if step.state == "comms_mock_call":
@@ -330,4 +403,5 @@ class OrchestrationEngine:
             scenario_version=scenario_version,
             comms_summary=comms_summary,
             orchestrator_report=orchestrator_report,
+            external_info=external_info,
         )

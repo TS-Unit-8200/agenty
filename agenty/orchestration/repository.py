@@ -4,9 +4,17 @@ from __future__ import annotations
 
 from datetime import UTC, datetime
 from typing import Any
+from uuid import uuid4
 
 from agenty.db.mongo import MongoConnector
-from agenty.orchestration.models import AgentRun, ScenarioVersion, WorkflowRun, WorkflowState, WorkflowStep
+from agenty.orchestration.models import (
+    AgentRun,
+    ExternalInfoRequest,
+    ScenarioVersion,
+    WorkflowRun,
+    WorkflowState,
+    WorkflowStep,
+)
 from agenty.orchestration.state_machine import TERMINAL_STATES, WORKFLOW_PATH
 
 
@@ -17,6 +25,7 @@ class OrchestrationRepository:
         self._steps = self._db["workflow_steps"]
         self._agent_runs = self._db["agent_runs"]
         self._scenario_versions = self._db["scenario_versions"]
+        self._external_info_requests = self._db["external_info_requests"]
         self._organizations = self._db["organizations"]
         self._runs.create_index([("id", 1)], unique=True)
         self._runs.create_index([("incident_id", 1), ("orchestrator_version", 1)])
@@ -24,6 +33,9 @@ class OrchestrationRepository:
         self._steps.create_index([("run_id", 1), ("state", 1)], unique=True)
         self._agent_runs.create_index([("run_id", 1)])
         self._scenario_versions.create_index([("id", 1)], unique=True)
+        self._external_info_requests.create_index([("id", 1)], unique=True)
+        self._external_info_requests.create_index([("run_id", 1)], unique=True)
+        self._external_info_requests.create_index([("status", 1), ("updated_at", -1)])
 
     @staticmethod
     def _strip_id(doc: dict[str, Any] | None) -> dict[str, Any] | None:
@@ -35,6 +47,8 @@ class OrchestrationRepository:
     def _workflow_progress_rank(state: str | None) -> int:
         if not state:
             return -1
+        if state == "comms_mock_call":
+            return len(WORKFLOW_PATH)
         try:
             return WORKFLOW_PATH.index(state)  # type: ignore[arg-type]
         except ValueError:
@@ -158,6 +172,32 @@ class OrchestrationRepository:
         clean = self._strip_id(doc)
         return ScenarioVersion.model_validate(clean) if clean else None
 
+    def upsert_external_info_request(self, request: ExternalInfoRequest) -> ExternalInfoRequest:
+        self._external_info_requests.update_one(
+            {"run_id": request.run_id},
+            {"$set": request.model_dump(mode="python")},
+            upsert=True,
+        )
+        return request
+
+    def get_external_info_request(self, run_id: str) -> ExternalInfoRequest | None:
+        doc = self._external_info_requests.find_one({"run_id": run_id}, {"_id": 0})
+        clean = self._strip_id(doc)
+        return ExternalInfoRequest.model_validate(clean) if clean else None
+
+    def list_external_info_requests(
+        self,
+        *,
+        statuses: list[str] | None = None,
+    ) -> list[ExternalInfoRequest]:
+        query: dict[str, Any] = {}
+        if statuses:
+            query["status"] = {"$in": statuses}
+        return [
+            ExternalInfoRequest.model_validate(self._strip_id(doc))
+            for doc in self._external_info_requests.find(query, {"_id": 0}).sort("updated_at", -1)
+        ]
+
     def update_incident_links(
         self,
         incident_id: str,
@@ -176,6 +216,36 @@ class OrchestrationRepository:
         ):
             filt: dict[str, Any] = {f"incidents.{filter_key}": incident_id}
             self._organizations.update_many(filt, {"$set": set_payload}, array_filters=[array_filter])
+
+    def append_incident_update(
+        self,
+        incident_id: str,
+        *,
+        author_role: str,
+        content: str,
+        update_type: str,
+    ) -> None:
+        now = datetime.now(UTC)
+        update_doc = {
+            "external_id": f"upd_{uuid4().hex[:12]}",
+            "author_role": author_role,
+            "content": content,
+            "type": update_type,
+            "created_at": now,
+        }
+        for filter_key, array_filter in (
+            ("id", {"elem.id": incident_id}),
+            ("external_id", {"elem.external_id": incident_id}),
+        ):
+            filt: dict[str, Any] = {f"incidents.{filter_key}": incident_id}
+            self._organizations.update_many(
+                filt,
+                {
+                    "$push": {"incidents.$[elem].updates": update_doc},
+                    "$set": {"incidents.$[elem].updated_at": now},
+                },
+                array_filters=[array_filter],
+            )
 
     def find_org_hierarchy_for_incident(self, incident_id: str) -> dict[str, Any] | None:
         elem = {"$elemMatch": {"$or": [{"id": incident_id}, {"external_id": incident_id}]}}

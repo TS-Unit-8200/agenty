@@ -7,6 +7,7 @@ from fastapi import APIRouter, HTTPException, Query
 from agenty.api.access_log import agenty_echo
 from agenty.api.schemas import StartOrchestrationRequest, StartOrchestrationResponse
 from agenty.orchestration.engine import OrchestrationEngine
+from agenty.orchestration.models import AgentRun
 from agenty.orchestration.repository import OrchestrationRepository
 from agenty.orchestration.state_machine import TERMINAL_STATES
 from agenty.orchestration.tracing import trace_event
@@ -20,6 +21,19 @@ def _scenario_version_id_from_steps(steps: list[object]) -> str | None:
             value = output_payload.get("scenario_version_id")
             return str(value) if value else None
     return None
+
+
+def _latest_visible_agent_runs(agent_runs: list[AgentRun | object]) -> list[AgentRun | object]:
+    latest: dict[str, AgentRun | object] = {}
+    order: list[str] = []
+    for item in agent_runs:
+        agent_id = str(getattr(item, "agent_id", "") or "")
+        if not agent_id:
+            continue
+        if agent_id not in order:
+            order.append(agent_id)
+        latest[agent_id] = item
+    return [latest[agent_id] for agent_id in order if agent_id in latest]
 
 
 def create_orchestration_router(
@@ -113,21 +127,24 @@ def create_orchestration_router(
         agent_runs = repository.list_agent_runs(run_id)
         scenario_version_id = _scenario_version_id_from_steps(steps)
         scenario_version = repository.get_scenario_version(scenario_version_id) if scenario_version_id else None
+        external_info = repository.get_external_info_request(run_id)
+        visible_agent_runs = _latest_visible_agent_runs(agent_runs)
         orchestrator_report = None
-        for agent_run in reversed(agent_runs):
+        for agent_run in reversed(visible_agent_runs):
             if agent_run.agent_id == "orchestrator" and agent_run.response:
                 orchestrator_report = agent_run.response
                 break
         agenty_echo(
             f"[agenty] handler GET /orchestrations/{run_id}/result - "
             f"run status={run.status!r} scenario_version_id={scenario_version_id!r} "
-            f"agent_runs={len(agent_runs)} has_scenario={scenario_version is not None} include_steps={include_steps}",
+            f"agent_runs={len(visible_agent_runs)} has_scenario={scenario_version is not None} include_steps={include_steps}",
         )
         payload: dict[str, object] = {
             "run": run.model_dump(mode="json"),
-            "agent_runs": [item.model_dump(mode="json") for item in agent_runs],
+            "agent_runs": [item.model_dump(mode="json") for item in visible_agent_runs],
             "scenario_version": scenario_version.model_dump(mode="json") if scenario_version else None,
             "orchestrator_report": orchestrator_report,
+            "external_info": external_info.model_dump(mode="json") if external_info else None,
         }
         if include_steps:
             payload["steps"] = [item.model_dump(mode="json") for item in steps]

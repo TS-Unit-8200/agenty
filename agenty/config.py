@@ -74,6 +74,36 @@ class Settings(BaseSettings):
         validation_alias="NEXTJS_HTTP_TIMEOUT_S",
         description="Timeout for agenty → Next.js MCP resource HTTP calls (resource_list, etc.).",
     )
+    phone_agent_base_url: str = Field(
+        default="http://localhost:5000",
+        validation_alias="PHONE_AGENT_BASE_URL",
+        description="Base URL of the ai-backend phone agent API.",
+    )
+    phone_agent_api_token: str | None = Field(
+        default=None,
+        validation_alias="PHONE_AGENT_API_TOKEN",
+        description="Bearer token used to authenticate against ai-backend /calls endpoints.",
+    )
+    phone_agent_default_phone_number: str | None = Field(
+        default=None,
+        validation_alias="PHONE_AGENT_DEFAULT_PHONE_NUMBER",
+        description="Fallback destination phone number when the incident has no contact resources but the council exposes explicit unknowns.",
+    )
+    phone_agent_poll_interval_s: float = Field(
+        default=10.0,
+        validation_alias="PHONE_AGENT_POLL_INTERVAL_S",
+        description="Polling interval for waiting phone calls before resuming a workflow run.",
+    )
+    phone_agent_max_wait_s: float = Field(
+        default=600.0,
+        validation_alias="PHONE_AGENT_MAX_WAIT_S",
+        description="Maximum time a workflow run should wait for ai-backend call completion.",
+    )
+    phone_agent_enabled: bool = Field(
+        default=False,
+        validation_alias="PHONE_AGENT_ENABLED",
+        description="Enable real ai-backend phone calls instead of dev/mock comms.",
+    )
     agent_llm_timeout_s: float = Field(
         default=120.0,
         validation_alias="AGENT_LLM_TIMEOUT_S",

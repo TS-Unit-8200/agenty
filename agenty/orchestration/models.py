@@ -15,6 +15,9 @@ WorkflowState = Literal[
     "select_agents",
     "run_agents_async",
     "resolve_conflicts",
+    "plan_external_info",
+    "await_external_info",
+    "refresh_agent_after_call",
     "run_orchestrator",
     "generate_scenarios",
     "sync_resources",
@@ -28,6 +31,15 @@ WorkflowState = Literal[
 StepStatus = Literal["pending", "running", "completed", "failed", "skipped"]
 AgentRunStatus = Literal["completed", "failed", "timed_out"]
 AgentUrgency = Literal["immediate", "hours", "days"]
+ExternalInfoStatus = Literal[
+    "planned",
+    "initiated",
+    "waiting",
+    "completed",
+    "failed",
+    "timed_out",
+    "skipped",
+]
 
 
 class WorkflowRun(BaseModel):
@@ -86,6 +98,31 @@ class ScenarioVersion(BaseModel):
     rationale: str = ""
 
 
+class ExternalInfoRequest(BaseModel):
+    id: str
+    run_id: str
+    incident_id: str
+    resource_id: str
+    resource_name: str
+    phone_number: str
+    resource_type: str | None = None
+    contact_name: str | None = None
+    contact_role: str | None = None
+    owner_agent_id: str | None = None
+    call_id: str | None = None
+    schema_def: dict[str, Any] = Field(default_factory=dict)
+    requirements: str = ""
+    reason: str | None = None
+    status: ExternalInfoStatus
+    notice: str | None = None
+    result: dict[str, Any] | None = None
+    transcript_excerpt: str | None = None
+    error: str | None = None
+    created_at: datetime
+    updated_at: datetime
+    completed_at: datetime | None = None
+
+
 class OrchestrationResult(BaseModel):
     run: WorkflowRun
     steps: list[WorkflowStep] = Field(default_factory=list)
@@ -93,3 +130,4 @@ class OrchestrationResult(BaseModel):
     scenario_version: ScenarioVersion | None = None
     comms_summary: str | None = None
     orchestrator_report: str | None = None
+    external_info: ExternalInfoRequest | None = None

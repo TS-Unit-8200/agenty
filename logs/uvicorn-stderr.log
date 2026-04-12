@@ -1,0 +1,30 @@
+C:\Users\Adam\Desktop\Programing\Civil42\agenty\venv\Lib\site-packages\langchain_core\_api\deprecation.py:25: UserWarning: Core Pydantic V1 functionality isn't compatible with Python 3.14 or greater.
+  from pydantic.v1.fields import FieldInfo as FieldInfoV1
+[agenty] CORS allow_origins=['http://localhost:3000', 'http://127.0.0.1:3000'] + regex localhost/127.0.0.1:anyPort for dev
+[agenty] create_app: ready (Mongo + routers mounted)
+INFO:     Started server process [38164]
+INFO:     Waiting for application startup.
+[agenty] startup restore_waiting_runs -> restored_watchers=0
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8080 (Press CTRL+C to quit)
+[agenty] HIT \u2192 GET /orchestrations/nonexistent client=127.0.0.1 content-length=- query=-
+[agenty] \u2192 GET /orchestrations/nonexistent client=127.0.0.1
+[agenty] handler GET /orchestrations/{run_id} - loading run + steps + agent_runs from Mongo (run_id='nonexistent')
+[agenty] handler GET /orchestrations/nonexistent - 404 run not found
+[agenty] DONE \u2190 GET /orchestrations/nonexistent \u2192 HTTP 404 (44 ms)
+[agenty] \u2190 GET /orchestrations/nonexistent 404 (44 ms)
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [38164]
+Exception ignored in atexit callback <function _shutdown_resources at 0x0000022484C98930>:
+Traceback (most recent call last):
+  File "C:\Users\Adam\Desktop\Programing\Civil42\agenty\venv\Lib\site-packages\pymongo\synchronous\monitor.py", line 539, in _shutdown_resources
+    shutdown()
+  File "C:\Users\Adam\Desktop\Programing\Civil42\agenty\venv\Lib\site-packages\pymongo\periodic_executor.py", line 294, in _shutdown_executors
+    executor.join(1)
+  File "C:\Users\Adam\Desktop\Programing\Civil42\agenty\venv\Lib\site-packages\pymongo\periodic_executor.py", line 211, in join
+    self._thread.join(timeout)
+  File "C:\Users\Adam\AppData\Local\Python\pythoncore-3.14-64\Lib\threading.py", line 1133, in join
+    self._os_thread_handle.join(timeout)
+KeyboardInterrupt: 

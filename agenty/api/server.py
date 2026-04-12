@@ -11,7 +11,13 @@ from agenty.api.routes_incident_report import create_incident_report_router
 from agenty.api.routes_orchestration import create_orchestration_router
 from agenty.config import get_settings
 from agenty.db.mongo import MongoConnector
-from agenty.mcp_gateway import CommsMockMCPServer, MCPGateway, ResourceCrudMCPServer, ScenarioGenMCPServer
+from agenty.mcp_gateway import (
+    CommsMockMCPServer,
+    MCPGateway,
+    PhoneCallMCPServer,
+    ResourceCrudMCPServer,
+    ScenarioGenMCPServer,
+)
 from agenty.orchestration.engine import OrchestrationEngine
 from agenty.orchestration.repository import OrchestrationRepository
 from agenty.orchestration.tracing import configure_orchestration_logging
@@ -35,8 +41,15 @@ def create_app() -> FastAPI:
         timeout_s=settings.nextjs_http_timeout_s,
     )
     scenario_server = ScenarioGenMCPServer()
-    comms_server = CommsMockMCPServer(runtime.llm)
-    mcp = MCPGateway([resource_server, scenario_server, comms_server])
+    phone_server = (
+        PhoneCallMCPServer(
+            base_url=settings.phone_agent_base_url,
+            api_token=settings.phone_agent_api_token or "",
+        )
+        if settings.phone_agent_enabled and (settings.phone_agent_api_token or "").strip()
+        else CommsMockMCPServer(runtime.llm)
+    )
+    mcp = MCPGateway([resource_server, scenario_server, phone_server])
 
     engine = OrchestrationEngine(
         repository=repository,
@@ -72,6 +85,11 @@ def create_app() -> FastAPI:
             settings=settings,
         )
     )
+    @app.on_event("startup")
+    async def _restore_waiting_phone_runs() -> None:
+        restored = engine.restore_waiting_runs()
+        agenty_echo(f"[agenty] startup restore_waiting_runs -> restored_watchers={restored}")
+
     agenty_echo("[agenty] create_app: ready (Mongo + routers mounted)")
     return app
 
