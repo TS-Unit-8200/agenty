@@ -1,4 +1,4 @@
-"""POST /orchestrations/report - persist incident to Mongo, then start orchestration."""
+"""Incident intake/report routes: persist incident, optionally start orchestration."""
 
 from __future__ import annotations
 
@@ -61,6 +61,7 @@ def create_incident_report_router(
             narrative,
             lat_hint=request.lat,
             lng_hint=request.lng,
+            execution_mode=request.execution_mode,
         )
         agenty_echo(
             f"[agenty] handler POST /orchestrations/intake - LLM draft done: "
@@ -99,6 +100,8 @@ def create_incident_report_router(
             incident_id=incident_id,
             organization_external_id=org_ext,
             workflow_org_id=workflow_org,
+            autostart=request.autostart,
+            execution_mode=request.execution_mode,
         )
         logger.info(
             "api.intake persisted incident_id=%s title=%r type=%s priority=%s",
@@ -108,19 +111,38 @@ def create_incident_report_router(
             doc["priority"],
         )
 
-        run = engine.start_run(incident_id=incident_id, org_id=workflow_org)
-        trace_event("api.orchestration.start", run_id=run.id, incident_id=incident_id, org_id=workflow_org)
-        scheduled = engine.schedule(run.id)
-        logger.info("api.intake started run_id=%s for incident_id=%s", run.id, incident_id)
-        agenty_echo(
-            f"[agenty] handler POST /orchestrations/intake - returning HTTP 200 with incident_id={incident_id!r} "
-            f"run_id={run.id!r}; scheduled={scheduled}",
-        )
+        run_id: str | None = None
+        status = "saved"
+        if request.autostart:
+            run = engine.start_run(
+                incident_id=incident_id,
+                org_id=workflow_org,
+                execution_mode=request.execution_mode,
+            )
+            trace_event(
+                "api.orchestration.start",
+                run_id=run.id,
+                incident_id=incident_id,
+                org_id=workflow_org,
+                execution_mode=request.execution_mode,
+            )
+            scheduled = engine.schedule(run.id)
+            logger.info("api.intake started run_id=%s for incident_id=%s", run.id, incident_id)
+            agenty_echo(
+                f"[agenty] handler POST /orchestrations/intake - returning HTTP 200 with incident_id={incident_id!r} "
+                f"run_id={run.id!r}; scheduled={scheduled}",
+            )
+            run_id = run.id
+            status = run.status
+        else:
+            agenty_echo(
+                f"[agenty] handler POST /orchestrations/intake - returning saved incident_id={incident_id!r} without autostart",
+            )
 
         return IncidentReportResponse(
             incident_id=incident_id,
-            run_id=run.id,
-            status=run.status,
+            run_id=run_id,
+            status=status,
             title=doc["title"],
             description=doc["description"],
             type=doc["type"],
@@ -157,7 +179,11 @@ def create_incident_report_router(
             "address": address,
         }
         agenty_echo("[agenty] handler POST /orchestrations/report - calling enrich_report_with_llm ...")
-        enriched = enrich_report_with_llm(runtime, llm_payload)
+        enriched = enrich_report_with_llm(
+            runtime,
+            llm_payload,
+            execution_mode=request.execution_mode,
+        )
         narrative = (enriched.narrative_summary or "").strip()
         description = request.description.strip()
         if narrative:
@@ -188,20 +214,41 @@ def create_incident_report_router(
             incident_id=incident_id,
             organization_external_id=org_ext,
             workflow_org_id=workflow_org,
+            autostart=request.autostart,
+            execution_mode=request.execution_mode,
         )
 
-        run = engine.start_run(incident_id=incident_id, org_id=workflow_org)
-        trace_event("api.orchestration.start", run_id=run.id, incident_id=incident_id, org_id=workflow_org)
-        scheduled = engine.schedule(run.id)
-        agenty_echo(
-            f"[agenty] handler POST /orchestrations/report - returning incident_id={incident_id!r} "
-            f"run_id={run.id!r}; scheduled={scheduled}",
-        )
+        run_id: str | None = None
+        status = "saved"
+        if request.autostart:
+            run = engine.start_run(
+                incident_id=incident_id,
+                org_id=workflow_org,
+                execution_mode=request.execution_mode,
+            )
+            trace_event(
+                "api.orchestration.start",
+                run_id=run.id,
+                incident_id=incident_id,
+                org_id=workflow_org,
+                execution_mode=request.execution_mode,
+            )
+            scheduled = engine.schedule(run.id)
+            agenty_echo(
+                f"[agenty] handler POST /orchestrations/report - returning incident_id={incident_id!r} "
+                f"run_id={run.id!r}; scheduled={scheduled}",
+            )
+            run_id = run.id
+            status = run.status
+        else:
+            agenty_echo(
+                f"[agenty] handler POST /orchestrations/report - returning saved incident_id={incident_id!r} without autostart",
+            )
 
         return IncidentReportResponse(
             incident_id=incident_id,
-            run_id=run.id,
-            status=run.status,
+            run_id=run_id,
+            status=status,
             title=doc["title"],
             description=doc["description"],
             type=doc["type"],

@@ -13,10 +13,16 @@ from agenty.api.routes_orchestration import create_orchestration_router
 class FakeEngine:
     def __init__(self) -> None:
         self.schedule_calls: list[tuple[str, bool]] = []
-        self.ensure_calls: list[tuple[str, str]] = []
+        self.ensure_calls: list[tuple[str, str, str]] = []
 
-    def ensure_run(self, *, incident_id: str, org_id: str) -> tuple[SimpleNamespace, bool]:
-        self.ensure_calls.append((incident_id, org_id))
+    def ensure_run(
+        self,
+        *,
+        incident_id: str,
+        org_id: str,
+        execution_mode: str = "default",
+    ) -> tuple[SimpleNamespace, bool]:
+        self.ensure_calls.append((incident_id, org_id, execution_mode))
         return SimpleNamespace(id="run-123", status="run_orchestrator"), True
 
     def schedule(self, run_id: str, *, resume: bool = False) -> bool:
@@ -81,6 +87,10 @@ class FakeRepository:
                 agent_id="komendant-policji",
                 response="Zamknac wezly i ustawic objazd.",
                 status="completed",
+                tool_status="unavailable_no_contact",
+                tool_notice="Brak przypisanego kontaktu dla tej luki.",
+                tool_resource_id=None,
+                tool_resource_name=None,
                 summary={
                     "perspective": "Priorytetem jest zamkniecie wezlow.",
                     "concerns": ["Wtorny korek."],
@@ -91,6 +101,10 @@ class FakeRepository:
                     "agent_id": "komendant-policji",
                     "response": "Zamknac wezly i ustawic objazd.",
                     "status": "completed",
+                    "tool_status": "unavailable_no_contact",
+                    "tool_notice": "Brak przypisanego kontaktu dla tej luki.",
+                    "tool_resource_id": None,
+                    "tool_resource_name": None,
                     "summary": {
                         "perspective": "Priorytetem jest zamkniecie wezlow.",
                         "concerns": ["Wtorny korek."],
@@ -164,7 +178,7 @@ def test_orchestration_post_is_idempotent_and_reuses_existing_run() -> None:
 
     assert response.status_code == 200
     assert response.json() == {"run_id": "run-123", "status": "run_orchestrator"}
-    assert engine.ensure_calls == [("inc-123", "org-9")]
+    assert engine.ensure_calls == [("inc-123", "org-9", "default")]
     assert engine.schedule_calls == [("run-123", True)]
 
 
@@ -188,6 +202,8 @@ def test_result_endpoint_omits_steps_by_default_and_can_opt_in_debug_steps() -> 
     assert result.json()["scenario_version"]["scenarios"][0]["label"] == "A"
     assert len(result.json()["agent_runs"]) == 2
     assert result.json()["agent_runs"][0]["response"] == "Zamknac wezly i ustawic objazd."
+    assert result.json()["agent_runs"][0]["tool_status"] == "unavailable_no_contact"
+    assert result.json()["agent_runs"][0]["tool_notice"] == "Brak przypisanego kontaktu dla tej luki."
     assert result.json()["orchestrator_report"] == "# Raport"
     assert result.json()["external_info"]["call_id"] == "call-123"
     assert "steps" not in result.json()

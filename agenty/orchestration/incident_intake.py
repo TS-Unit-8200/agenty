@@ -79,6 +79,7 @@ def draft_incident_from_narrative_llm(
     *,
     lat_hint: float | None,
     lng_hint: float | None,
+    execution_mode: str | None = None,
 ) -> NarrativeIncidentDraft:
     """Infer title, type, priority, geography, and description from unstructured Polish text."""
     geo = ""
@@ -105,10 +106,15 @@ def draft_incident_from_narrative_llm(
             messages,
             response_format={"type": "json_object"},
             log_label="intake:narrative_draft_json",
+            execution_mode=execution_mode,
         )
     except Exception as exc:  # noqa: BLE001
         logger.info("Narrative intake: json_object failed (%s); plain completion", exc)
-        raw = runtime.llm.chat_completion(messages, log_label="intake:narrative_draft_plain")
+        raw = runtime.llm.chat_completion(
+            messages,
+            log_label="intake:narrative_draft_plain",
+            execution_mode=execution_mode,
+        )
     try:
         data = _parse_llm_json_object(raw)
         draft = NarrativeIncidentDraft.model_validate(data)
@@ -134,7 +140,12 @@ def draft_incident_from_narrative_llm(
     return draft
 
 
-def enrich_report_with_llm(runtime: AgentRuntime, payload: dict[str, Any]) -> IntakeLlmFields:
+def enrich_report_with_llm(
+    runtime: AgentRuntime,
+    payload: dict[str, Any],
+    *,
+    execution_mode: str | None = None,
+) -> IntakeLlmFields:
     """Ask the model for population estimate, voivodeship, and a concise operational summary."""
     instruction = (
         "Jesteś analizatorem zgłoszeń kryzysowych. Na podstawie pól JSON wejściowych zwróć "
@@ -151,10 +162,15 @@ def enrich_report_with_llm(runtime: AgentRuntime, payload: dict[str, Any]) -> In
             messages,
             response_format={"type": "json_object"},
             log_label="intake:enrich_report_json",
+            execution_mode=execution_mode,
         )
     except Exception as exc:  # noqa: BLE001
         logger.info("LLM json_object unsupported or failed (%s); retrying plain completion", exc)
-        raw = runtime.llm.chat_completion(messages, log_label="intake:enrich_report_plain")
+        raw = runtime.llm.chat_completion(
+            messages,
+            log_label="intake:enrich_report_plain",
+            execution_mode=execution_mode,
+        )
     raw = (raw or "").strip()
     if raw.startswith("```"):
         raw = re.sub(r"^```\w*\n?", "", raw)

@@ -9,6 +9,7 @@ from uuid import uuid4
 from agenty.db.mongo import MongoConnector
 from agenty.orchestration.models import (
     AgentRun,
+    AgentToolSession,
     ExternalInfoRequest,
     ScenarioVersion,
     WorkflowRun,
@@ -24,17 +25,23 @@ class OrchestrationRepository:
         self._runs = self._db["workflow_runs"]
         self._steps = self._db["workflow_steps"]
         self._agent_runs = self._db["agent_runs"]
+        self._agent_tool_sessions = self._db["agent_tool_sessions"]
         self._scenario_versions = self._db["scenario_versions"]
         self._external_info_requests = self._db["external_info_requests"]
         self._organizations = self._db["organizations"]
         self._runs.create_index([("id", 1)], unique=True)
-        self._runs.create_index([("incident_id", 1), ("orchestrator_version", 1)])
+        self._runs.create_index([("incident_id", 1), ("orchestrator_version", 1), ("execution_mode", 1)])
         self._runs.create_index([("incident_id", 1), ("updated_at", -1)])
         self._steps.create_index([("run_id", 1), ("state", 1)], unique=True)
         self._agent_runs.create_index([("run_id", 1)])
+        self._agent_tool_sessions.create_index([("run_id", 1), ("agent_id", 1)], unique=True)
         self._scenario_versions.create_index([("id", 1)], unique=True)
+        for index_name, info in self._external_info_requests.index_information().items():
+            if info.get("unique") and info.get("key") == [("run_id", 1)]:
+                self._external_info_requests.drop_index(index_name)
         self._external_info_requests.create_index([("id", 1)], unique=True)
-        self._external_info_requests.create_index([("run_id", 1)], unique=True)
+        self._external_info_requests.create_index([("run_id", 1), ("updated_at", -1)])
+        self._external_info_requests.create_index([("run_id", 1), ("status", 1), ("updated_at", -1)])
         self._external_info_requests.create_index([("status", 1), ("updated_at", -1)])
 
     @staticmethod
@@ -54,13 +61,24 @@ class OrchestrationRepository:
         except ValueError:
             return -1
 
-    def find_latest_active_run(self, incident_id: str, orchestrator_version: str) -> WorkflowRun | None:
+    def find_latest_active_run(
+        self,
+        incident_id: str,
+        orchestrator_version: str,
+        execution_mode: str = "default",
+    ) -> WorkflowRun | None:
+        execution_mode_query: dict[str, Any]
+        if execution_mode == "default":
+            execution_mode_query = {"$or": [{"execution_mode": "default"}, {"execution_mode": {"$exists": False}}]}
+        else:
+            execution_mode_query = {"execution_mode": execution_mode}
         docs = list(
             self._runs.find(
                 {
                     "incident_id": incident_id,
                     "orchestrator_version": orchestrator_version,
                     "status": {"$nin": list(TERMINAL_STATES)},
+                    **execution_mode_query,
                 },
                 {"_id": 0},
             )
@@ -82,12 +100,15 @@ class OrchestrationRepository:
         *,
         incident_id: str | None = None,
         orchestrator_version: str | None = None,
+        execution_mode: str | None = None,
     ) -> list[WorkflowRun]:
         query: dict[str, Any] = {}
         if incident_id is not None:
             query["incident_id"] = incident_id
         if orchestrator_version is not None:
             query["orchestrator_version"] = orchestrator_version
+        if execution_mode is not None:
+            query["execution_mode"] = execution_mode
         return [
             WorkflowRun.model_validate(self._strip_id(doc))
             for doc in self._runs.find(query, {"_id": 0}).sort("updated_at", -1)
@@ -163,6 +184,28 @@ class OrchestrationRepository:
             for doc in self._agent_runs.find({"run_id": run_id}, {"_id": 0}).sort("started_at", 1)
         ]
 
+    def upsert_agent_tool_session(self, session: AgentToolSession) -> AgentToolSession:
+        self._agent_tool_sessions.update_one(
+            {"run_id": session.run_id, "agent_id": session.agent_id},
+            {"$set": session.model_dump(mode="python")},
+            upsert=True,
+        )
+        return session
+
+    def get_agent_tool_session(self, run_id: str, agent_id: str) -> AgentToolSession | None:
+        doc = self._agent_tool_sessions.find_one({"run_id": run_id, "agent_id": agent_id}, {"_id": 0})
+        clean = self._strip_id(doc)
+        return AgentToolSession.model_validate(clean) if clean else None
+
+    def list_agent_tool_sessions(self, run_id: str) -> list[AgentToolSession]:
+        return [
+            AgentToolSession.model_validate(self._strip_id(doc))
+            for doc in self._agent_tool_sessions.find({"run_id": run_id}, {"_id": 0}).sort("created_at", 1)
+        ]
+
+    def delete_agent_tool_session(self, run_id: str, agent_id: str) -> None:
+        self._agent_tool_sessions.delete_one({"run_id": run_id, "agent_id": agent_id})
+
     def save_scenario_version(self, version: ScenarioVersion) -> ScenarioVersion:
         self._scenario_versions.insert_one(version.model_dump())
         return version
@@ -174,14 +217,27 @@ class OrchestrationRepository:
 
     def upsert_external_info_request(self, request: ExternalInfoRequest) -> ExternalInfoRequest:
         self._external_info_requests.update_one(
-            {"run_id": request.run_id},
+            {"id": request.id},
             {"$set": request.model_dump(mode="python")},
             upsert=True,
         )
         return request
 
     def get_external_info_request(self, run_id: str) -> ExternalInfoRequest | None:
-        doc = self._external_info_requests.find_one({"run_id": run_id}, {"_id": 0})
+        doc = self._external_info_requests.find_one(
+            {"run_id": run_id},
+            {"_id": 0},
+            sort=[("updated_at", -1), ("created_at", -1)],
+        )
+        clean = self._strip_id(doc)
+        return ExternalInfoRequest.model_validate(clean) if clean else None
+
+    def get_active_external_info_request(self, run_id: str) -> ExternalInfoRequest | None:
+        doc = self._external_info_requests.find_one(
+            {"run_id": run_id, "status": {"$in": ["initiated", "waiting"]}},
+            {"_id": 0},
+            sort=[("updated_at", -1), ("created_at", -1)],
+        )
         clean = self._strip_id(doc)
         return ExternalInfoRequest.model_validate(clean) if clean else None
 

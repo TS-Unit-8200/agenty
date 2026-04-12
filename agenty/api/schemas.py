@@ -2,12 +2,17 @@
 
 from __future__ import annotations
 
+from typing import Literal
+
 from pydantic import BaseModel, Field
+
+ExecutionMode = Literal["default", "cloud_fallback"]
 
 
 class StartOrchestrationRequest(BaseModel):
     incident_id: str = Field(min_length=1)
     org_id: str = Field(min_length=1)
+    execution_mode: ExecutionMode = "default"
 
 
 class StartOrchestrationResponse(BaseModel):
@@ -35,6 +40,8 @@ class IncidentReportRequest(BaseModel):
         default=None,
         description="Value stored on the workflow run (org_id); defaults to organization_external_id",
     )
+    autostart: bool = True
+    execution_mode: ExecutionMode = "default"
 
 
 class IncidentReportLocation(BaseModel):
@@ -47,7 +54,7 @@ class IncidentReportLocation(BaseModel):
 
 class IncidentReportResponse(BaseModel):
     incident_id: str
-    run_id: str
+    run_id: str | None = None
     status: str
     title: str
     description: str
@@ -71,3 +78,5 @@ class IntakeNarrativeRequest(BaseModel):
         default=None,
         description="Stored on the workflow run; defaults to organization_external_id",
     )
+    autostart: bool = True
+    execution_mode: ExecutionMode = "default"

@@ -13,6 +13,7 @@ from uuid import uuid4
 
 from agenty.connection import LlmConnection
 from agenty.orchestration.agent_runner import AgentRunner
+from agenty.orchestration.agent_phone_tool import poll_external_info_request
 from agenty.orchestration.agent_selector import AgentSelector
 from agenty.orchestration.crisis_graph_state import CrisisGraphState
 from agenty.orchestration.exceptions import WorkflowPause
@@ -150,6 +151,10 @@ def _json_default(value: Any) -> Any:
     if isinstance(value, datetime):
         return value.isoformat()
     return str(value)
+
+
+def _ensure_utc(value: datetime) -> datetime:
+    return value if value.tzinfo is not None else value.replace(tzinfo=UTC)
 
 
 def _synthetic_resource_for_gaps(*, phone_number: str, gaps: list[str]) -> dict[str, Any]:
@@ -560,6 +565,8 @@ class CrisisWorkflowNodes:
             output = _json_safe({"organization": context["organization"], "incident": context["incident"], "hierarchy_found": bool(context["hierarchy"]), "hierarchy": context["hierarchy"]})
             self._complete_step(run, step, name, output, mark_run_completed=False)
             return {name: output}
+        except WorkflowPause:
+            raise
         except Exception as exc:  # noqa: BLE001
             self._fail_step(run, step, name, exc)
             raise
@@ -598,17 +605,117 @@ class CrisisWorkflowNodes:
                 "Organization": json.dumps(fetched.get("organization", {}), ensure_ascii=False, default=_json_default),
                 "Rada": f"Role w tej turze (odpowiedzi rownolegle): {', '.join(agent_ids) if agent_ids else '(brak)'}.\n{_COUNCIL_INSTRUCTION}",
             }
-            prompt = "Przeanalizuj incydent z perspektywy swojej roli. Podaj najwazniejsze dzialania, ryzyka, zaleznosci czasowe i priorytety. Uzywaj konkretow, liczb i ograniczen, gdy sa dostepne."
-            async with self._heartbeat(run.id, name):
-                runs = await self._runner.run(agent_ids, prompt, context_sections)
-            for item in runs:
-                item.run_id = run.id
-                item.summary = summarize_agent_response(agent_id=item.agent_id, response=item.response, error=item.error, status=item.status)
-                self._repository.append_agent_run(item)
+            prompt = (
+                "Przeanalizuj incydent z perspektywy swojej roli. Podaj najwazniejsze dzialania, ryzyka, zaleznosci czasowe i priorytety. "
+                "Uzywaj konkretow, liczb i ograniczen, gdy sa dostepne. "
+                "Jesli brakuje Ci kluczowych danych, ktore mozna potwierdzic telefonicznie przez przypisany zasob incydentu, "
+                "uzyj dostepnego toola phone_query_resource przed finalna odpowiedzia. "
+                "Najpierw sproboj toola, a dopiero potem napisz finalna odpowiedz. "
+                "Nie koncz odpowiedzi sekcja 'Czego nie wiem', jesli te dane da sie zweryfikowac przez tool. "
+                "Jesli tool zwroci unavailable_no_contact albo denied_budget_exhausted, opisz to krotko i zakoncz analize na pozostalych danych."
+            )
+            latest_runs = {item.agent_id: item for item in self._latest_council_runs(run.id)}
+            terminal_statuses = {"completed", "failed", "timed_out"}
+
+            for agent_id in agent_ids:
+                latest = latest_runs.get(agent_id)
+                if latest is not None and latest.status in terminal_statuses:
+                    continue
+
+                if latest is not None and latest.status == "waiting_tool":
+                    session = self._repository.get_agent_tool_session(run.id, agent_id)
+                    request = self._repository.get_active_external_info_request(run.id)
+                    if session is None or request is None or request.owner_agent_id != agent_id:
+                        raise RuntimeError(f"Missing waiting-tool session state for agent {agent_id}")
+
+                    async with self._heartbeat(run.id, name):
+                        request, tool_payload_json = await asyncio.to_thread(
+                            poll_external_info_request,
+                            repository=self._repository,
+                            mcp=self._mcp,
+                            request=request,
+                            phone_max_wait_s=self._phone_max_wait_s,
+                        )
+                    if tool_payload_json is None:
+                        partial_output = {
+                            "total": len(agent_ids),
+                            "completed_agents": [item.agent_id for item in latest_runs.values() if item.status in terminal_statuses],
+                            "waiting_agent": agent_id,
+                            "council_agents": agent_ids,
+                        }
+                        self._pause_step(run, step, name, partial_output, reason=request.notice or "Oczekiwanie na rozmowe.")
+                        raise WorkflowPause(reason=request.notice or "waiting for phone call", delay_s=self._phone_poll_interval_s)
+
+                    tool_payload = json.loads(tool_payload_json)
+                    async with self._heartbeat(run.id, name):
+                        resumed_run = await self._runner.resume_council_agent(
+                            agent_id=agent_id,
+                            session=session,
+                            tool_payload=tool_payload,
+                            execution_mode=run.execution_mode,
+                        )
+                    resumed_run.run_id = run.id
+                    resumed_run.summary = summarize_agent_response(
+                        agent_id=resumed_run.agent_id,
+                        response=resumed_run.response,
+                        error=resumed_run.error,
+                        status=resumed_run.status,
+                    )
+                    self._repository.append_agent_run(resumed_run)
+                    self._repository.delete_agent_tool_session(run.id, agent_id)
+                    latest_runs[agent_id] = resumed_run
+                    continue
+
+                async with self._heartbeat(run.id, name):
+                    outcome = await self._runner.run_council_agent(
+                        run_id=run.id,
+                        incident_id=run.incident_id,
+                        agent_id=agent_id,
+                        prompt=prompt,
+                        context_sections=context_sections,
+                        repository=self._repository,
+                        mcp=self._mcp,
+                        execution_mode=run.execution_mode,
+                    )
+                outcome.agent_run.run_id = run.id
+                if outcome.agent_run.status in terminal_statuses:
+                    outcome.agent_run.summary = summarize_agent_response(
+                        agent_id=outcome.agent_run.agent_id,
+                        response=outcome.agent_run.response,
+                        error=outcome.agent_run.error,
+                        status=outcome.agent_run.status,
+                    )
+                self._repository.append_agent_run(outcome.agent_run)
+                latest_runs[agent_id] = outcome.agent_run
+
+                if outcome.paused:
+                    if outcome.session is None or outcome.external_request is None:
+                        raise RuntimeError(f"Paused council agent {agent_id} without persisted tool state")
+                    self._repository.upsert_agent_tool_session(outcome.session)
+                    partial_output = {
+                        "total": len(agent_ids),
+                        "completed_agents": [item.agent_id for item in latest_runs.values() if item.status in terminal_statuses],
+                        "waiting_agent": agent_id,
+                        "council_agents": agent_ids,
+                    }
+                    self._pause_step(run, step, name, partial_output, reason=outcome.external_request.notice or "Oczekiwanie na rozmowe.")
+                    raise WorkflowPause(
+                        reason=outcome.external_request.notice or "waiting for phone call",
+                        delay_s=self._phone_poll_interval_s,
+                    )
+
+            runs = [latest_runs[agent_id] for agent_id in agent_ids if agent_id in latest_runs]
             failures = [item for item in runs if item.status != "completed"]
-            output = {"total": len(runs), "failures": len(failures), "failed_agents": [item.agent_id for item in failures], "council_agents": [item.agent_id for item in runs]}
+            output = {
+                "total": len(runs),
+                "failures": len(failures),
+                "failed_agents": [item.agent_id for item in failures],
+                "council_agents": [item.agent_id for item in runs],
+            }
             self._complete_step(run, step, name, output, mark_run_completed=False)
             return {name: output}
+        except WorkflowPause:
+            raise
         except Exception as exc:  # noqa: BLE001
             self._fail_step(run, step, name, exc)
             raise
@@ -758,7 +865,7 @@ class CrisisWorkflowNodes:
                 schema_def=_validate_schema(plan.get("schema"), selected_resource),
                 requirements=str(plan.get("requirements") or "").strip() or f"Potwierdz dla zasobu '{selected_resource.get('name', 'zasob')}' aktualna dostepnosc, kluczowe liczby operacyjne, ETA i ograniczenia.",
                 reason=str(plan.get("reason") or "").strip() or None,
-                status="planned",
+                status="initiated",
                 notice=f"Zaplanowano rozmowe z {selected_resource.get('name', 'zasob')}.",
                 created_at=datetime.now(UTC),
                 updated_at=datetime.now(UTC),
@@ -797,7 +904,17 @@ class CrisisWorkflowNodes:
 
             if not request.call_id:
                 async with self._heartbeat(run.id, name):
-                    start_raw = await asyncio.to_thread(self._mcp.call_tool, "phone_agent_start_call", {"phone_number": request.phone_number, "schema": request.schema_def, "requirements": request.requirements, "resource_name": request.resource_name})
+                    start_raw = await asyncio.to_thread(
+                        self._mcp.call_tool,
+                        "phone_agent_start_call",
+                        {
+                            "phone_number": request.phone_number,
+                            "schema": request.schema_def,
+                            "requirements": request.requirements,
+                            "resource_name": request.resource_name,
+                            "execution_mode": run.execution_mode,
+                        },
+                    )
                 start_payload = json.loads(start_raw)
                 call_id = str(start_payload.get("call_id") or "").strip()
                 if not call_id:
@@ -820,7 +937,7 @@ class CrisisWorkflowNodes:
                 self._pause_step(run, step, name, output, reason=request.notice or "Oczekiwanie na rozmowe.")
                 raise WorkflowPause(reason=request.notice or "waiting for phone call", delay_s=self._phone_poll_interval_s)
 
-            elapsed_s = (datetime.now(UTC) - request.created_at).total_seconds()
+            elapsed_s = (datetime.now(UTC) - _ensure_utc(request.created_at)).total_seconds()
             if elapsed_s >= self._phone_max_wait_s:
                 request.status = "timed_out"
                 request.notice = f"Rozmowa z {request.resource_name} przekroczyla limit oczekiwania."
@@ -909,7 +1026,12 @@ class CrisisWorkflowNodes:
                 context_sections["Poprzednia odpowiedz agenta"] = previous_agent_run.response
             prompt = "Masz nowe potwierdzenie telefoniczne o zasobie. Zaktualizuj analize ze swojej perspektywy, uwzgledniajac tylko dane potwierdzone w rozmowie. Napisz od nowa zwiezla, operacyjna odpowiedz z ryzykami, liczbami i rekomendacjami."
             async with self._heartbeat(run.id, name):
-                refreshed = await self._runner.run([request.owner_agent_id], prompt, context_sections)
+                refreshed = await self._runner.run(
+                    [request.owner_agent_id],
+                    prompt,
+                    context_sections,
+                    execution_mode=run.execution_mode,
+                )
             refreshed_run = refreshed[0]
             refreshed_run.run_id = run.id
             refreshed_run.summary = summarize_agent_response(agent_id=refreshed_run.agent_id, response=refreshed_run.response, error=refreshed_run.error, status=refreshed_run.status)
@@ -949,7 +1071,13 @@ class CrisisWorkflowNodes:
             if request is not None:
                 context_sections["Telefoniczne potwierdzenie"] = json.dumps({"status": request.status, "resource_id": request.resource_id, "resource_name": request.resource_name, "contact_name": request.contact_name, "contact_role": request.contact_role, "result": request.result, "notice": request.notice, "error": request.error}, ensure_ascii=False, indent=2, default=_json_default)
             async with self._heartbeat(run.id, name):
-                result = await self._runner.run(["orchestrator"], _ORCHESTRATOR_PROMPT, context_sections, timeout_s=max(180.0, self._runner.default_timeout_s * 3))
+                result = await self._runner.run(
+                    ["orchestrator"],
+                    _ORCHESTRATOR_PROMPT,
+                    context_sections,
+                    timeout_s=max(180.0, self._runner.default_timeout_s * 3),
+                    execution_mode=run.execution_mode,
+                )
             orchestrator_run = result[0]
             orchestrator_run.run_id = run.id
             orchestrator_run.summary = summarize_agent_response(agent_id=orchestrator_run.agent_id, response=orchestrator_run.response, error=orchestrator_run.error, status=orchestrator_run.status)

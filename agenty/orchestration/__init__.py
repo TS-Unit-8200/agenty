@@ -1,6 +1,9 @@
-"""Incident orchestration package."""
+"""Incident orchestration package with lazy exports to avoid import cycles."""
 
-from agenty.orchestration.engine import OrchestrationEngine
+from __future__ import annotations
+
+from typing import Any
+
 from agenty.orchestration.models import (
     AgentRun,
     OrchestrationResult,
@@ -9,7 +12,6 @@ from agenty.orchestration.models import (
     WorkflowState,
     WorkflowStep,
 )
-from agenty.orchestration.repository import OrchestrationRepository
 
 __all__ = [
     "AgentRun",
@@ -21,3 +23,15 @@ __all__ = [
     "WorkflowState",
     "WorkflowStep",
 ]
+
+
+def __getattr__(name: str) -> Any:
+    if name == "OrchestrationEngine":
+        from agenty.orchestration.engine import OrchestrationEngine
+
+        return OrchestrationEngine
+    if name == "OrchestrationRepository":
+        from agenty.orchestration.repository import OrchestrationRepository
+
+        return OrchestrationRepository
+    raise AttributeError(name)

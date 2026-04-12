@@ -11,6 +11,7 @@ class CrisisGraphState(TypedDict, total=False):
     run_id: str
     incident_id: str
     org_id: str
+    execution_mode: str
     fetch_hierarchy: dict[str, Any]
     select_agents: dict[str, Any]
     run_agents_async: dict[str, Any]

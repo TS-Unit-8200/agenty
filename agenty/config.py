@@ -2,7 +2,7 @@
 
 from functools import lru_cache
 from pathlib import Path
-from typing import Self
+from typing import Literal, Self
 
 from pydantic import Field, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -25,12 +25,15 @@ class Settings(BaseSettings):
         extra="ignore",
     )
 
-    llm_base_url: str = Field(
+    llm_base_url: str = "https://llm.comtegra.cloud/v1"
+    llm_api_key: str = ""
+    default_chat_model: str = "llama3-8b"
+    cgc_llm_base_url: str = Field(
         default="https://llm.comtegra.cloud/v1",
         validation_alias="CGC_LLM_BASE_URL",
     )
-    llm_api_key: str = Field(default="", validation_alias="CGC_LLM_API_KEY")
-    default_chat_model: str = Field(
+    cgc_llm_api_key: str = Field(default="", validation_alias="CGC_LLM_API_KEY")
+    cgc_llm_chat_model: str = Field(
         default="llama3-8b",
         validation_alias="CGC_LLM_CHAT_MODEL",
     )
@@ -147,12 +150,28 @@ class Settings(BaseSettings):
             self.llm_base_url = self.anthropic_base_url.rstrip("/")
             self.llm_api_key = anthropic
             self.default_chat_model = self.anthropic_chat_model
+        elif (self.cgc_llm_api_key or "").strip():
+            self.llm_base_url = self.cgc_llm_base_url.rstrip("/")
+            self.llm_api_key = self.cgc_llm_api_key
+            self.default_chat_model = self.cgc_llm_chat_model
         elif not (self.llm_api_key or "").strip():
             raise ValueError(
                 "Missing LLM credentials: set ANTHROPIC_API_KEY (Claude) or CGC_LLM_API_KEY "
                 "(Comtegra GPU Cloud). See agenty/.env.example."
             )
         return self
+
+    def resolve_llm_profile(
+        self,
+        execution_mode: Literal["default", "cloud_fallback"] | None = None,
+    ) -> tuple[str, str, str]:
+        if execution_mode == "cloud_fallback" and (self.cgc_llm_api_key or "").strip():
+            return (
+                self.cgc_llm_base_url.rstrip("/"),
+                self.cgc_llm_api_key,
+                self.cgc_llm_chat_model,
+            )
+        return (self.llm_base_url.rstrip("/"), self.llm_api_key, self.default_chat_model)
 
 
 @lru_cache

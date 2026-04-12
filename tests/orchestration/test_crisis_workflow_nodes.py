@@ -2,8 +2,19 @@ import asyncio
 import json
 from datetime import UTC, datetime
 
+import pytest
+
+from agenty.orchestration.agent_runner import AgentExecutionOutcome
 from agenty.orchestration.crisis_workflow_nodes import CrisisWorkflowNodes
-from agenty.orchestration.models import AgentRun, AgentRunSummary, ExternalInfoRequest, WorkflowRun, WorkflowStep
+from agenty.orchestration.exceptions import WorkflowPause
+from agenty.orchestration.models import (
+    AgentRun,
+    AgentRunSummary,
+    AgentToolSession,
+    ExternalInfoRequest,
+    WorkflowRun,
+    WorkflowStep,
+)
 
 
 class FakeRepository:
@@ -37,6 +48,7 @@ class FakeRepository:
                 ),
             )
         ]
+        self.agent_tool_sessions: dict[str, AgentToolSession] = {}
         self.external_request: ExternalInfoRequest | None = None
 
     def get_run(self, run_id: str) -> WorkflowRun | None:
@@ -80,6 +92,20 @@ class FakeRepository:
         self.agent_runs.append(agent_run)
         return agent_run
 
+    def upsert_agent_tool_session(self, session: AgentToolSession) -> AgentToolSession:
+        self.agent_tool_sessions[session.agent_id] = session
+        return session
+
+    def get_agent_tool_session(self, run_id: str, agent_id: str) -> AgentToolSession | None:
+        if run_id != self.run.id:
+            return None
+        return self.agent_tool_sessions.get(agent_id)
+
+    def delete_agent_tool_session(self, run_id: str, agent_id: str) -> None:
+        if run_id != self.run.id:
+            return
+        self.agent_tool_sessions.pop(agent_id, None)
+
     def get_external_info_request(self, run_id: str):
         if run_id != self.run.id:
             return None
@@ -117,6 +143,7 @@ class FakeRunner:
         context_sections: dict[str, str],
         *,
         timeout_s: float | None = None,
+        execution_mode: str | None = None,
     ) -> list[AgentRun]:
         self.calls.append((agent_ids, prompt, context_sections, timeout_s))
         now = datetime.now(UTC)
@@ -141,6 +168,7 @@ class ExplodingRunner(FakeRunner):
         context_sections: dict[str, str],
         *,
         timeout_s: float | None = None,
+        execution_mode: str | None = None,
     ) -> list[AgentRun]:
         raise RuntimeError("boom")
 
@@ -153,6 +181,72 @@ class DummyService:
 class FakePlannerLlm:
     def chat_completion(self, *_args, **_kwargs) -> str:
         return '{"should_call": false}'
+
+
+class PausingCouncilRunner(FakeRunner):
+    async def run_council_agent(
+        self,
+        *,
+        run_id: str,
+        incident_id: str,
+        agent_id: str,
+        prompt: str,
+        context_sections: dict[str, str],
+        repository,
+        mcp,
+        timeout_s: float | None = None,
+        execution_mode: str | None = None,
+    ) -> AgentExecutionOutcome:
+        now = datetime.now(UTC)
+        request = ExternalInfoRequest(
+            id="ext-1",
+            run_id=run_id,
+            incident_id=incident_id,
+            resource_id="res-police",
+            resource_name="KPP Swidnik - dyzurny ruchu",
+            phone_number="+48695031104",
+            resource_type="police",
+            contact_name="Dyżurny ruchu",
+            contact_role="komendant-policji",
+            owner_agent_id=agent_id,
+            call_id="call-1",
+            preferred_contact_type="police",
+            unknowns=["Dokladny kilometr zdarzenia na S17"],
+            schema_def={},
+            requirements="Potwierdz lokalizacje i przejezdnosc.",
+            reason="Brakuje potwierdzenia od dyzurnego.",
+            status="waiting",
+            budget_status="reserved",
+            notice="Trwa rozmowa z KPP Swidnik - dyzurny ruchu.",
+            created_at=now,
+            updated_at=now,
+        )
+        repository.upsert_external_info_request(request)
+        return AgentExecutionOutcome(
+            agent_run=AgentRun(
+                run_id=run_id,
+                agent_id=agent_id,
+                status="waiting_tool",
+                started_at=now,
+                finished_at=now,
+                latency_ms=120,
+                tool_status="waiting_tool",
+                tool_notice=request.notice,
+                tool_resource_id=request.resource_id,
+                tool_resource_name=request.resource_name,
+            ),
+            paused=True,
+            session=AgentToolSession(
+                run_id=run_id,
+                agent_id=agent_id,
+                tool_name="phone_query_resource",
+                tool_call_id="tool-call-1",
+                messages=[{"role": "assistant", "content": "tool call pending"}],
+                created_at=now,
+                updated_at=now,
+            ),
+            external_request=request,
+        )
 
 
 def test_run_orchestrator_happens_after_reconciliation() -> None:
@@ -377,3 +471,50 @@ def test_plan_external_info_uses_fallback_phone_when_incident_has_no_resources()
     assert repository.external_request.phone_number == "+48695031104"
     assert repository.external_request.resource_id == "fallback_operator_phone"
     assert repository.external_request.owner_agent_id == "dyrektor-abw"
+
+
+def test_run_agents_async_pause_does_not_fail_run() -> None:
+    repository = FakeRepository()
+    repository.agent_runs = []
+    nodes = CrisisWorkflowNodes(
+        repository=repository,
+        hierarchy=DummyService(),
+        selector=DummyService(),
+        runner=PausingCouncilRunner(),
+        reconciliation=DummyService(),
+        scenarios=DummyService(),
+        mcp=DummyService(),
+        planner_llm=FakePlannerLlm(),
+        phone_poll_interval_s=5.0,
+        phone_max_wait_s=60.0,
+    )
+
+    state = {
+        "run_id": "run-1",
+        "fetch_hierarchy": {
+            "incident": {"id": "inc-1", "description": "Karambol na S17."},
+            "organization": {"name": "Lubelskie"},
+        },
+        "select_agents": {
+            "agents": ["komendant-policji"],
+        },
+    }
+
+    with pytest.raises(WorkflowPause):
+        asyncio.run(nodes.run_agents_async(state))
+
+    assert repository.run.status == "run_agents_async"
+    assert repository.run.current_state == "run_agents_async"
+    assert repository.run.completed_at is None
+
+    step = repository.steps["run_agents_async"]
+    assert step.status == "running"
+    assert step.error is None
+    assert step.finished_at is None
+    assert step.output_payload["waiting_agent"] == "komendant-policji"
+
+    assert repository.agent_runs[-1].status == "waiting_tool"
+    assert repository.agent_runs[-1].tool_status == "waiting_tool"
+    assert repository.external_request is not None
+    assert repository.external_request.status == "waiting"
+    assert repository.get_agent_tool_session("run-1", "komendant-policji") is not None

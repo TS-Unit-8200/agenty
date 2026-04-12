@@ -33,6 +33,7 @@ class PhoneCallMCPServer:
                         "phone_number": {"type": "string"},
                         "schema": {"type": "object"},
                         "requirements": {"type": "string"},
+                        "execution_mode": {"type": "string"},
                     },
                     "required": ["phone_number", "schema", "requirements"],
                 },

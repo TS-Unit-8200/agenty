@@ -49,12 +49,17 @@ def create_orchestration_router(
             f"[agenty] handler POST /orchestrations - start workflow for "
             f"incident_id={request.incident_id!r} org_id={request.org_id!r}",
         )
-        run, reused = engine.ensure_run(incident_id=request.incident_id, org_id=request.org_id)
+        run, reused = engine.ensure_run(
+            incident_id=request.incident_id,
+            org_id=request.org_id,
+            execution_mode=request.execution_mode,
+        )
         trace_event(
             "api.orchestration.start",
             run_id=run.id,
             incident_id=request.incident_id,
             org_id=request.org_id,
+            execution_mode=request.execution_mode,
             reused=reused,
         )
         scheduled = engine.schedule(run.id, resume=reused)

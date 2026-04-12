@@ -29,10 +29,19 @@ WorkflowState = Literal[
 ]
 
 StepStatus = Literal["pending", "running", "completed", "failed", "skipped"]
-AgentRunStatus = Literal["completed", "failed", "timed_out"]
+AgentRunStatus = Literal["running", "waiting_tool", "completed", "failed", "timed_out"]
+AgentToolStatus = Literal[
+    "idle",
+    "waiting_tool",
+    "unavailable_no_contact",
+    "denied_budget_exhausted",
+    "completed",
+    "failed",
+    "timed_out",
+]
+ExecutionMode = Literal["default", "cloud_fallback"]
 AgentUrgency = Literal["immediate", "hours", "days"]
 ExternalInfoStatus = Literal[
-    "planned",
     "initiated",
     "waiting",
     "completed",
@@ -40,6 +49,7 @@ ExternalInfoStatus = Literal[
     "timed_out",
     "skipped",
 ]
+ExternalInfoBudgetStatus = Literal["reserved", "completed", "failed", "timed_out"]
 
 
 class WorkflowRun(BaseModel):
@@ -47,6 +57,7 @@ class WorkflowRun(BaseModel):
     incident_id: str
     org_id: str
     orchestrator_version: str
+    execution_mode: ExecutionMode = "default"
     status: WorkflowState
     current_state: WorkflowState
     started_at: datetime
@@ -85,6 +96,10 @@ class AgentRun(BaseModel):
     response: str | None = None
     error: str | None = None
     summary: AgentRunSummary | None = None
+    tool_status: AgentToolStatus | None = None
+    tool_notice: str | None = None
+    tool_resource_id: str | None = None
+    tool_resource_name: str | None = None
 
 
 class ScenarioVersion(BaseModel):
@@ -110,10 +125,13 @@ class ExternalInfoRequest(BaseModel):
     contact_role: str | None = None
     owner_agent_id: str | None = None
     call_id: str | None = None
+    preferred_contact_type: str | None = None
+    unknowns: list[str] = Field(default_factory=list)
     schema_def: dict[str, Any] = Field(default_factory=dict)
     requirements: str = ""
     reason: str | None = None
     status: ExternalInfoStatus
+    budget_status: ExternalInfoBudgetStatus | None = None
     notice: str | None = None
     result: dict[str, Any] | None = None
     transcript_excerpt: str | None = None
@@ -121,6 +139,17 @@ class ExternalInfoRequest(BaseModel):
     created_at: datetime
     updated_at: datetime
     completed_at: datetime | None = None
+
+
+class AgentToolSession(BaseModel):
+    run_id: str
+    agent_id: str
+    tool_name: str
+    tool_call_id: str
+    execution_mode: ExecutionMode = "default"
+    messages: list[dict[str, Any]] = Field(default_factory=list)
+    created_at: datetime
+    updated_at: datetime
 
 
 class OrchestrationResult(BaseModel):

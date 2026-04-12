@@ -34,9 +34,6 @@ WORKFLOW_STEPS: tuple[WorkflowState, ...] = (
     "select_agents",
     "run_agents_async",
     "resolve_conflicts",
-    "plan_external_info",
-    "await_external_info",
-    "refresh_agent_after_call",
     "run_orchestrator",
     "generate_scenarios",
     "sync_resources",
@@ -64,6 +61,7 @@ class OrchestrationEngine:
         self._runner = AgentRunner(
             runtime,
             timeout_s=max(30.0, float(runtime._settings.agent_llm_timeout_s)),
+            phone_poll_interval_s=max(1.0, float(runtime._settings.phone_agent_poll_interval_s)),
         )
         self._reconciliation = ReconciliationService()
         self._scenarios = ScenarioService(mcp)
@@ -90,19 +88,32 @@ class OrchestrationEngine:
     def orchestrator_version(self) -> str:
         return self._orchestrator_version
 
-    def start_run(self, *, incident_id: str, org_id: str) -> WorkflowRun:
+    def start_run(
+        self,
+        *,
+        incident_id: str,
+        org_id: str,
+        execution_mode: str = "default",
+    ) -> WorkflowRun:
         now = datetime.now(UTC)
         run = WorkflowRun(
             id=str(uuid4()),
             incident_id=incident_id,
             org_id=org_id,
             orchestrator_version=self._orchestrator_version,
+            execution_mode=execution_mode,
             status="created",
             current_state="created",
             started_at=now,
             updated_at=now,
         )
-        trace_event("orchestration.run.created", run_id=run.id, incident_id=incident_id, org_id=org_id)
+        trace_event(
+            "orchestration.run.created",
+            run_id=run.id,
+            incident_id=incident_id,
+            org_id=org_id,
+            execution_mode=execution_mode,
+        )
         created = self._repository.create_run(run)
         self._repository.update_incident_links(
             incident_id,
@@ -111,8 +122,18 @@ class OrchestrationEngine:
         )
         return created
 
-    def ensure_run(self, *, incident_id: str, org_id: str) -> tuple[WorkflowRun, bool]:
-        existing = self._repository.find_latest_active_run(incident_id, self._orchestrator_version)
+    def ensure_run(
+        self,
+        *,
+        incident_id: str,
+        org_id: str,
+        execution_mode: str = "default",
+    ) -> tuple[WorkflowRun, bool]:
+        existing = self._repository.find_latest_active_run(
+            incident_id,
+            self._orchestrator_version,
+            execution_mode=execution_mode,
+        )
         if existing is not None:
             self._repository.update_incident_links(
                 incident_id,
@@ -120,7 +141,7 @@ class OrchestrationEngine:
                 scenario_version_id=self._scenario_version_id(existing.id),
             )
             return existing, True
-        return self.start_run(incident_id=incident_id, org_id=org_id), False
+        return self.start_run(incident_id=incident_id, org_id=org_id, execution_mode=execution_mode), False
 
     def is_task_active(self, run_id: str) -> bool:
         task = self._active_tasks.get(run_id)
@@ -221,6 +242,7 @@ class OrchestrationEngine:
             "run_id": run.id,
             "incident_id": run.incident_id,
             "org_id": run.org_id,
+            "execution_mode": run.execution_mode,
         }
         config = {"configurable": {"thread_id": run.id}}
         paused = False
@@ -309,6 +331,7 @@ class OrchestrationEngine:
             "run_id": run.id,
             "incident_id": run.incident_id,
             "org_id": run.org_id,
+            "execution_mode": run.execution_mode,
         }
         steps = {step.state: step for step in self._repository.list_steps(run.id)}
 

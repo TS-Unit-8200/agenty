@@ -4,8 +4,8 @@ from agenty.orchestration.state_machine import is_valid_transition, next_state, 
 def test_next_state_advances_on_happy_path() -> None:
     assert next_state("created") == "fetch_hierarchy"
     assert next_state("fetch_hierarchy") == "select_agents"
-    assert next_state("resolve_conflicts") == "plan_external_info"
-    assert next_state("await_external_info") == "refresh_agent_after_call"
+    assert next_state("resolve_conflicts") == "run_orchestrator"
+    assert next_state("generate_scenarios") == "sync_resources"
 
 
 def test_valid_transition_rejects_jump_over_steps() -> None:
