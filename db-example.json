@@ -31,8 +31,8 @@
         "is_active": true,
         "created_at": "2025-01-02T00:00:00.000Z",
         "hierarchy": {
-          "role": "Prezes Zarzadu",
-          "slug": "prezes_kghm",
+          "role": "Orchestrator Rady Kryzysowej KGHM",
+          "slug": "orchestrator-kghm",
           "level": 1,
           "permissions": [
             "incidents:read",
@@ -45,22 +45,26 @@
             "scenarios:read",
             "scenarios:write"
           ],
-          "summary": "Centralny szczebel decyzyjny dla scenariuszy KGHM.",
-          "activation": "Zawsze dla zdarzen korporacyjnych i bezpieczenstwa zakladow.",
-          "escalation": "zarzad",
+          "summary": "Centralny koordynator rady kryzysowej KGHM, zbiera perspektywy agentow-rol korporacyjnych, identyfikuje konflikty decyzyjne i generuje 3 scenariusze dzialania.",
+          "activation": "Zawsze, jako korzen systemu decyzyjnego KGHM.",
+          "escalation": "koordynacyjny",
           "constraints": [
-            "Nie zastepuje operacji terenowych.",
-            "Nie prowadzi ratownictwa bezposrednio."
+            "Nigdy nie generuje jednego scenariusza — zawsze 3.",
+            "Nie podejmuje decyzji za czlowieka — REKOMENDUJE.",
+            "Nie kieruje dzialaniami ratowniczymi bezposrednio."
           ],
           "competencies": [
-            "Nadzor zarzadzania",
-            "Eskalacja do dyrektora operacyjnego"
+            "Klasyfikacja incydentow (typ, zasieg, priorytet, infrastruktura krytyczna)",
+            "Zbieranie perspektyw agentow",
+            "Identyfikacja konfliktow decyzyjnych",
+            "Generowanie scenariuszy dzialania",
+            "Eskalacja wg skali: odcinek → zaklad → grupa kapitalowa"
           ],
-          "source_file": "agenty/HIERARCHIA.md",
+          "source_file": "agents_kghm/orchestrator-kghm.md",
           "children": [
             {
-              "role": "Dyrektor Operacyjny",
-              "slug": "dyrektor_operacyjny",
+              "role": "Zarzad i Kierownictwo",
+              "slug": "zarzad-kierownictwo",
               "level": 2,
               "permissions": [
                 "incidents:read",
@@ -71,65 +75,364 @@
                 "scenarios:read",
                 "scenarios:write"
               ],
-              "summary": "Koordynuje dzialania operacyjne w zakladzie.",
-              "activation": "Gdy incydent dotyczy produkcji, bezpieczenstwa lub logistyki zakladu.",
-              "escalation": "operacyjny",
+              "summary": "Pion eskalacji zarzadczej: od kierownika ruchu zakladu, przez dyrektora zakladu, po czlonka zarzadu grupy kapitalowej.",
+              "activation": "Aktywny gdy incydent wymaga decyzji na poziomie zakladu lub korporacji.",
+              "escalation": "warstwowy",
               "constraints": [
-                "Nie podejmuje decyzji strategicznych zarzadu.",
-                "Nie zastępuje ratownikow gorniczych."
+                "Nie prowadzi bezposrednich dzialan ratowniczych w terenie.",
+                "Nie zastepuje agentow operacyjnych."
               ],
               "competencies": [
-                "Koordynacja zmian",
-                "Bezpieczenstwo produkcji",
-                "Zlecanie dzialan terenowych"
+                "Eskalacja decyzji wg skali incydentu",
+                "Koordynacja miedzy poziomami zarzadzania",
+                "Alokacja zasobow zakladowych i korporacyjnych"
               ],
-              "source_file": "agenty/HIERARCHIA.md",
+              "source_file": "agents_kghm/orchestrator-kghm.md",
               "children": [
                 {
-                  "role": "Kierownik Zmiany",
-                  "slug": "kierownik_zmiany",
+                  "role": "Czlonek Zarzadu ds. Operacji",
+                  "slug": "czlonek-zarzadu-operacje",
+                  "level": 3,
+                  "permissions": [
+                    "incidents:read",
+                    "incidents:write",
+                    "incidents:delete",
+                    "agents:trigger",
+                    "users:manage",
+                    "resources:read",
+                    "resources:write",
+                    "scenarios:read",
+                    "scenarios:write"
+                  ],
+                  "summary": "Perspektywa korporacyjna — zasoby grupy kapitalowej, budzet kryzysowy, koordynacja miedzyoddzialowa. Zarzadza transportem miedzyoddzialowym, budzetem kryzysowym, rezerwami sprzetu.",
+                  "activation": "Gdy potrzebne zasoby z poziomu grupy kapitalowej lub incydent dotyczy wielu zakladow.",
+                  "escalation": "korporacyjny",
+                  "constraints": [
+                    "Nie kieruje dzialaniami ratowniczymi w zakladzie — to rola Dyrektora ZUZ / Kierownika Ruchu.",
+                    "Nie wydaje polecen ratownikom gorniczym — to rola Dyspozytora Ratownictwa.",
+                    "Nie decyduje o ewakuacji poszczegolnych odcinkow — to rola Kierownika Ruchu.",
+                    "Nie prowadzi komunikacji kryzysowej samodzielnie — to rola Rzecznika."
+                  ],
+                  "competencies": [
+                    "Przesuwanie zasobow miedzy zakladami (ludzie, sprzet, paliwo)",
+                    "Uruchamianie rezerwy finansowej korporacyjnej",
+                    "Zatrzymanie produkcji w zagrozoonym zakladzie",
+                    "Wzywanie podwykonawcow z umow ramowych",
+                    "Priorytetyzacja zasobow miedzy zakladami",
+                    "Zatwierdzanie wydatkow powyej progu dyrektorskiego",
+                    "Reprezentacja KGHM wobec WUG, prokuratury",
+                    "Wnioskowanie do Prezesa o eskalacje do Rady Nadzorczej"
+                  ],
+                  "source_file": "agents_kghm/czlonek-zarzadu-operacje.md",
+                  "children": [
+                    {
+                      "role": "Dyrektor ZUZ / Szef Sztabu Kryzysowego",
+                      "slug": "dyrektor-zuz",
+                      "level": 4,
+                      "permissions": [
+                        "incidents:read",
+                        "incidents:write",
+                        "agents:trigger",
+                        "resources:read",
+                        "resources:write",
+                        "scenarios:read",
+                        "scenarios:write"
+                      ],
+                      "summary": "Perspektywa strategiczna i koordynacyjna na poziomie zakladu. Najwyzszy szczebel zarzadzania w zakladzie gorniczym lub hutniczym. Kieruje dzialaniami kryzysowymi na poziomie zakladu.",
+                      "activation": "Gdy incydent dotyczy poziomu zakladu lub wymaga koordynacji wielu sluzb zakladowych.",
+                      "escalation": "zakladowy",
+                      "constraints": [
+                        "Nie podejmuje decyzji operacyjnych w terenie pod ziemia — to rola Kierownika Ruchu.",
+                        "Nie kieruje dzialaniami ratowniczymi bezposrednio — to rola Dyspozytora Ratownictwa.",
+                        "Nie zarzadza zasobami innych zakladow — to rola Czlonka Zarzadu.",
+                        "Nie prowadzi komunikacji z mediami — to rola Rzecznika."
+                      ],
+                      "competencies": [
+                        "Kierowanie dzialaniami kryzysowymi na poziomie zakladu",
+                        "Decyzja o zatrzymaniu/wznowieniu produkcji (calej lub czesciowej)",
+                        "Zatwierdzanie planu ewakuacji",
+                        "Koordynacja Kierownika Ruchu, Dyspozytora, Lekarza, Logistyka, Ochrony",
+                        "Wezwanie sluzb zewnetrznych (PSP, Policja, LPR)",
+                        "Eskalacja do Czlonka Zarzadu",
+                        "Powiadamianie OUG/WUG (art. 118 PGG)",
+                        "Organizacja komisji powypadkowej"
+                      ],
+                      "source_file": "agents_kghm/dyrektor-zuz.md",
+                      "children": [
+                        {
+                          "role": "Kierownik Ruchu Zakladu Gorniczego",
+                          "slug": "kierownik-ruchu-zakladu",
+                          "level": 5,
+                          "permissions": [
+                            "incidents:read",
+                            "incidents:write",
+                            "resources:read",
+                            "resources:write"
+                          ],
+                          "summary": "Perspektywa zakladowa — pierwsza linia, najblizej ludzi pod ziemia. Zna kazdy szyb, odcinek, przodek. Prawo i OBOWIAZEK wstrzymac ruch w zagrozoonym rejonie (art. 68 PGG).",
+                          "activation": "Zawsze jesli incydent dotyczy zakladu gorniczego.",
+                          "escalation": "operacyjny",
+                          "constraints": [
+                            "Nie koordynuje miedzy zakladami — to rola Dyrektora ZUZ / Czlonka Zarzadu.",
+                            "Nie kieruje ratownikami ze Stacji Ratownictwa Gorniczego — to rola Dyspozytora.",
+                            "Nie zarzadza zasobami korporacyjnymi — to rola Czlonka Zarzadu.",
+                            "Nie prowadzi komunikacji zewnetrznej — to rola Rzecznika."
+                          ],
+                          "competencies": [
+                            "Ocena sytuacji pod ziemia (system RCP — dokladna liczba ludzi)",
+                            "Wstrzymanie ruchu w zagrozoonym rejonie (art. 68 PGG)",
+                            "Zarzadzenie ewakuacji zagrozoonych rejonow",
+                            "Uaktywnienie alarmu kopalni",
+                            "Uruchomienie wentylacji awaryjnej",
+                            "Koordynacja ze sztygarami zmianowymi pod ziemia",
+                            "Monitoring stezen gazow (CH4, CO, CO2) w czasie rzeczywistym",
+                            "Zabezpieczenie pompowni i komor bezpieczenstwa"
+                          ],
+                          "source_file": "agents_kghm/kierownik-ruchu-zakladu.md",
+                          "children": []
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "role": "Operacyjni",
+              "slug": "operacyjni-kghm",
+              "level": 2,
+              "permissions": [
+                "incidents:read",
+                "incidents:write",
+                "agents:trigger",
+                "resources:read",
+                "scenarios:read"
+              ],
+              "summary": "Rdzen reagowania na zdarzenia — agenci operacyjni aktywowani ZAWSZE, niezaleznie od skali incydentu.",
+              "activation": "ZAWSZE, niezaleznie od skali zdarzenia.",
+              "escalation": "operacyjny",
+              "constraints": [
+                "Nie podejmuja decyzji strategicznych zakladu.",
+                "Dzialaja w ramach swojej specjalizacji."
+              ],
+              "competencies": [
+                "Ratownictwo gornicze",
+                "Bezpieczenstwo fizyczne i kontrola dostepu",
+                "Opieka medyczna i triage",
+                "Logistyka zasobow i utrzymanie ruchu"
+              ],
+              "source_file": "agents_kghm/orchestrator-kghm.md",
+              "children": [
+                {
+                  "role": "Dyspozytor Ratownictwa Gorniczego",
+                  "slug": "dyspozytor-ratownictwa",
+                  "level": 3,
+                  "permissions": [
+                    "incidents:read",
+                    "incidents:write",
+                    "agents:trigger",
+                    "resources:read",
+                    "scenarios:read"
+                  ],
+                  "summary": "Perspektywa ratownicza — kierowanie dzialaniami ratowniczymi pod ziemia i na powierzchni. Dysponuje zastepami JRGH i ratownikami zakladowymi.",
+                  "activation": "Zawsze.",
+                  "escalation": "operacyjny",
+                  "constraints": [
+                    "Nie decyduje o priorytetach zakladu — to rola Dyrektora / Kierownika Ruchu.",
+                    "Nie zarzadza logistyka/transportem — to rola Logistyka.",
+                    "Nie zabezpiecza terenu na powierzchni — to rola Szefa Ochrony.",
+                    "Nie leczy poszkodowanych — to rola Lekarza Zakladowego."
+                  ],
+                  "competencies": [
+                    "Kierowanie dzialaniami ratowniczymi pod ziemia i na powierzchni",
+                    "Dysponowanie ratownikami gorniczymi (JRGH, zakladowi)",
+                    "Rozpoznanie i ocena zagrozenia ratowniczego",
+                    "Akcje ratownicze: pozar podziemny, zawal, zagrozenie metanowe, wodne",
+                    "Wnioskowanie o wsparcie CSRG Bytom",
+                    "Zarzadzanie strefami zagrozenia"
+                  ],
+                  "source_file": "agents_kghm/dyspozytor-ratownictwa.md",
+                  "children": []
+                },
+                {
+                  "role": "Szef Ochrony",
+                  "slug": "szef-ochrony",
                   "level": 3,
                   "permissions": [
                     "incidents:read",
                     "incidents:write",
                     "resources:read",
-                    "resources:write"
+                    "scenarios:read"
                   ],
-                  "summary": "Reaguje lokalnie na poziomie zmiany i przekazuje sytuacje wyzej.",
-                  "activation": "Zawsze na poziomie zmiany.",
-                  "escalation": "zmianowy",
+                  "summary": "Perspektywa bezpieczenstwa fizycznego, kontroli dostepu i porzadku. Zabezpieczenie terenu zakladu, kontrola bram i szybów, ochrona mienia, eskorty.",
+                  "activation": "Zawsze.",
+                  "escalation": "operacyjny",
                   "constraints": [
-                    "Nie kieruje calym zakladem.",
-                    "Nie podejmuje decyzji strategicznych."
+                    "Nie kieruje dzialaniami ratowniczymi — to rola Dyspozytora Ratownictwa.",
+                    "Nie decyduje o ewakuacji pod ziemia — to rola Kierownika Ruchu.",
+                    "Nie zarzadza logistyka zakladu — to rola Logistyka.",
+                    "Nie prowadzi dochodzen — to rola Policji / prokuratury."
                   ],
                   "competencies": [
-                    "Zarządzanie zmiana",
-                    "Alarmowanie zalogi",
-                    "Raportowanie do dyrektora"
+                    "Zabezpieczenie terenu zakladu i kontrola dostepu",
+                    "Kierowanie ruchem na powierzchni przy ewakuacji",
+                    "Ochrona mienia i magazynow materialow wybuchowych",
+                    "Eskorty transportow krytycznych (paliwo, MW, poszkodowani)",
+                    "Monitoring CCTV i centrum monitoringu",
+                    "Wspolpraca z Policja i PSP na terenie zakladu",
+                    "Ocena podejrzenia sabotazu"
                   ],
-                  "source_file": "agenty/HIERARCHIA.md",
-                  "children": [
-                    {
-                      "role": "Ratownik Gorniczy",
-                      "slug": "ratownik_gorniczy",
-                      "level": 4,
-                      "permissions": ["incidents:read", "resources:read"],
-                      "summary": "Dziala w bezposrednim terenie zagrozenia i wykonuje zadania ratownicze.",
-                      "activation": "Na polecenie kierownika zmiany lub dyspozytora ratowniczego.",
-                      "escalation": "terenowy",
-                      "constraints": [
-                        "Nie zarzadza calym zakladem.",
-                        "Dziala w ramach polecen operacyjnych."
-                      ],
-                      "competencies": [
-                        "Ratownictwo gornicze",
-                        "Ewakuacja zalogi",
-                        "Obsluga sprzetu ratowniczego"
-                      ],
-                      "source_file": "agenty/HIERARCHIA.md",
-                      "children": []
-                    }
-                  ]
+                  "source_file": "agents_kghm/szef-ochrony.md",
+                  "children": []
+                },
+                {
+                  "role": "Lekarz Zakladowy / Dyrektor MCZ",
+                  "slug": "lekarz-zakladowy",
+                  "level": 3,
+                  "permissions": [
+                    "incidents:read",
+                    "resources:read",
+                    "scenarios:read"
+                  ],
+                  "summary": "Perspektywa medyczna — zdrowie pracownikow, triage, transport sanitarny. Koordynacja z MCZ, szpitalami publicznymi i LPR.",
+                  "activation": "Zawsze.",
+                  "escalation": "operacyjny",
+                  "constraints": [
+                    "Nie kieruje dzialaniami ratowniczymi — to rola Dyspozytora Ratownictwa.",
+                    "Nie decyduje o ewakuacji zakladu — to rola Kierownika Ruchu.",
+                    "Nie zarzadza logistyka — to rola Logistyka.",
+                    "Nie prowadzi oficjalnej komunikacji z rodzinami poszkodowanych — to rola Rzecznika."
+                  ],
+                  "competencies": [
+                    "Segregacja medyczna (triage START)",
+                    "Stabilizacja i leczenie poszkodowanych",
+                    "Koordynacja transportu sanitarnego (karetki MCZ, LPR)",
+                    "Specyfika gornicza: zatrucie CO, crush syndrome, oparzenia metanowe",
+                    "Koordynacja ze szpitalami (MCZ Lubin, USK Wroclaw, Centrum Oparzeniowe)",
+                    "Zarzadzanie antidotami (CO, cyjanki)",
+                    "Dokumentacja wypadkow (wymaganie WUG)"
+                  ],
+                  "source_file": "agents_kghm/lekarz-zakladowy.md",
+                  "children": []
+                },
+                {
+                  "role": "Logistyk KGHM / Utrzymanie Ruchu",
+                  "slug": "logistyk-kghm",
+                  "level": 3,
+                  "permissions": [
+                    "incidents:read",
+                    "resources:read",
+                    "resources:write",
+                    "scenarios:read"
+                  ],
+                  "summary": "Perspektywa zasobow, infrastruktury, energii i zaopatrzenia zakladu. Realna ocena dostepnosci paliwa, energii, wentylacji, pompowni, agregatow, transportu.",
+                  "activation": "Zawsze.",
+                  "escalation": "operacyjny",
+                  "constraints": [
+                    "Nie kieruje dzialaniami ratowniczymi — to rola Dyspozytora.",
+                    "Nie decyduje o ewakuacji — to rola Kierownika Ruchu.",
+                    "Nie zarzadza personelem medycznym — to rola Lekarza.",
+                    "Nie podejmuje decyzji strategicznych — to rola Dyrektora ZUZ."
+                  ],
+                  "competencies": [
+                    "Ocena stanu wentylacji (krytyczne — bez niej ludzie gina w minutach)",
+                    "Ocena stanu pompowni (krytyczne — bez nich zaklad sie zalewa)",
+                    "Zarzadzanie zasilaniem awaryjnym (agregaty, paliwo, UPS)",
+                    "Transport szybowy i naziemny",
+                    "Prognozowanie wyczerpania zasobow (paliwo, czas do zalania, metan)",
+                    "Analiza efektow kaskadowych (brak pradu → brak wentylacji → metan → brak pomp → zalanie)",
+                    "Koordynacja z dostawcami (paliwo, sprzet, materialy)"
+                  ],
+                  "source_file": "agents_kghm/logistyk-kghm.md",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "role": "Specjalistyczni",
+              "slug": "specjalistyczni-kghm",
+              "level": 2,
+              "permissions": [
+                "incidents:read",
+                "agents:trigger",
+                "resources:read",
+                "scenarios:read"
+              ],
+              "summary": "Agenci specjalistyczni aktywowani warunkowo — cyberbezpieczenstwo i komunikacja kryzysowa.",
+              "activation": "Gdy pojawia sie podejrzenie cyberataku, sabotazu, incydent publiczny lub ofiary.",
+              "escalation": "warunkowy",
+              "constraints": [
+                "Nie prowadza dzialan ratowniczych.",
+                "Nie podejmuja decyzji operacyjnych w terenie."
+              ],
+              "competencies": [
+                "Cyberbezpieczenstwo systemow OT/IT",
+                "Komunikacja kryzysowa z mediami, WUG, rodzinami, GPW"
+              ],
+              "source_file": "agents_kghm/orchestrator-kghm.md",
+              "children": [
+                {
+                  "role": "CSIRT OT/IT",
+                  "slug": "csirt-ot",
+                  "level": 3,
+                  "permissions": [
+                    "incidents:read",
+                    "incidents:write",
+                    "agents:trigger",
+                    "resources:read",
+                    "scenarios:read"
+                  ],
+                  "summary": "Perspektywa cyberbezpieczenstwa systemow przemyslowych i korporacyjnych. Ochrona SCADA, DCS, PLC, metanometrii, systemow sterowania wentylacja i pompowniami.",
+                  "activation": "Gdy podejrzenie cyberataku, sabotazu cyfrowego, awaria systemow sterowania lub anomalie SCADA/DCS.",
+                  "escalation": "warunkowy",
+                  "constraints": [
+                    "Nie kieruje dzialaniami ratowniczymi — to rola Dyspozytora.",
+                    "Nie decyduje o ewakuacji — to rola Kierownika Ruchu.",
+                    "Nie zarzadza infrastruktura fizyczna — to rola Logistyka.",
+                    "Nie prowadzi sledztw karnych — to rola Policji/ABW/prokuratury."
+                  ],
+                  "competencies": [
+                    "Analiza charakteru zdarzenia (awaria vs cyberatak)",
+                    "Monitoring systemow krytycznych OT (SCADA wentylacji, pompowni, metanometrii)",
+                    "Weryfikacja integralnosci danych z czujnikow",
+                    "Izolacja/kwarantanna systemow",
+                    "Raportowanie do CSIRT NASK i ABW",
+                    "Zabezpieczanie dowodow cyfrowych",
+                    "Ocena lateral movement IT→OT",
+                    "Wspolpraca z dostawcami SCADA/DCS"
+                  ],
+                  "source_file": "agents_kghm/csirt-ot.md",
+                  "children": []
+                },
+                {
+                  "role": "Rzecznik Kryzysowy / Komunikacja Korporacyjna",
+                  "slug": "rzecznik-kryzysowy",
+                  "level": 3,
+                  "permissions": [
+                    "incidents:read",
+                    "resources:read",
+                    "scenarios:read"
+                  ],
+                  "summary": "Perspektywa komunikacji — media, regulator WUG, rodziny pracownikow, spolecznosci lokalne, GPW/KNF. Jedyne uprawnione zrodlo oficjalnych informacji w kryzysie.",
+                  "activation": "Gdy incydent publiczny, ofiary, zainteresowanie mediow lub obowiazek informacyjny MAR/GPW.",
+                  "escalation": "warunkowy",
+                  "constraints": [
+                    "Nie decyduje o dzialaniach operacyjnych — to rola Dyrektora / Kierownika Ruchu.",
+                    "Nie ocenia przyczyn wypadku publicznie — to rola komisji WUG.",
+                    "Nie publikuje danych osobowych poszkodowanych — RODO.",
+                    "Nie wydaje komunikatu bez zatwierdzenia wg matrycy (Dyrektor lub Czlonek Zarzadu)."
+                  ],
+                  "competencies": [
+                    "Tworzenie komunikatow kryzysowych (potwierdzone fakty, nie spekulacje)",
+                    "Informowanie rodzin poszkodowanych PRZED mediami",
+                    "Koordynacja komunikacji z WUG",
+                    "Raportowanie GPW/KNF (obowiazki MAR — spolka gieldowa)",
+                    "Monitoring mediow i social media, reagowanie na dezinformacje",
+                    "Koordynacja z Dyrektorem, Czlonkiem Zarzadu, prawnikami",
+                    "Komunikacja ze zwiazkami zawodowymi, gminami, MKiS"
+                  ],
+                  "source_file": "agents_kghm/rzecznik-kryzysowy.md",
+                  "children": []
                 }
               ]
             }
