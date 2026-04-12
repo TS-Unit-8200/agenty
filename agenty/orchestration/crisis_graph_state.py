@@ -15,6 +15,7 @@ class CrisisGraphState(TypedDict, total=False):
     select_agents: dict[str, Any]
     run_agents_async: dict[str, Any]
     resolve_conflicts: dict[str, Any]
+    run_orchestrator: dict[str, Any]
     generate_scenarios: dict[str, Any]
     sync_resources: dict[str, Any]
     comms_mock_call: dict[str, Any]

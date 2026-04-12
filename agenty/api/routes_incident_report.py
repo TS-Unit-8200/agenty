@@ -1,4 +1,4 @@
-"""POST /orchestrations/report — persist incident to Mongo, then start orchestration."""
+"""POST /orchestrations/report - persist incident to Mongo, then start orchestration."""
 
 from __future__ import annotations
 
@@ -9,7 +9,6 @@ from fastapi import APIRouter, HTTPException
 
 from agenty.agent import AgentRuntime
 from agenty.api.access_log import agenty_echo
-from agenty.api.routes_orchestration import _orchestration_task_done_callback
 from agenty.api.schemas import (
     IncidentReportLocation,
     IncidentReportRequest,
@@ -46,7 +45,7 @@ def create_incident_report_router(
         workflow_org = (request.workflow_org_id or "").strip() or org_ext
         narrative = request.narrative.strip()
         agenty_echo(
-            f"[agenty] handler POST /orchestrations/intake — narrative LLM + Mongo append + start run; "
+            f"[agenty] handler POST /orchestrations/intake - narrative LLM + Mongo append + start run; "
             f"narrative_chars={len(narrative)} lat={request.lat!r} lng={request.lng!r} org={org_ext!r}",
         )
         logger.info(
@@ -64,11 +63,11 @@ def create_incident_report_router(
             lng_hint=request.lng,
         )
         agenty_echo(
-            f"[agenty] handler POST /orchestrations/intake — LLM draft done: "
+            f"[agenty] handler POST /orchestrations/intake - LLM draft done: "
             f"title={draft.title[:80]!r} type={draft.type!r} powiat={draft.powiat!r}",
         )
         lat, lng, gmina = _resolve_coords(draft.powiat, draft.gmina, request.lat, request.lng)
-        address = (draft.address or "").strip() or f"Zgłoszenie kryzysowe, {gmina}"
+        address = (draft.address or "").strip() or f"Zgloszenie kryzysowe, {gmina}"
         inc_type = draft.type.strip().lower()
         pri = draft.priority.strip().lower()
         incident_id = new_incident_id()
@@ -92,7 +91,7 @@ def create_incident_report_router(
             raise HTTPException(status_code=400, detail=str(exc)) from exc
 
         agenty_echo(
-            f"[agenty] handler POST /orchestrations/intake — Mongo: appended incident_id={incident_id!r} "
+            f"[agenty] handler POST /orchestrations/intake - Mongo: appended incident_id={incident_id!r} "
             f"to organization external_id={org_ext!r}",
         )
         trace_event(
@@ -111,12 +110,11 @@ def create_incident_report_router(
 
         run = engine.start_run(incident_id=incident_id, org_id=workflow_org)
         trace_event("api.orchestration.start", run_id=run.id, incident_id=incident_id, org_id=workflow_org)
-        task = asyncio.create_task(engine.execute(run.id))
-        task.add_done_callback(_orchestration_task_done_callback(run.id))
+        scheduled = engine.schedule(run.id)
         logger.info("api.intake started run_id=%s for incident_id=%s", run.id, incident_id)
         agenty_echo(
-            f"[agenty] handler POST /orchestrations/intake — returning HTTP 200 with incident_id={incident_id!r} "
-            f"run_id={run.id!r}; LangGraph still running in background",
+            f"[agenty] handler POST /orchestrations/intake - returning HTTP 200 with incident_id={incident_id!r} "
+            f"run_id={run.id!r}; scheduled={scheduled}",
         )
 
         return IncidentReportResponse(
@@ -142,12 +140,12 @@ def create_incident_report_router(
         org_ext = (request.organization_external_id or "").strip() or settings.intake_default_organization_external_id
         workflow_org = (request.workflow_org_id or "").strip() or org_ext
         agenty_echo(
-            f"[agenty] handler POST /orchestrations/report — structured report + LLM enrich + Mongo; "
+            f"[agenty] handler POST /orchestrations/report - structured report + LLM enrich + Mongo; "
             f"title={request.title[:60]!r} org={org_ext!r}",
         )
 
         lat, lng, gmina = _resolve_coords(request.powiat, request.gmina, request.lat, request.lng)
-        address = (request.address or "").strip() or f"Zgłoszenie kryzysowe, {gmina}"
+        address = (request.address or "").strip() or f"Zgloszenie kryzysowe, {gmina}"
 
         llm_payload = {
             "title": request.title,
@@ -158,7 +156,7 @@ def create_incident_report_router(
             "gmina": gmina,
             "address": address,
         }
-        agenty_echo("[agenty] handler POST /orchestrations/report — calling enrich_report_with_llm …")
+        agenty_echo("[agenty] handler POST /orchestrations/report - calling enrich_report_with_llm ...")
         enriched = enrich_report_with_llm(runtime, llm_payload)
         narrative = (enriched.narrative_summary or "").strip()
         description = request.description.strip()
@@ -194,11 +192,10 @@ def create_incident_report_router(
 
         run = engine.start_run(incident_id=incident_id, org_id=workflow_org)
         trace_event("api.orchestration.start", run_id=run.id, incident_id=incident_id, org_id=workflow_org)
-        task = asyncio.create_task(engine.execute(run.id))
-        task.add_done_callback(_orchestration_task_done_callback(run.id))
+        scheduled = engine.schedule(run.id)
         agenty_echo(
-            f"[agenty] handler POST /orchestrations/report — returning incident_id={incident_id!r} "
-            f"run_id={run.id!r}; LangGraph in background",
+            f"[agenty] handler POST /orchestrations/report - returning incident_id={incident_id!r} "
+            f"run_id={run.id!r}; scheduled={scheduled}",
         )
 
         return IncidentReportResponse(

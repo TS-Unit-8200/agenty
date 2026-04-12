@@ -1,22 +1,25 @@
 from agenty.orchestration.agent_selector import AgentSelector
 
 
-def test_selector_includes_mandatory_and_orchestrator() -> None:
+def test_selector_excludes_orchestrator_from_parallel_council() -> None:
     selector = AgentSelector()
-    agents = selector.select(
-        hierarchy={"role": "Wojt", "children": []},
-        incident={"type": "infrastructure", "description": "awaria", "scope": "gminny"},
-    )
-    assert "orchestrator" in agents
-    assert "komendant-psp" in agents
-    assert "logistyk" in agents
 
-
-def test_selector_adds_abw_for_terror_signal() -> None:
-    selector = AgentSelector()
-    agents = selector.select(
-        hierarchy={"role": "Starosta", "children": []},
-        incident={"type": "terror", "description": "possible sabotage", "scope": "powiatowy"},
+    selected = selector.select(
+      hierarchy={
+          "role": "Starosta Powiatu",
+          "children": [
+              {"role": "Wojewoda", "children": []},
+              {"role": "Komendant PSP", "children": []},
+          ],
+      },
+      incident={
+          "type": "accident",
+          "description": "Karambol z wieloma pojazdami.",
+          "scope": "powiat",
+      },
     )
-    assert "dyrektor-abw" in agents
-    assert "starosta" in agents
+
+    assert "orchestrator" not in selected
+    assert "starosta" in selected
+    assert "wojewoda" in selected
+    assert "komendant-psp" in selected

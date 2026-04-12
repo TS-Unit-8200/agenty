@@ -23,13 +23,28 @@ class AgentRunner:
         self._timeout_s = timeout_s
         self._max_concurrency = max_concurrency
 
-    async def run(self, agent_ids: list[str], prompt: str, context_sections: dict[str, str]) -> list[AgentRun]:
+    @property
+    def default_timeout_s(self) -> float:
+        return self._timeout_s
+
+    async def run(
+        self,
+        agent_ids: list[str],
+        prompt: str,
+        context_sections: dict[str, str],
+        *,
+        timeout_s: float | None = None,
+    ) -> list[AgentRun]:
         trace_event("orchestration.agent.batch.start", agent_ids=agent_ids)
         trace_human_block(
-            f"Agent batch  │  {len(agent_ids)} roles",
-            "Agents: " + ", ".join(agent_ids) + "\n\nPrompt (preview):\n" + (prompt[:2000] + ("…" if len(prompt) > 2000 else "")),
+            "Agent batch  |  {count} roles".format(count=len(agent_ids)),
+            "Agents: "
+            + ", ".join(agent_ids)
+            + "\n\nPrompt (preview):\n"
+            + (prompt[:2000] + ("..." if len(prompt) > 2000 else "")),
         )
         semaphore = asyncio.Semaphore(self._max_concurrency)
+        effective_timeout_s = timeout_s or self._timeout_s
 
         async def execute(agent_id: str) -> AgentRun:
             async with semaphore:
@@ -40,12 +55,15 @@ class AgentRunner:
                     context = AgentContext(sections=context_sections)
                     response = await asyncio.wait_for(
                         asyncio.to_thread(self._invoke_agent, agent_id, prompt, context),
-                        timeout=self._timeout_s,
+                        timeout=effective_timeout_s,
                     )
                     finished = datetime.now(UTC)
                     latency_ms = int((finished.timestamp() - start_ts) * 1000)
                     trace_human_block(
-                        f"Agent «{agent_id}»  │  completed  │  {latency_ms} ms",
+                        "Agent '{agent_id}'  |  completed  |  {latency_ms} ms".format(
+                            agent_id=agent_id,
+                            latency_ms=latency_ms,
+                        ),
                         response or "(empty reply)",
                     )
                     return AgentRun(
@@ -60,9 +78,12 @@ class AgentRunner:
                 except TimeoutError:
                     finished = datetime.now(UTC)
                     latency_ms = int((finished.timestamp() - start_ts) * 1000)
-                    err = f"Timed out after {self._timeout_s}s"
+                    err = f"Timed out after {effective_timeout_s}s"
                     trace_human_block(
-                        f"Agent «{agent_id}»  │  timed_out  │  {latency_ms} ms",
+                        "Agent '{agent_id}'  |  timed_out  |  {latency_ms} ms".format(
+                            agent_id=agent_id,
+                            latency_ms=latency_ms,
+                        ),
                         err,
                     )
                     return AgentRun(
@@ -79,7 +100,10 @@ class AgentRunner:
                     latency_ms = int((finished.timestamp() - start_ts) * 1000)
                     err = str(exc)
                     trace_human_block(
-                        f"Agent «{agent_id}»  │  failed  │  {latency_ms} ms",
+                        "Agent '{agent_id}'  |  failed  |  {latency_ms} ms".format(
+                            agent_id=agent_id,
+                            latency_ms=latency_ms,
+                        ),
                         err,
                     )
                     return AgentRun(

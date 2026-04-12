@@ -10,6 +10,7 @@ WORKFLOW_PATH: list[WorkflowState] = [
     "select_agents",
     "run_agents_async",
     "resolve_conflicts",
+    "run_orchestrator",
     "generate_scenarios",
     "sync_resources",
     "comms_mock_call",

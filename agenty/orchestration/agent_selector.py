@@ -57,5 +57,4 @@ class AgentSelector:
         ):
             selected.add("dyrektor-abw")
 
-        selected.add("orchestrator")
         return sorted(selected)

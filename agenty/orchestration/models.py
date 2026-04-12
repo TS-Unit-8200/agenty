@@ -15,6 +15,7 @@ WorkflowState = Literal[
     "select_agents",
     "run_agents_async",
     "resolve_conflicts",
+    "run_orchestrator",
     "generate_scenarios",
     "sync_resources",
     "comms_mock_call",
@@ -26,6 +27,7 @@ WorkflowState = Literal[
 
 StepStatus = Literal["pending", "running", "completed", "failed", "skipped"]
 AgentRunStatus = Literal["completed", "failed", "timed_out"]
+AgentUrgency = Literal["immediate", "hours", "days"]
 
 
 class WorkflowRun(BaseModel):
@@ -54,6 +56,13 @@ class WorkflowStep(BaseModel):
     error: str | None = None
 
 
+class AgentRunSummary(BaseModel):
+    perspective: str
+    concerns: list[str] = Field(default_factory=list)
+    recommendations: list[str] = Field(default_factory=list)
+    urgency: AgentUrgency = "hours"
+
+
 class AgentRun(BaseModel):
     run_id: str
     agent_id: str
@@ -63,6 +72,7 @@ class AgentRun(BaseModel):
     latency_ms: int
     response: str | None = None
     error: str | None = None
+    summary: AgentRunSummary | None = None
 
 
 class ScenarioVersion(BaseModel):
@@ -82,3 +92,4 @@ class OrchestrationResult(BaseModel):
     agent_runs: list[AgentRun] = Field(default_factory=list)
     scenario_version: ScenarioVersion | None = None
     comms_summary: str | None = None
+    orchestrator_report: str | None = None

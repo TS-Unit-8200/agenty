@@ -7,6 +7,7 @@ from typing import Any
 
 from agenty.db.mongo import MongoConnector
 from agenty.orchestration.models import AgentRun, ScenarioVersion, WorkflowRun, WorkflowState, WorkflowStep
+from agenty.orchestration.state_machine import TERMINAL_STATES, WORKFLOW_PATH
 
 
 class OrchestrationRepository:
@@ -19,6 +20,7 @@ class OrchestrationRepository:
         self._organizations = self._db["organizations"]
         self._runs.create_index([("id", 1)], unique=True)
         self._runs.create_index([("incident_id", 1), ("orchestrator_version", 1)])
+        self._runs.create_index([("incident_id", 1), ("updated_at", -1)])
         self._steps.create_index([("run_id", 1), ("state", 1)], unique=True)
         self._agent_runs.create_index([("run_id", 1)])
         self._scenario_versions.create_index([("id", 1)], unique=True)
@@ -29,17 +31,53 @@ class OrchestrationRepository:
             return None
         return {key: value for key, value in doc.items() if key != "_id"}
 
-    def find_existing_run(self, incident_id: str, orchestrator_version: str) -> WorkflowRun | None:
-        doc = self._runs.find_one(
-            {
-                "incident_id": incident_id,
-                "orchestrator_version": orchestrator_version,
-                "status": {"$nin": ["failed"]},
-            },
-            {"_id": 0},
+    @staticmethod
+    def _workflow_progress_rank(state: str | None) -> int:
+        if not state:
+            return -1
+        try:
+            return WORKFLOW_PATH.index(state)  # type: ignore[arg-type]
+        except ValueError:
+            return -1
+
+    def find_latest_active_run(self, incident_id: str, orchestrator_version: str) -> WorkflowRun | None:
+        docs = list(
+            self._runs.find(
+                {
+                    "incident_id": incident_id,
+                    "orchestrator_version": orchestrator_version,
+                    "status": {"$nin": list(TERMINAL_STATES)},
+                },
+                {"_id": 0},
+            )
         )
-        clean = self._strip_id(doc)
+        if not docs:
+            return None
+        docs.sort(
+            key=lambda doc: (
+                self._workflow_progress_rank(doc.get("current_state") or doc.get("status")),
+                doc.get("updated_at") or doc.get("started_at"),
+            ),
+            reverse=True,
+        )
+        clean = self._strip_id(docs[0])
         return WorkflowRun.model_validate(clean) if clean else None
+
+    def list_runs(
+        self,
+        *,
+        incident_id: str | None = None,
+        orchestrator_version: str | None = None,
+    ) -> list[WorkflowRun]:
+        query: dict[str, Any] = {}
+        if incident_id is not None:
+            query["incident_id"] = incident_id
+        if orchestrator_version is not None:
+            query["orchestrator_version"] = orchestrator_version
+        return [
+            WorkflowRun.model_validate(self._strip_id(doc))
+            for doc in self._runs.find(query, {"_id": 0}).sort("updated_at", -1)
+        ]
 
     def create_run(self, run: WorkflowRun) -> WorkflowRun:
         self._runs.insert_one(run.model_dump())
@@ -70,6 +108,12 @@ class OrchestrationRepository:
             set_payload["completed_at"] = now
         self._runs.update_one({"id": run_id}, {"$set": set_payload})
 
+    def touch_run(self, run_id: str, *, current_state: WorkflowState | None = None) -> None:
+        payload: dict[str, Any] = {"updated_at": datetime.now(UTC)}
+        if current_state is not None:
+            payload["current_state"] = current_state
+        self._runs.update_one({"id": run_id}, {"$set": payload})
+
     def upsert_step(self, step: WorkflowStep) -> WorkflowStep:
         self._steps.update_one(
             {"run_id": step.run_id, "state": step.state},
@@ -77,6 +121,17 @@ class OrchestrationRepository:
             upsert=True,
         )
         return step
+
+    def get_step(self, run_id: str, state: WorkflowState) -> WorkflowStep | None:
+        doc = self._steps.find_one({"run_id": run_id, "state": state}, {"_id": 0})
+        clean = self._strip_id(doc)
+        return WorkflowStep.model_validate(clean) if clean else None
+
+    def touch_step(self, run_id: str, state: WorkflowState) -> None:
+        self._steps.update_one(
+            {"run_id": run_id, "state": state},
+            {"$set": {"updated_at": datetime.now(UTC)}},
+        )
 
     def list_steps(self, run_id: str) -> list[WorkflowStep]:
         return [
@@ -149,3 +204,18 @@ class OrchestrationRepository:
                 f"Organization with external_id={organization_external_id!r} not found. "
                 "Seed Mongo or set INTAKE_DEFAULT_ORG_EXTERNAL_ID to match an existing org."
             )
+
+    def mark_run_superseded(self, run_id: str, *, superseded_by: str) -> None:
+        now = datetime.now(UTC)
+        self._runs.update_one(
+            {"id": run_id},
+            {
+                "$set": {
+                    "status": "failed",
+                    "current_state": "failed",
+                    "updated_at": now,
+                    "completed_at": now,
+                    "last_error": f"superseded_by:{superseded_by}",
+                }
+            },
+        )

@@ -9,12 +9,44 @@ from uuid import uuid4
 from agenty.db.models import Scenario, ScenarioActions
 from agenty.mcp_gateway.base import MCPGateway
 from agenty.orchestration.models import ScenarioVersion
+from agenty.orchestration.response_parsers import build_scenario_version_from_orchestrator_report
 from agenty.orchestration.tracing import trace_event
 
 
 class ScenarioService:
     def __init__(self, mcp: MCPGateway) -> None:
         self._mcp = mcp
+
+    @staticmethod
+    def _fallback_confidence(reconciliation: dict[str, object]) -> float:
+        raw_gaps = reconciliation.get("gaps", [])
+        gaps = raw_gaps if isinstance(raw_gaps, list) else []
+        return max(0.35, 0.9 - 0.12 * len(gaps))
+
+    def build_from_orchestrator_report(
+        self,
+        *,
+        run_id: str,
+        incident_id: str,
+        report: str,
+        reconciliation: dict[str, object],
+    ) -> ScenarioVersion | None:
+        version = build_scenario_version_from_orchestrator_report(
+            report=report,
+            run_id=run_id,
+            incident_id=incident_id,
+            fallback_confidence=self._fallback_confidence(reconciliation),
+        )
+        if version is None:
+            trace_event("orchestration.scenario.parse.missed", run_id=run_id)
+        else:
+            trace_event(
+                "orchestration.scenario.parse.ok",
+                run_id=run_id,
+                scenario_count=len(version.scenarios),
+                recommendation=version.recommendation_label,
+            )
+        return version
 
     def build(
         self,
@@ -112,9 +144,7 @@ class ScenarioService:
         trace_event("orchestration.scenario.scored", run_id=run_id, best_label=best_scenario.label, best_score=best_score)
 
         recommendation = best_scenario
-        raw_gaps = reconciliation.get("gaps", [])
-        gaps = raw_gaps if isinstance(raw_gaps, list) else []
-        confidence = max(0.35, 0.9 - 0.12 * len(gaps))
+        confidence = self._fallback_confidence(reconciliation)
         return ScenarioVersion(
             id=str(uuid4()),
             run_id=run_id,
