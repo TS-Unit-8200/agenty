@@ -1,137 +1,137 @@
-# agenty
+# Agenty
 
-Python runtime for **CrisisTwin** role agents: loads instruction markdown from `agents/`, talks to the **Comtegra GPU Cloud** LLM API (OpenAI-compatible), and reserves hooks for future **MCP** tooling.
+`agenty` to backend orkiestracji dla Crisis OS. Odpowiada za Radę Agentów, hierarchię decyzyjną, uruchamianie workflow incydentów, generowanie rekomendacji i scenariuszy oraz integrację z warstwą telefonicznego pozyskiwania danych.
 
-- **LLM API reference:** [LLM inference API | Comtegra GPU Cloud](https://docs.cgc.comtegra.cloud/llm-api)  
-- **Base URL (hosted):** `https://llm.comtegra.cloud/v1`  
-- **Auth:** bearer token (`Authorization: Bearer …`), same as `api_key` in the OpenAI Python client.
+## Co robi ten projekt
 
-## Requirements
+- uruchamia agentów rolowych dla incydentu,
+- prowadzi workflow orkiestracji i zapisuje jego stan w MongoDB,
+- pobiera dane organizacji, incydentów i zasobów z `civil42-frontend`,
+- korzysta z modeli LLM do odpowiedzi agentów i syntezy,
+- integruje telefoniczny tool-use przez `ai-backend`,
+- wystawia API dla frontendu i innych klientów.
 
-- Python **3.12+**
-- A CGC LLM API key (`cgc api-keys create --level LLM` — see docs above)
+## Stack
 
-## Install
+- Python 3.12+
+- FastAPI
+- Uvicorn
+- PyMongo
+- LangGraph
+- OpenAI-compatible clients
 
-From this directory (`cyvil42/agenty/`):
+## Wymagania
+
+- Python 3.12+
+- dostęp do MongoDB
+- działający `civil42-frontend`
+- opcjonalnie działający `ai-backend` do telefonii
+- klucz do Anthropic albo Comtegra CGC
+
+## Instalacja
 
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate   # Windows: .venv\Scripts\activate
+python -m venv .venv
+.venv\Scripts\activate
 pip install -e .
 ```
 
-## Configuration
-
-Copy `.env.example` to `.env` and set your secret. **Do not commit** `.env`.
-
-| Variable | Meaning |
-|----------|---------|
-| `CGC_LLM_BASE_URL` | API root (default: `https://llm.comtegra.cloud/v1`) |
-| `CGC_LLM_API_KEY` | Bearer token from CGC |
-| `CGC_LLM_CHAT_MODEL` | Model id, e.g. `llama3-8b` (must exist in your CGC account) |
-
-Environment variables override `.env`. The library resolves `.env` from the **agenty project root** (next to `pyproject.toml`), not from your shell’s current working directory.
-
-## Concepts
-
-- **`AgentDefinition`** — One agent: id (markdown stem), title (from first heading), full instruction text.
-- **`AgentRegistry`** — Scans `agents/*.md` and returns definitions by id.
-- **`AgentContext`** — Optional structured context (`preamble`, `sections`, `metadata`) appended to the system message when the session starts.
-- **`AgentRuntime`** — Shared LLM client + registry; **`start(agent_id, …)`** creates a session.
-- **`AgentSession`** — One conversation; **`say(user_message)`** appends user + assistant messages and calls the API.
-- **`MCPProvider`** — Protocol for future tool listing/execution (not wired into the chat loop yet).
-
-## Starting an agent (code)
-
-```python
-from agenty import AgentContext, AgentRuntime
-
-runtime = AgentRuntime()
-
-session = runtime.start(
-    "orchestrator",
-    context=AgentContext(
-        preamble="Tryb operacyjny — jedna tura odpowiedzi.",
-        sections={
-            "Incydent": "Blackout w gminie X, brak zasilania od 2 godzin, szpital na agregatach.",
-        },
-    ),
-)
-
-answer = session.say("Zaklasyfikuj incydent i wypisz 3 kluczowe pola zgodnie z instrukcją.")
-print(answer)
-```
-
-List loaded agent ids:
-
-```python
-from agenty import AgentRegistry
-
-registry = AgentRegistry()
-print(registry.list_ids())
-```
-
-Override the chat model for one session:
-
-```python
-session = runtime.start("komendant-psp", context=None, model="llama3-8b")
-```
-
-## Command-line example
-
-List agents (no API key required):
+Na systemach Unix:
 
 ```bash
-python examples/start_agent.py --list
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e .
 ```
 
-One turn with default example context and message:
+## Konfiguracja
+
+1. Skopiuj plik:
 
 ```bash
-python examples/start_agent.py --agent orchestrator
+cp .env.example .env
 ```
 
-Custom message and instructions only (no extra context block):
+2. Uzupełnij zmienne środowiskowe.
 
-```bash
-python examples/start_agent.py --agent marszalek-wojewodztwa -m "Opisz priorytety na pierwszą godzinę." --no-context
-```
-
-## Layout
-
-| Path | Role |
-|------|------|
-| `agenty/` | Python package (`config`, `connection`, `context`, `agent`, `mcp`) |
-| `agents/*.md` | System prompts / role specs |
-| `examples/start_agent.py` | Runnable demo |
-| `.env.example` | Template for secrets |
-
-## Incident Orchestration Backend (async)
-
-This repository now includes an async orchestration backend for incident workflows:
-
-- Fetches incident hierarchy from Mongo first
-- Selects and runs required agents concurrently
-- Reconciles outputs and generates scenario sets (A/B/C)
-- Uses MCP adapters for resources, scenario tools, and mocked comms calls
-
-Main modules:
-
-- `agenty/orchestration/engine.py` — state-machine orchestrator
-- `agenty/orchestration/repository.py` — Mongo persistence for runs/steps/results
-- `agenty/mcp_gateway/` — MCP tool servers and gateway
-- `agenty/api/server.py` — FastAPI app exposing orchestration endpoints
-- Trace logs are written to `logs/orchestration-trace.log` by default
-
-Run API server:
+3. Uruchom API:
 
 ```bash
 uvicorn agenty.api.server:app_factory --factory --reload --port 8080
 ```
 
-Endpoints:
+## Najważniejsze zmienne
 
-- `POST /orchestrations` — start run (`incident_id`, `org_id`)
-- `GET /orchestrations/{run_id}` — status and steps
-- `GET /orchestrations/{run_id}/result` — final artifacts when available
+### Provider LLM
+
+Masz dwie ścieżki:
+
+- Anthropic - jeśli `ANTHROPIC_API_KEY` jest ustawiony, ta ścieżka ma priorytet,
+- Comtegra CGC - fallback albo główny provider w trybie awaryjnym.
+
+### MongoDB
+
+- `DATABASE_URL`
+- `MONGODB_DATABASE`
+
+To źródło trwałego stanu workflow, wyników agentów i wpisów orkiestracji.
+
+### Integracja z frontendem
+
+- `NEXTJS_API_BASE_URL`
+- `NEXTJS_API_TOKEN`
+
+Backend używa tych zmiennych do pobierania danych Civil42, w tym zasobów incydentu.
+
+### Integracja telefoniczna
+
+- `PHONE_AGENT_ENABLED`
+- `PHONE_AGENT_BASE_URL`
+- `PHONE_AGENT_API_TOKEN`
+- `PHONE_AGENT_DEFAULT_PHONE_NUMBER`
+
+`PHONE_AGENT_DEFAULT_PHONE_NUMBER` to numer zapasowy dla ścieżek, które tego wymagają. W nowym flow telefonicznym preferowane są zasoby przypisane do incydentu.
+
+## Najważniejsze endpointy
+
+- `POST /orchestrations`
+- `POST /orchestrations/intake`
+- `POST /orchestrations/report`
+- `POST /orchestrations/{run_id}/resume`
+- `GET /orchestrations/{run_id}`
+- `GET /orchestrations/{run_id}/result`
+
+## Logi
+
+Projekt zapisuje dwa typy logów:
+
+- `logs/orchestration-trace.log` - pełny ślad techniczny,
+- `logs/orchestration-pretty.log` - czytelniejszy log operacyjny.
+
+Ścieżki są konfigurowalne przez:
+
+- `ORCHESTRATION_LOG_FILE`
+- `ORCHESTRATION_HUMAN_LOG_FILE`
+
+## Testy
+
+```bash
+pytest
+```
+
+## Architektura w skrócie
+
+- `agenty/api` - FastAPI i endpointy publiczne
+- `agenty/orchestration` - silnik workflow, repozytorium i modele
+- `agenty/mcp_gateway` - integracje narzędziowe i gateway MCP
+- `agents/` - prompty i definicje ról
+- `tests/` - testy jednostkowe i integracyjne
+
+## Tryb awaryjny
+
+Projekt wspiera działanie z wykorzystaniem Comtegra CGC jako ścieżki zapasowej dla modeli. Dzięki temu orkiestracja może działać także wtedy, gdy podstawowy provider nie jest dostępny.
+
+## Powiązane repozytoria
+
+- `civil42-frontend` - interfejs i model danych Civil42
+- `ai-backend` - telefonia AI i ekstrakcja danych z rozmów
